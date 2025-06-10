@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageSquare, Send, Bot, User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface ChatMessage {
   id: string;
@@ -17,22 +19,23 @@ export function CareerChatPage() {
     {
       id: '1',
       sender: 'bot',
-      message: 'Hello! I\'m your AI Career Assistant. I can help you with job search advice, career guidance, interview tips, and more. What would you like to know?',
+      message: 'Hello! I\'m your AI Career Assistant for the Indian job market. I can help you with job search advice, career guidance, interview tips, salary negotiation in INR, and more. What would you like to know?',
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const { toast } = useToast();
 
   const quickActions = [
-    'Help me find relevant jobs',
-    'Interview preparation tips',
-    'How to improve my resume?',
-    'Salary negotiation advice',
-    'Career change guidance'
+    'Help me find relevant jobs in India',
+    'Interview preparation tips for Indian companies',
+    'How to improve my resume for Indian job market?',
+    'Salary negotiation advice in INR',
+    'Career change guidance in India'
   ];
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
     const userMessage: ChatMessage = {
@@ -43,39 +46,44 @@ export function CareerChatPage() {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentMessage = inputMessage;
     setInputMessage('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('career-chat', {
+        body: { message: currentMessage }
+      });
+
+      if (error) throw error;
+
       const botResponse: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'bot',
-        message: getBotResponse(inputMessage),
+        message: data.response,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      toast({
+        title: "Error",
+        description: "Failed to get AI response. Please try again.",
+        variant: "destructive",
+      });
+      
+      const errorResponse: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        sender: 'bot',
+        message: "Sorry, I'm having trouble responding right now. Please try again in a moment.",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
-  };
-
-  const getBotResponse = (userInput: string): string => {
-    const input = userInput.toLowerCase();
-    
-    if (input.includes('job') || input.includes('find')) {
-      return 'I can help you find relevant jobs! Based on your profile, I\'d recommend focusing on roles that match your skills. Would you like me to suggest some specific job searches or companies to target?';
-    } else if (input.includes('interview')) {
-      return 'Great question! Here are some key interview tips: 1) Research the company thoroughly, 2) Prepare STAR method examples, 3) Practice common questions, 4) Prepare thoughtful questions to ask them. Would you like me to elaborate on any of these?';
-    } else if (input.includes('resume')) {
-      return 'For resume improvement: 1) Use action verbs and quantify achievements, 2) Tailor it for each job, 3) Keep it concise (1-2 pages), 4) Include relevant keywords. Would you like specific advice for your industry?';
-    } else if (input.includes('salary')) {
-      return 'For salary negotiation: 1) Research market rates, 2) Know your value proposition, 3) Consider the total compensation package, 4) Practice your pitch. What\'s your current situation?';
-    } else if (input.includes('career change')) {
-      return 'Career changes can be exciting! Consider: 1) Identify transferable skills, 2) Network in your target industry, 3) Consider additional training/certifications, 4) Start with informational interviews. What field are you considering?';
-    } else {
-      return 'That\'s an interesting question! I\'m here to help with career-related topics like job searching, interviews, resume writing, salary negotiation, and career development. Could you tell me more about what specific career help you\'re looking for?';
     }
   };
+
 
   const handleQuickAction = (action: string) => {
     setInputMessage(action);
