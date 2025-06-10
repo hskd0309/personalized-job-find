@@ -20,13 +20,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface NavbarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  user: SupabaseUser | null;
+  onSignOut: () => void;
 }
 
-export function Navbar({ activeTab, onTabChange }: NavbarProps) {
+export function Navbar({ activeTab, onTabChange, user, onSignOut }: NavbarProps) {
   const [notifications] = useState(3); // Simulated notification count
 
   const navItems = [
@@ -45,7 +48,7 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Briefcase className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">JobPortal</span>
+            <span className="text-xl font-bold text-foreground">Job Search India</span>
           </div>
 
           {/* Navigation Items */}
@@ -83,9 +86,9 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="flex items-center gap-2">
                   <div className="h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm">
-                    J
+                    {user?.email?.[0]?.toUpperCase() || 'U'}
                   </div>
-                  <span className="hidden sm:inline">John Doe</span>
+                  <span className="hidden sm:inline">{user?.email}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
@@ -100,7 +103,7 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={onSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
