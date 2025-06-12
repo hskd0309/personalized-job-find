@@ -1,20 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Navbar } from '@/components/Navbar';
+import { useNavigate } from 'react-router-dom';
 import { JobSearchPage } from '@/pages/JobSearchPage';
-import { ApplicationsPage } from '@/components/ApplicationsPage';
-import { ProfilePage } from '@/components/ProfilePage';
-import { ResumeBuilderPage } from '@/components/ResumeBuilderPage';
-import { CompaniesPage } from '@/components/CompaniesPage';
-import { CareerChatPage } from '@/components/CareerChatPage';
 import { AuthPage } from '@/components/AuthPage';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState('search');
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set up auth state listener
@@ -35,10 +30,6 @@ const Index = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -48,34 +39,10 @@ const Index = () => {
   }
 
   if (!user) {
-    return <AuthPage onAuthSuccess={() => setActiveTab('search')} />;
+    return <AuthPage onAuthSuccess={() => navigate('/')} />;
   }
 
-  const renderPage = () => {
-    switch (activeTab) {
-      case 'search':
-        return <JobSearchPage />;
-      case 'applications':
-        return <ApplicationsPage />;
-      case 'profile':
-        return <ProfilePage />;
-      case 'resume':
-        return <ResumeBuilderPage />;
-      case 'companies':
-        return <CompaniesPage />;
-      case 'chat':
-        return <CareerChatPage />;
-      default:
-        return <JobSearchPage />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar activeTab={activeTab} onTabChange={setActiveTab} user={user} onSignOut={handleSignOut} />
-      {renderPage()}
-    </div>
-  );
+  return <JobSearchPage />;
 };
 
-export default Index;
+export { Index };
