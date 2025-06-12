@@ -26,15 +26,38 @@ interface UserProfile {
   updated_at: string;
 }
 
+interface Experience {
+  id: string;
+  position: string;
+  company_name: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  is_current: boolean;
+  description: string;
+}
+
 export function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState('');
+  const [showExperienceForm, setShowExperienceForm] = useState(false);
+  const [newExperience, setNewExperience] = useState({
+    position: '',
+    company_name: '',
+    location: '',
+    start_date: '',
+    end_date: '',
+    is_current: false,
+    description: ''
+  });
   const { toast } = useToast();
 
   useEffect(() => {
     fetchProfile();
+    fetchExperiences();
   }, []);
 
   const fetchProfile = async () => {
@@ -83,6 +106,89 @@ export function ProfilePage() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchExperiences = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('experiences')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('start_date', { ascending: false });
+
+      if (error) throw error;
+      setExperiences(data || []);
+    } catch (error: any) {
+      console.error('Error fetching experiences:', error);
+    }
+  };
+
+  const addExperience = async () => {
+    if (!newExperience.position || !newExperience.company_name) return;
+    
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('experiences')
+        .insert([{
+          user_id: user.id,
+          ...newExperience
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Experience added successfully",
+      });
+
+      setNewExperience({
+        position: '',
+        company_name: '',
+        location: '',
+        start_date: '',
+        end_date: '',
+        is_current: false,
+        description: ''
+      });
+      setShowExperienceForm(false);
+      fetchExperiences();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to add experience",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const removeExperience = async (experienceId: string) => {
+    try {
+      const { error } = await supabase
+        .from('experiences')
+        .delete()
+        .eq('id', experienceId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Experience removed successfully",
+      });
+
+      fetchExperiences();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to remove experience",
+        variant: "destructive",
+      });
     }
   };
 
@@ -260,22 +366,142 @@ export function ProfilePage() {
               <CardTitle>Experience</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="border-l-2 border-primary pl-4">
-                  <h4 className="font-semibold">Senior Software Engineer</h4>
-                  <p className="text-muted-foreground">Tech Company Inc. • 2022 - Present</p>
-                  <p className="text-sm mt-2">Leading development of web applications using React and Node.js...</p>
-                </div>
-                <div className="border-l-2 border-muted pl-4">
-                  <h4 className="font-semibold">Software Engineer</h4>
-                  <p className="text-muted-foreground">StartupXYZ • 2020 - 2022</p>
-                  <p className="text-sm mt-2">Developed full-stack applications and improved system performance...</p>
-                </div>
+              <div className="space-y-4 mb-4">
+                {experiences.map((exp) => (
+                  <div key={exp.id} className="border-l-2 border-primary pl-4 relative group">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h4 className="font-semibold">{exp.position}</h4>
+                        <p className="text-muted-foreground">
+                          {exp.company_name} • {exp.location}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(exp.start_date).toLocaleDateString()} - {
+                            exp.is_current ? 'Present' : 
+                            exp.end_date ? new Date(exp.end_date).toLocaleDateString() : 'Present'
+                          }
+                        </p>
+                        {exp.description && (
+                          <p className="text-sm mt-2">{exp.description}</p>
+                        )}
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => removeExperience(exp.id)}
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                {experiences.length === 0 && (
+                  <p className="text-muted-foreground text-sm">No experience added yet. Click the button below to add your first experience.</p>
+                )}
               </div>
-              <Button variant="outline" size="sm" className="mt-4">
+              <Button variant="outline" size="sm" onClick={() => setShowExperienceForm(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Experience
               </Button>
+              
+              {showExperienceForm && (
+                <div className="mt-4 p-4 border rounded-lg space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="position">Position</Label>
+                      <Input 
+                        id="position"
+                        placeholder="Software Engineer"
+                        value={newExperience.position}
+                        onChange={(e) => setNewExperience(prev => ({...prev, position: e.target.value}))}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="company">Company</Label>
+                      <Input 
+                        id="company"
+                        placeholder="Company Name"
+                        value={newExperience.company_name}
+                        onChange={(e) => setNewExperience(prev => ({...prev, company_name: e.target.value}))}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="expLocation">Location</Label>
+                    <Input 
+                      id="expLocation"
+                      placeholder="City, State"
+                      value={newExperience.location}
+                      onChange={(e) => setNewExperience(prev => ({...prev, location: e.target.value}))}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="startDate">Start Date</Label>
+                      <Input 
+                        id="startDate"
+                        type="date"
+                        value={newExperience.start_date}
+                        onChange={(e) => setNewExperience(prev => ({...prev, start_date: e.target.value}))}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="endDate">End Date</Label>
+                      <Input 
+                        id="endDate"
+                        type="date"
+                        value={newExperience.end_date}
+                        onChange={(e) => setNewExperience(prev => ({...prev, end_date: e.target.value}))}
+                        disabled={newExperience.is_current}
+                      />
+                      <div className="flex items-center mt-2">
+                        <input 
+                          type="checkbox" 
+                          id="current"
+                          checked={newExperience.is_current}
+                          onChange={(e) => setNewExperience(prev => ({
+                            ...prev, 
+                            is_current: e.target.checked,
+                            end_date: e.target.checked ? '' : prev.end_date
+                          }))}
+                          className="mr-2"
+                        />
+                        <Label htmlFor="current" className="text-sm">I currently work here</Label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea 
+                      id="description"
+                      placeholder="Describe your role and achievements..."
+                      value={newExperience.description}
+                      onChange={(e) => setNewExperience(prev => ({...prev, description: e.target.value}))}
+                      rows={3}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={addExperience} disabled={!newExperience.position || !newExperience.company_name}>
+                      Save Experience
+                    </Button>
+                    <Button variant="outline" onClick={() => {
+                      setShowExperienceForm(false);
+                      setNewExperience({
+                        position: '',
+                        company_name: '',
+                        location: '',
+                        start_date: '',
+                        end_date: '',
+                        is_current: false,
+                        description: ''
+                      });
+                    }}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
