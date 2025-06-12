@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { JobSearchPage } from '@/pages/JobSearchPage';
 import { AuthPage } from '@/components/AuthPage';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
@@ -17,6 +16,9 @@ const Index = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        if (session?.user) {
+          navigate('/app');
+        }
       }
     );
 
@@ -25,24 +27,27 @@ const Index = () => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user) {
+        navigate('/app');
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-foreground">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center">
+        <div className="animate-pulse text-foreground">Loading...</div>
       </div>
     );
   }
 
   if (!user) {
-    return <AuthPage onAuthSuccess={() => navigate('/')} />;
+    return <AuthPage onAuthSuccess={() => navigate('/app')} />;
   }
 
-  return <JobSearchPage />;
+  return null;
 };
 
 export { Index };

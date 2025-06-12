@@ -29,37 +29,37 @@ import { supabase } from '@/integrations/supabase/client';
 const menuItems = [
   {
     title: "Home",
-    url: "/",
+    url: "/app",
     icon: Home,
   },
   {
     title: "Job Search",
-    url: "/job-search",
+    url: "/app/job-search",
     icon: Search,
   },
   {
     title: "Applications",
-    url: "/applications",
+    url: "/app/applications",
     icon: Briefcase,
   },
   {
     title: "Resume Builder",
-    url: "/resume-builder",
+    url: "/app/resume-builder",
     icon: FileText,
   },
   {
     title: "Companies",
-    url: "/companies",
+    url: "/app/companies",
     icon: Building,
   },
   {
     title: "AI Career Chat",
-    url: "/career-chat",
+    url: "/app/career-chat",
     icon: MessageSquare,
   },
   {
     title: "Profile",
-    url: "/profile",
+    url: "/app/profile",
     icon: User,
   },
 ];
@@ -104,7 +104,7 @@ export function AppSidebar() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate('/auth');
+    navigate('/');
   };
 
   const getInitials = () => {
