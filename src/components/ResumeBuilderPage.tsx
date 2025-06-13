@@ -210,7 +210,9 @@ export function ResumeBuilderPage() {
 
       if (error) throw error;
       
-      setCurrentResume(data.content as ResumeData);
+      // Safely cast the content with proper typing
+      const resumeContent = data.content as unknown as ResumeData;
+      setCurrentResume(resumeContent);
       setSelectedTemplate(data.template_id);
       setActiveView('builder');
     } catch (error) {
