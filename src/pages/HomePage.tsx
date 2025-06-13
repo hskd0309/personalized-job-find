@@ -51,7 +51,7 @@ export function HomePage() {
   const quickActions = [
     {
       title: 'Find Jobs',
-      description: 'Search for opportunities in India',
+      description: 'Search for opportunities worldwide',
       icon: Search,
       href: '/app/job-search',
       color: 'bg-blue-500',
@@ -95,10 +95,10 @@ export function HomePage() {
       {/* Welcome Section */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-scale-in">
-          Welcome to JobPortal India
+          Welcome to Global JobPortal
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Your AI-powered career companion for finding dream jobs in India. Build resumes, track applications, and get personalized career guidance.
+          Your AI-powered career companion for finding dream jobs worldwide. Build resumes, track applications, and get personalized career guidance.
         </p>
       </div>
 
@@ -197,7 +197,7 @@ export function HomePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5" />
-              Career Tips for India
+              Global Career Tips
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -227,12 +227,12 @@ export function HomePage() {
 
       {/* Trending Jobs */}
       <Card className="animate-fade-in">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
-            Trending Job Categories in India
-          </CardTitle>
-        </CardHeader>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              Trending Job Categories Worldwide
+            </CardTitle>
+          </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {[
