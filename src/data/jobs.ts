@@ -116,10 +116,11 @@ export const jobs: Job[] = Array.from({ length: 100 }, (_, i) => {
   ];
 
   const locations = [
+    'Bangalore, Karnataka', 'Mumbai, Maharashtra', 'Hyderabad, Telangana', 'Chennai, Tamil Nadu', 
+    'Pune, Maharashtra', 'Gurgaon, Haryana', 'Noida, Uttar Pradesh', 'Delhi, Delhi',
+    'Kolkata, West Bengal', 'Ahmedabad, Gujarat', 'Jaipur, Rajasthan', 'Kochi, Kerala',
     'San Francisco, CA', 'New York, NY', 'Seattle, WA', 'Austin, TX', 'Boston, MA',
-    'Los Angeles, CA', 'Chicago, IL', 'Denver, CO', 'Portland, OR', 'Atlanta, GA',
     'London, UK', 'Berlin, Germany', 'Amsterdam, Netherlands', 'Toronto, Canada', 'Sydney, Australia',
-    'Singapore', 'Tokyo, Japan', 'Tel Aviv, Israel', 'Stockholm, Sweden', 'Dublin, Ireland',
     'Remote', 'Hybrid'
   ];
 
