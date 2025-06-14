@@ -293,18 +293,18 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Live Preview</CardTitle>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="hover-scale">
+          <Button variant="outline" size="sm">
             <Eye className="h-4 w-4 mr-2" />
             Full Screen
           </Button>
-          <Button size="sm" onClick={downloadResume} className="hover-scale">
+          <Button size="sm" onClick={downloadResume}>
             <Download className="h-4 w-4 mr-2" />
             Download HTML
           </Button>
         </div>
       </CardHeader>
       <CardContent className="h-[calc(100%-80px)] overflow-y-auto">
-        <div className="bg-background text-foreground p-8 mx-auto max-w-[8.5in] min-h-[11in] shadow-lg rounded-lg animate-scale-in">
+        <div className="bg-background text-foreground p-8 mx-auto max-w-[8.5in] min-h-[11in] shadow-lg rounded-lg">
           {renderTemplate()}
         </div>
       </CardContent>

@@ -66,14 +66,14 @@ export function ApplicationsPage() {
         <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           My Applications
         </h1>
-        <Badge variant="secondary" className="hover-scale">
+        <Badge variant="secondary">
           {applications.length} Applications
         </Badge>
       </div>
 
       <div className="grid gap-4">
         {applications.map((app) => (
-          <Card key={app.id} className="hover-scale hover:shadow-lg transition-all duration-300">
+          <Card key={app.id} className="hover:shadow-lg">
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -100,7 +100,7 @@ export function ApplicationsPage() {
                     Applied {new Date(app.applied_date).toLocaleDateString()}
                   </div>
                 </div>
-                <Button variant="outline" size="sm" className="hover-scale">
+                <Button variant="outline" size="sm">
                   View Details
                 </Button>
               </div>
@@ -126,7 +126,7 @@ export function ApplicationsPage() {
             <p className="text-muted-foreground mb-6">
               Start applying to jobs to track your applications here.
             </p>
-            <Button asChild className="hover-scale">
+            <Button asChild>
               <Link to="/app/job-search">
                 Browse Jobs
               </Link>

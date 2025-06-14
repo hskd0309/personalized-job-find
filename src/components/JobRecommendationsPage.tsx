@@ -230,7 +230,7 @@ export function JobRecommendationsPage() {
         >
           {isGenerating ? (
             <>
-              <Zap className="h-4 w-4 mr-2 animate-spin" />
+              <Zap className="h-4 w-4 mr-2" />
               Generating Matches...
             </>
           ) : (

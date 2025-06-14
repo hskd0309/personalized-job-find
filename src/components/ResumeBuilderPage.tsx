@@ -291,7 +291,7 @@ export function ResumeBuilderPage() {
         <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           AI Resume Builder
         </h1>
-        <Button onClick={createNewResume} className="hover-scale">
+        <Button onClick={createNewResume}>
           <Plus className="h-4 w-4 mr-2" />
           Create New Resume
         </Button>
@@ -316,7 +316,7 @@ export function ResumeBuilderPage() {
                 {resumeTemplates.slice(0, 8).map((template) => (
                   <div 
                     key={template.id} 
-                    className="border rounded-lg p-4 hover:border-primary cursor-pointer transition-all duration-300 hover:shadow-lg hover-scale group"
+                    className="border rounded-lg p-4 hover:border-primary cursor-pointer hover:shadow-lg group"
                     onClick={() => selectTemplate(template.id)}
                   >
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded mb-3 flex items-center justify-center group-hover:from-primary/20 group-hover:to-secondary/20 transition-all">
@@ -351,7 +351,7 @@ export function ResumeBuilderPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {myResumes.map((resume) => (
-                    <Card key={resume.id} className="hover-scale cursor-pointer">
+                    <Card key={resume.id} className="cursor-pointer">
                       <CardContent className="p-4">
                         <h4 className="font-medium truncate">{resume.title}</h4>
                         <p className="text-xs text-muted-foreground mb-3">

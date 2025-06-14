@@ -186,7 +186,7 @@ export function ResumeAnalyzerPage() {
               >
                 {isAnalyzing ? (
                   <>
-                    <Zap className="h-4 w-4 mr-2 animate-spin" />
+                    <Zap className="h-4 w-4 mr-2" />
                     Analyzing with AI...
                   </>
                 ) : (
