@@ -104,7 +104,7 @@ export function JobSearchPage() {
   const allAvailableJobs = useMemo(() => {
     const convertedDbJobs = databaseJobs.map(convertToJob);
     const staticJobs = filters.category === 'New' ? [] : allJobs;
-    const newJobs = filters.category !== 'New' && filters.category !== '' ? [] : convertedDbJobs;
+    const newJobs = filters.category !== 'New' && filters.category !== '' && filters.category !== 'all' ? [] : convertedDbJobs;
     return [...newJobs, ...staticJobs];
   }, [databaseJobs, filters.category]);
 
@@ -131,12 +131,12 @@ export function JobSearchPage() {
       }
 
       // Job type filter
-      if (filters.jobType && job.type !== filters.jobType) {
+      if (filters.jobType && filters.jobType !== 'all' && job.type !== filters.jobType) {
         return false;
       }
 
       // Experience filter
-      if (filters.experience) {
+      if (filters.experience && filters.experience !== 'all') {
         const jobExpNum = parseInt(job.experience);
         switch (filters.experience) {
           case 'entry':
@@ -152,7 +152,7 @@ export function JobSearchPage() {
       }
 
       // Salary filter
-      if (filters.salary) {
+      if (filters.salary && filters.salary !== 'all') {
         // Extract salary numbers from INR format (₹X.XL - ₹Y.YL)
         const salaryMatch = job.salary.match(/₹(\d+\.?\d*)L/g);
         if (salaryMatch && salaryMatch.length >= 2) {
@@ -178,7 +178,7 @@ export function JobSearchPage() {
       }
 
       // Category filter
-      if (filters.category && job.category !== filters.category) {
+      if (filters.category && filters.category !== 'all' && job.category !== filters.category) {
         return false;
       }
 

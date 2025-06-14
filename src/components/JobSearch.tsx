@@ -101,7 +101,7 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
                   <SelectValue placeholder="Job Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="full-time">Full Time</SelectItem>
                   <SelectItem value="part-time">Part Time</SelectItem>
                   <SelectItem value="contract">Contract</SelectItem>
@@ -114,7 +114,7 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
                   <SelectValue placeholder="Experience Level" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Levels</SelectItem>
+                  <SelectItem value="all">All Levels</SelectItem>
                   <SelectItem value="entry">Entry Level (0-2 years)</SelectItem>
                   <SelectItem value="mid">Mid Level (3-5 years)</SelectItem>
                   <SelectItem value="senior">Senior Level (5+ years)</SelectItem>
@@ -127,7 +127,7 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
                   <SelectValue placeholder="Salary Range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any Salary</SelectItem>
+                  <SelectItem value="all">Any Salary</SelectItem>
                   <SelectItem value="4-8">₹4L - ₹8L</SelectItem>
                   <SelectItem value="8-15">₹8L - ₹15L</SelectItem>
                   <SelectItem value="15-25">₹15L - ₹25L</SelectItem>
@@ -140,7 +140,7 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="all">All Categories</SelectItem>
                   <SelectItem value="New">New (Posted by Companies)</SelectItem>
                   <SelectItem value="Technology">Technology</SelectItem>
                   <SelectItem value="Data Science">Data Science</SelectItem>
