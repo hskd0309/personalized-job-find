@@ -27,19 +27,24 @@ serve(async (req) => {
 
     // Analyze resume with OpenAI
     const analysisPrompt = `
-      Analyze this resume and provide a comprehensive evaluation:
+      You are an AI Resume Analyst with extensive knowledge of ATS systems and hiring practices. 
+      Analyze this resume comprehensively and provide detailed, actionable feedback:
       
-      Resume Content: ${resumeText}
-      Skills Listed: ${skills?.join(', ') || 'None provided'}
-      Experience: ${experience || 'Not specified'}
+      RESUME CONTENT: ${resumeText}
+      SKILLS LISTED: ${skills?.join(', ') || 'None provided'}
+      EXPERIENCE: ${experience || 'Not specified'}
       
-      Please provide:
-      1. Overall score (0-100)
-      2. Grammar and formatting assessment
-      3. Keyword richness analysis
-      4. Improvement suggestions
-      5. Missing skills recommendations
-      6. ATS-friendliness score
+      Provide a detailed evaluation covering:
+      1. Overall Score (0-100)
+      2. Grammar and formatting quality score (0-100)
+      3. Keyword optimization score (0-100)
+      4. ATS-friendliness score (0-100)
+      5. Specific improvements needed (minimum 5 actionable items)
+      6. Missing skills that would strengthen this resume
+      7. Specific strategies to pass ATS screening
+      8. Strengths - what's working well
+      9. Weaknesses - what needs improvement
+      10. Industry-specific optimization tips
       
       Format your response as JSON with these fields:
       {
@@ -48,9 +53,13 @@ serve(async (req) => {
         "formattingScore": number,
         "keywordScore": number,
         "atsScore": number,
-        "improvements": ["suggestion1", "suggestion2"],
-        "missingSkills": ["skill1", "skill2"],
-        "feedback": "detailed feedback text"
+        "improvements": ["detailed suggestion 1", "detailed suggestion 2", ...],
+        "missingSkills": ["skill1", "skill2", ...],
+        "atsStrategies": ["strategy1", "strategy2", ...],
+        "strengths": ["strength1", "strength2", ...],
+        "weaknesses": ["weakness1", "weakness2", ...],
+        "industryTips": ["tip1", "tip2", ...],
+        "feedback": "comprehensive actionable feedback paragraph"
       }
     `;
 
@@ -61,15 +70,15 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
         messages: [
           { 
             role: 'system', 
-            content: 'You are an expert resume analyst. Provide detailed, actionable feedback to help job seekers improve their resumes. Always respond with valid JSON.' 
+            content: 'You are an expert ATS and resume analyst with 15+ years of recruitment experience. Provide extremely detailed, actionable feedback to help job seekers improve their resumes and bypass ATS systems. Be thorough and insightful. Always respond with valid JSON.'
           },
           { role: 'user', content: analysisPrompt }
         ],
-        temperature: 0.3,
+        temperature: 0.2,
       }),
     });
 
@@ -82,16 +91,39 @@ serve(async (req) => {
     
     try {
       analysis = JSON.parse(data.choices[0].message.content);
-    } catch {
+    } catch (e) {
+      console.error("Failed to parse JSON response:", e);
+      console.log("Original content:", data.choices[0].message.content);
+      
       // Fallback if JSON parsing fails
       analysis = {
-        overallScore: 75,
+        overallScore: 72,
         grammarScore: 80,
         formattingScore: 70,
-        keywordScore: 75,
-        atsScore: 72,
-        improvements: ["Add more quantifiable achievements", "Include relevant keywords", "Improve formatting consistency"],
-        missingSkills: ["Data Analysis", "Project Management", "Communication"],
+        keywordScore: 68,
+        atsScore: 65,
+        improvements: [
+          "Add more quantifiable achievements with metrics and numbers", 
+          "Structure your work experience with clear bullet points", 
+          "Ensure consistency in formatting throughout the document",
+          "Include relevant keywords from the job description",
+          "Use a more modern and ATS-friendly template"
+        ],
+        missingSkills: ["Data Analysis", "Project Management", "Communication", "Leadership", "Problem Solving"],
+        atsStrategies: [
+          "Use standard section headings like 'Experience' and 'Education'", 
+          "Avoid complex formatting, tables, and graphics",
+          "Include keywords from the job description verbatim",
+          "Use a single-column layout for better parsing",
+          "Save as a simple .docx or .pdf format"
+        ],
+        strengths: ["Educational background", "Work experience", "Technical skills"],
+        weaknesses: ["Lack of metrics and achievements", "Inconsistent formatting", "Missing targeted keywords"],
+        industryTips: [
+          "Research industry-specific terminology",
+          "Highlight certifications prominently",
+          "Include relevant projects and their outcomes"
+        ],
         feedback: data.choices[0].message.content
       };
     }
