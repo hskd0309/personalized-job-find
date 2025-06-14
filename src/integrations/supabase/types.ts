@@ -93,6 +93,137 @@ export type Database = {
         }
         Relationships: []
       }
+      job_matches: {
+        Row: {
+          applied: boolean | null
+          created_at: string
+          id: string
+          job_id: string
+          match_reasons: string[] | null
+          match_score: number | null
+          user_id: string
+          viewed: boolean | null
+        }
+        Insert: {
+          applied?: boolean | null
+          created_at?: string
+          id?: string
+          job_id: string
+          match_reasons?: string[] | null
+          match_score?: number | null
+          user_id: string
+          viewed?: boolean | null
+        }
+        Update: {
+          applied?: boolean | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          match_reasons?: string[] | null
+          match_score?: number | null
+          user_id?: string
+          viewed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_job_matches_job_id"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_postings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_postings: {
+        Row: {
+          applications_count: number | null
+          created_at: string
+          description: string
+          experience_level: string | null
+          id: string
+          is_active: boolean | null
+          job_type: string | null
+          location: string | null
+          recruiter_id: string
+          requirements: string
+          salary_max: number | null
+          salary_min: number | null
+          skills_required: string[] | null
+          title: string
+          updated_at: string
+          views_count: number | null
+        }
+        Insert: {
+          applications_count?: number | null
+          created_at?: string
+          description: string
+          experience_level?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_type?: string | null
+          location?: string | null
+          recruiter_id: string
+          requirements: string
+          salary_max?: number | null
+          salary_min?: number | null
+          skills_required?: string[] | null
+          title: string
+          updated_at?: string
+          views_count?: number | null
+        }
+        Update: {
+          applications_count?: number | null
+          created_at?: string
+          description?: string
+          experience_level?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_type?: string | null
+          location?: string | null
+          recruiter_id?: string
+          requirements?: string
+          salary_max?: number | null
+          salary_min?: number | null
+          skills_required?: string[] | null
+          title?: string
+          updated_at?: string
+          views_count?: number | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          message: string
+          read: boolean | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          message: string
+          read?: boolean | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          message?: string
+          read?: boolean | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -144,6 +275,96 @@ export type Database = {
         }
         Relationships: []
       }
+      recruiter_profiles: {
+        Row: {
+          company_description: string | null
+          company_name: string
+          company_size: string | null
+          company_website: string | null
+          created_at: string
+          id: string
+          industry: string | null
+          logo_url: string | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          company_description?: string | null
+          company_name: string
+          company_size?: string | null
+          company_website?: string | null
+          created_at?: string
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          company_description?: string | null
+          company_name?: string
+          company_size?: string | null
+          company_website?: string | null
+          created_at?: string
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      resume_uploads: {
+        Row: {
+          ai_feedback: string | null
+          ai_score: number | null
+          created_at: string
+          education_level: string | null
+          experience_years: number | null
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          parsed_data: Json | null
+          skills_extracted: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_feedback?: string | null
+          ai_score?: number | null
+          created_at?: string
+          education_level?: string | null
+          experience_years?: number | null
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          parsed_data?: Json | null
+          skills_extracted?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_feedback?: string | null
+          ai_score?: number | null
+          created_at?: string
+          education_level?: string | null
+          experience_years?: number | null
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          parsed_data?: Json | null
+          skills_extracted?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       resumes: {
         Row: {
           content: Json
@@ -169,6 +390,45 @@ export type Database = {
           id?: string
           template_id?: string
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      skill_gap_analysis: {
+        Row: {
+          created_at: string
+          current_skills: string[] | null
+          id: string
+          missing_skills: string[] | null
+          recommendations: string[] | null
+          required_skills: string[] | null
+          skill_gap_score: number | null
+          target_job_title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_skills?: string[] | null
+          id?: string
+          missing_skills?: string[] | null
+          recommendations?: string[] | null
+          required_skills?: string[] | null
+          skill_gap_score?: number | null
+          target_job_title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_skills?: string[] | null
+          id?: string
+          missing_skills?: string[] | null
+          recommendations?: string[] | null
+          required_skills?: string[] | null
+          skill_gap_score?: number | null
+          target_job_title?: string
           updated_at?: string
           user_id?: string
         }

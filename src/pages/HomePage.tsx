@@ -50,36 +50,52 @@ export function HomePage() {
 
   const quickActions = [
     {
+      title: 'AI Job Match',
+      description: 'Get personalized job recommendations',
+      icon: TrendingUp,
+      href: '/app/job-recommendations',
+      color: 'bg-purple-500',
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    {
+      title: 'Resume Analyzer',
+      description: 'AI-powered resume optimization',
+      icon: Users,
+      href: '/app/resume-analyzer',
+      color: 'bg-blue-500',
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
       title: 'Find Jobs',
       description: 'Search for opportunities worldwide',
       icon: Search,
       href: '/app/job-search',
-      color: 'bg-blue-500',
-      gradient: 'from-blue-500 to-cyan-500'
+      color: 'bg-green-500',
+      gradient: 'from-green-500 to-emerald-500'
     },
     {
       title: 'Build Resume',
       description: 'Create professional resumes',
       icon: FileText,
       href: '/app/resume-builder',
-      color: 'bg-green-500',
-      gradient: 'from-green-500 to-emerald-500'
+      color: 'bg-orange-500',
+      gradient: 'from-orange-500 to-red-500'
     },
     {
       title: 'AI Career Chat',
       description: 'Get personalized career advice',
       icon: MessageSquare,
       href: '/app/career-chat',
-      color: 'bg-purple-500',
-      gradient: 'from-purple-500 to-pink-500'
+      color: 'bg-indigo-500',
+      gradient: 'from-indigo-500 to-violet-500'
     },
     {
       title: 'My Applications',
       description: 'Track your job applications',
       icon: Briefcase,
       href: '/app/applications',
-      color: 'bg-orange-500',
-      gradient: 'from-orange-500 to-red-500'
+      color: 'bg-teal-500',
+      gradient: 'from-teal-500 to-emerald-500'
     }
   ];
 

@@ -38,6 +38,16 @@ const menuItems = [
     icon: Search,
   },
   {
+    title: "AI Job Match",
+    url: "/app/job-recommendations",
+    icon: Target,
+  },
+  {
+    title: "Resume Analyzer",
+    url: "/app/resume-analyzer",
+    icon: Brain,
+  },
+  {
     title: "Applications",
     url: "/app/applications",
     icon: Briefcase,
@@ -48,14 +58,19 @@ const menuItems = [
     icon: FileText,
   },
   {
+    title: "AI Career Chat",
+    url: "/app/career-chat",
+    icon: MessageSquare,
+  },
+  {
     title: "Companies",
     url: "/app/companies",
     icon: Building,
   },
   {
-    title: "AI Career Chat",
-    url: "/app/career-chat",
-    icon: MessageSquare,
+    title: "Recruiter Dashboard",
+    url: "/app/recruiter-dashboard",
+    icon: Users,
   },
   {
     title: "Profile",
