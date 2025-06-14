@@ -83,7 +83,7 @@ export function ApplicationsPage() {
                     <span className="text-muted-foreground">{app.company_name}</span>
                   </div>
                 </div>
-                <Badge className={`${getStatusColor(app.status)} text-white`}>
+                <Badge className={`${getStatusColor(app.status)} text-primary-foreground`}>
                   {app.status}
                 </Badge>
               </div>

@@ -276,7 +276,7 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
 
     // Default template for other cases
     return (
-      <div className="resume-template bg-white text-black p-8">
+      <div className="resume-template bg-background text-foreground p-8">
         <div className="text-center border-b-2 border-primary pb-4 mb-6">
           <h1 className="text-3xl font-bold">{data.personalInfo.firstName} {data.personalInfo.lastName}</h1>
           <div className="text-muted-foreground mt-2">
