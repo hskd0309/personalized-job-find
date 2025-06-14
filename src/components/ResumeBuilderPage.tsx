@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, Eye, Edit, Plus, Bot } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ResumeForm } from '@/components/ResumeBuilder/ResumeForm';
 import { ResumePreview } from '@/components/ResumeBuilder/ResumePreview';
-import { resumeTemplates } from '@/components/resume/ResumeTemplates';
+import { resumeTemplates, templateCategories } from '@/components/resume/ResumeTemplates';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -46,6 +47,7 @@ interface ResumeData {
 export function ResumeBuilderPage() {
   const [activeView, setActiveView] = useState<'templates' | 'builder'>('templates');
   const [selectedTemplate, setSelectedTemplate] = useState('professional');
+  const [selectedCategory, setSelectedCategory] = useState('All Templates');
   const [myResumes, setMyResumes] = useState<any[]>([]);
   const [currentResume, setCurrentResume] = useState<ResumeData>({
     personalInfo: {
@@ -64,6 +66,11 @@ export function ResumeBuilderPage() {
     skills: []
   });
   const { toast } = useToast();
+
+  // Filter templates by category
+  const filteredTemplates = selectedCategory === 'All Templates' 
+    ? resumeTemplates 
+    : resumeTemplates.filter(template => template.category === selectedCategory);
 
   useEffect(() => {
     fetchMyResumes();
@@ -306,17 +313,31 @@ export function ResumeBuilderPage() {
         <TabsContent value="templates" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Professional Templates
-              </CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Professional Templates ({filteredTemplates.length})
+                </CardTitle>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Filter by category" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border z-50">
+                    {templateCategories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {resumeTemplates.slice(0, 8).map((template) => (
+                {filteredTemplates.map((template) => (
                   <div 
                     key={template.id} 
-                    className="border rounded-lg p-4 hover:border-primary cursor-pointer hover:shadow-lg group"
+                    className="border rounded-lg p-4 hover:border-primary cursor-pointer hover:shadow-lg group transition-all"
                     onClick={() => selectTemplate(template.id)}
                   >
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 rounded mb-3 flex items-center justify-center group-hover:from-primary/20 group-hover:to-secondary/20 transition-all">
@@ -324,9 +345,14 @@ export function ResumeBuilderPage() {
                     </div>
                     <h3 className="font-semibold text-center">{template.name}</h3>
                     <p className="text-xs text-muted-foreground text-center mt-1">{template.description}</p>
-                    <Button variant="outline" className="w-full mt-3" size="sm">
-                      Use Template
-                    </Button>
+                    <div className="flex justify-between items-center mt-3">
+                      <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded">
+                        {template.category}
+                      </span>
+                      <Button variant="outline" className="text-xs px-3 py-1" size="sm">
+                        Use Template
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>

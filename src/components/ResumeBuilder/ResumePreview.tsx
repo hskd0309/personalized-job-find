@@ -119,6 +119,14 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
   const renderTemplate = () => {
     const template = resumeTemplates.find(t => t.id === templateId) || resumeTemplates[0];
     
+    // Check if we have a custom React component for this template
+    const TemplateComponent = resumeTemplateMap[templateId as keyof typeof resumeTemplateMap];
+    
+    if (TemplateComponent) {
+      return <TemplateComponent data={data} />;
+    }
+    
+    // Fallback to existing hardcoded templates
     if (templateId === 'professional') {
       return (
         <div className="resume-template professional">
