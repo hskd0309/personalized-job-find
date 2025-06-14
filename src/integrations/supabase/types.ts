@@ -19,6 +19,7 @@ export type Database = {
           job_title: string
           location: string | null
           notes: string | null
+          resume_url: string | null
           status: string | null
           updated_at: string
           user_id: string
@@ -32,6 +33,7 @@ export type Database = {
           job_title: string
           location?: string | null
           notes?: string | null
+          resume_url?: string | null
           status?: string | null
           updated_at?: string
           user_id: string
@@ -45,6 +47,7 @@ export type Database = {
           job_title?: string
           location?: string | null
           notes?: string | null
+          resume_url?: string | null
           status?: string | null
           updated_at?: string
           user_id?: string

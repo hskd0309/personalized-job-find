@@ -1,12 +1,58 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { JobSearch, SearchFilters } from '@/components/JobSearch';
 import { JobCard } from '@/components/JobCard';
 import { JobDetails } from '@/components/JobDetails';
+import { ApplicationModal } from '@/components/ApplicationModal';
 import { allJobs, Job } from '@/data/jobs';
+import { supabase } from '@/integrations/supabase/client';
+import { Badge } from '@/components/ui/badge';
+
+interface DatabaseJob {
+  id: string;
+  title: string;
+  description: string;
+  requirements: string;
+  location: string;
+  job_type: string;
+  experience_level: string;
+  salary_min?: number;
+  salary_max?: number;
+  skills_required: string[];
+  applications_count: number;
+  views_count: number;
+  created_at: string;
+  company_name?: string;
+  isNew?: boolean;
+}
+
+// Convert database job to Job format for compatibility
+const convertToJob = (dbJob: DatabaseJob): Job => ({
+  id: dbJob.id,
+  title: dbJob.title,
+  company: dbJob.company_name || 'Company Name',
+  location: dbJob.location || '',
+  type: (dbJob.job_type as 'full-time' | 'part-time' | 'contract' | 'remote') || 'full-time',
+  salary: dbJob.salary_min && dbJob.salary_max 
+    ? `₹${(dbJob.salary_min/100000).toFixed(1)}L - ₹${(dbJob.salary_max/100000).toFixed(1)}L`
+    : 'Salary not disclosed',
+  experience: `${dbJob.experience_level || 'entry'} level`,
+  description: dbJob.description,
+  requirements: dbJob.requirements ? dbJob.requirements.split('\n') : [],
+  benefits: [],
+  postedDate: new Date(dbJob.created_at).toLocaleDateString(),
+  category: 'New',
+  skills: dbJob.skills_required || [],
+  companyRating: 4.0,
+  companyReviews: 100
+});
 
 export function JobSearchPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isJobDetailsOpen, setIsJobDetailsOpen] = useState(false);
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [jobToApply, setJobToApply] = useState<DatabaseJob | null>(null);
+  const [databaseJobs, setDatabaseJobs] = useState<DatabaseJob[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<SearchFilters>({
     searchTerm: '',
     location: '',
@@ -16,8 +62,54 @@ export function JobSearchPage() {
     category: ''
   });
 
+  useEffect(() => {
+    loadDatabaseJobs();
+  }, []);
+
+  const loadDatabaseJobs = async () => {
+    try {
+      const { data: jobs, error } = await supabase
+        .from('job_postings')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      // Get company names for each job
+      const jobsWithCompanies: DatabaseJob[] = [];
+      for (const job of jobs || []) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('company_name')
+          .eq('user_id', job.user_id)
+          .single();
+        
+        jobsWithCompanies.push({
+          ...job,
+          company_name: profile?.company_name || 'Company Name',
+          isNew: true
+        });
+      }
+      
+      setDatabaseJobs(jobsWithCompanies);
+    } catch (error) {
+      console.error('Error loading jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Combine static and database jobs
+  const allAvailableJobs = useMemo(() => {
+    const convertedDbJobs = databaseJobs.map(convertToJob);
+    const staticJobs = filters.category === 'New' ? [] : allJobs;
+    const newJobs = filters.category !== 'New' && filters.category !== '' ? [] : convertedDbJobs;
+    return [...newJobs, ...staticJobs];
+  }, [databaseJobs, filters.category]);
+
   const filteredJobs = useMemo(() => {
-    return allJobs.filter(job => {
+    return allAvailableJobs.filter(job => {
       // Search term filter
       if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
@@ -92,11 +184,20 @@ export function JobSearchPage() {
 
       return true;
     });
-  }, [filters]);
+  }, [allAvailableJobs, filters]);
 
   const handleViewDetails = (job: Job) => {
     setSelectedJob(job);
     setIsJobDetailsOpen(true);
+  };
+
+  const handleApply = (job: Job) => {
+    // Find the original database job for the application
+    const dbJob = databaseJobs.find(dbJ => dbJ.id === job.id);
+    if (dbJob) {
+      setJobToApply(dbJob);
+      setIsApplicationModalOpen(true);
+    }
   };
 
   return (
@@ -109,13 +210,14 @@ export function JobSearchPage() {
 
       {/* Job Listings */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredJobs.map(job => (
-          <JobCard 
-            key={job.id} 
-            job={job} 
-            onViewDetails={handleViewDetails}
-          />
-        ))}
+         {filteredJobs.map(job => (
+           <JobCard 
+             key={job.id} 
+             job={job} 
+             onViewDetails={handleViewDetails}
+             onApply={handleApply}
+           />
+         ))}
       </div>
 
       {/* No Results */}
@@ -139,6 +241,17 @@ export function JobSearchPage() {
         onClose={() => {
           setIsJobDetailsOpen(false);
           setSelectedJob(null);
+        }}
+      />
+
+      {/* Application Modal */}
+      <ApplicationModal
+        job={jobToApply}
+        isOpen={isApplicationModalOpen}
+        onClose={() => {
+          setIsApplicationModalOpen(false);
+          setJobToApply(null);
+          loadDatabaseJobs(); // Refresh to update application counts
         }}
       />
     </div>

@@ -9,10 +9,12 @@ import { useToast } from '@/hooks/use-toast';
 interface JobCardProps {
   job: Job;
   onViewDetails: (job: Job) => void;
+  onApply?: (job: Job) => void;
 }
 
-export function JobCard({ job, onViewDetails }: JobCardProps) {
+export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
   const { toast } = useToast();
+  const isNewJob = job.category === 'New';
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -26,7 +28,16 @@ export function JobCard({ job, onViewDetails }: JobCardProps) {
     return date.toLocaleDateString();
   };
 
-  const applyToJob = async () => {
+  const handleApply = () => {
+    if (isNewJob && onApply) {
+      onApply(job);
+    } else {
+      // Legacy apply for static jobs
+      applyToStaticJob();
+    }
+  };
+
+  const applyToStaticJob = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -98,7 +109,10 @@ export function JobCard({ job, onViewDetails }: JobCardProps) {
               </div>
             </div>
           </div>
-          <Badge variant="secondary">{job.type}</Badge>
+          <div className="flex gap-2">
+            <Badge variant="secondary">{job.type}</Badge>
+            {isNewJob && <Badge className="bg-green-600 hover:bg-green-700">New</Badge>}
+          </div>
         </div>
       </CardHeader>
       
@@ -144,7 +158,7 @@ export function JobCard({ job, onViewDetails }: JobCardProps) {
               <Button variant="outline" size="sm" onClick={() => onViewDetails(job)}>
                 View Details
               </Button>
-              <Button size="sm" onClick={applyToJob}>
+              <Button size="sm" onClick={handleApply}>
                 Apply Now
               </Button>
             </div>

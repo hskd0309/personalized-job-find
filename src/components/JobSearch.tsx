@@ -141,6 +141,7 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="New">New (Posted by Companies)</SelectItem>
                   <SelectItem value="Technology">Technology</SelectItem>
                   <SelectItem value="Data Science">Data Science</SelectItem>
                   <SelectItem value="Design">Design</SelectItem>
