@@ -289,7 +289,7 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
   };
 
   return (
-    <Card className="h-full animate-fade-in">
+    <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Live Preview</CardTitle>
         <div className="flex gap-2">

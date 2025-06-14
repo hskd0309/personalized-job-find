@@ -104,7 +104,7 @@ export function ResumeAnalyzer() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-primary">

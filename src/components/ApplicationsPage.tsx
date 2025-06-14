@@ -61,7 +61,7 @@ export function ApplicationsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">
+    <div className="container mx-auto px-4 py-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           My Applications
@@ -115,7 +115,7 @@ export function ApplicationsPage() {
       </div>
 
       {applications.length === 0 && (
-        <div className="text-center py-12 animate-fade-in">
+        <div className="text-center py-12">
           <div className="max-w-md mx-auto">
             <div className="h-24 w-24 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 flex items-center justify-center mx-auto mb-6">
               <Briefcase className="h-12 w-12 text-primary" />

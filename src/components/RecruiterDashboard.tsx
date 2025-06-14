@@ -177,7 +177,7 @@ export function RecruiterDashboard() {
 
   if (!isRecruiter) {
     return (
-      <div className="space-y-6 animate-fade-in">
+      <div className="space-y-6">
         <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
           <CardContent className="p-8 text-center">
             <Building className="h-16 w-16 mx-auto text-primary mb-4" />
@@ -198,7 +198,7 @@ export function RecruiterDashboard() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -333,7 +333,7 @@ export function RecruiterDashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20 animate-fade-in">
+        <Card className="bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -345,7 +345,7 @@ export function RecruiterDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-secondary/10 to-green-500/10 border-secondary/20 animate-fade-in" style={{animationDelay: '0.1s'}}>
+        <Card className="bg-gradient-to-r from-secondary/10 to-green-500/10 border-secondary/20">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -357,7 +357,7 @@ export function RecruiterDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-accent/10 to-purple-500/10 border-accent/20 animate-fade-in" style={{animationDelay: '0.2s'}}>
+        <Card className="bg-gradient-to-r from-accent/10 to-purple-500/10 border-accent/20">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>

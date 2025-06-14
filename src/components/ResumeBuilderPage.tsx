@@ -286,7 +286,7 @@ export function ResumeBuilderPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">
+    <div className="container mx-auto px-4 py-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           AI Resume Builder
@@ -386,7 +386,7 @@ export function ResumeBuilderPage() {
       </Tabs>
 
       {/* AI Features */}
-      <Card className="animate-fade-in bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+      <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-purple-600" />
