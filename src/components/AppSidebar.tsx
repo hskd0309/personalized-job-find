@@ -22,13 +22,17 @@ import {
   MessageSquare, 
   User, 
   Briefcase,
-  LogOut
+  LogOut,
+  Target,
+  Brain,
+  Users,
+  TrendingUp
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const menuItems = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "/app",
     icon: Home,
   },
@@ -38,9 +42,9 @@ const menuItems = [
     icon: Search,
   },
   {
-    title: "AI Job Match",
-    url: "/app/job-recommendations",
-    icon: Target,
+    title: "Resume Builder",
+    url: "/app/resume-builder",
+    icon: FileText,
   },
   {
     title: "Resume Analyzer",
@@ -48,28 +52,28 @@ const menuItems = [
     icon: Brain,
   },
   {
+    title: "Job Matches",
+    url: "/app/job-matches",
+    icon: Target,
+  },
+  {
+    title: "Skill Gap",
+    url: "/app/skill-gap",
+    icon: TrendingUp,
+  },
+  {
     title: "Applications",
     url: "/app/applications",
     icon: Briefcase,
   },
   {
-    title: "Resume Builder",
-    url: "/app/resume-builder",
-    icon: FileText,
-  },
-  {
-    title: "AI Career Chat",
+    title: "Career Chat",
     url: "/app/career-chat",
     icon: MessageSquare,
   },
   {
-    title: "Companies",
-    url: "/app/companies",
-    icon: Building,
-  },
-  {
-    title: "Recruiter Dashboard",
-    url: "/app/recruiter-dashboard",
+    title: "Recruiter",
+    url: "/app/recruiter",
     icon: Users,
   },
   {

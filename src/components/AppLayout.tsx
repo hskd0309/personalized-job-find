@@ -9,8 +9,9 @@ import { ProfilePage } from '@/components/ProfilePage';
 import { ResumeBuilderPage } from '@/components/ResumeBuilderPage';
 import { CompaniesPage } from '@/components/CompaniesPage';
 import { CareerChatPage } from '@/components/CareerChatPage';
-import { ResumeAnalyzerPage } from '@/components/ResumeAnalyzerPage';
-import { JobRecommendationsPage } from '@/components/JobRecommendationsPage';
+import { ResumeAnalyzer } from '@/components/ResumeAnalyzer';
+import { JobMatchDashboard } from '@/components/JobMatchDashboard';
+import { SkillGapAnalyzer } from '@/components/SkillGapAnalyzer';
 import { RecruiterDashboard } from '@/components/RecruiterDashboard';
 import { supabase } from '@/integrations/supabase/client';
 import type { User } from '@supabase/supabase-js';
@@ -69,13 +70,14 @@ export function AppLayout() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/job-search" element={<JobSearchPage />} />
-              <Route path="/job-recommendations" element={<JobRecommendationsPage />} />
-              <Route path="/applications" element={<ApplicationsPage />} />
               <Route path="/resume-builder" element={<ResumeBuilderPage />} />
-              <Route path="/resume-analyzer" element={<ResumeAnalyzerPage />} />
+              <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
+              <Route path="/job-matches" element={<JobMatchDashboard />} />
+              <Route path="/skill-gap" element={<SkillGapAnalyzer />} />
+              <Route path="/applications" element={<ApplicationsPage />} />
               <Route path="/career-chat" element={<CareerChatPage />} />
               <Route path="/companies" element={<CompaniesPage />} />
-              <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
+              <Route path="/recruiter" element={<RecruiterDashboard />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Routes>
           </div>

@@ -68,7 +68,7 @@ export function JobMatchDashboard() {
       const response = await supabase.functions.invoke('job-matcher', {
         body: {
           userSkills: profile.skills || [],
-          userExperience: profile.experience?.length || 0,
+          userExperience: Array.isArray(profile.experience) ? profile.experience.length : 0,
           jobPostings
         }
       });

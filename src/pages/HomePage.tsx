@@ -53,7 +53,7 @@ export function HomePage() {
       title: 'AI Job Match',
       description: 'Get personalized job recommendations',
       icon: TrendingUp,
-      href: '/app/job-recommendations',
+      href: '/app/job-matches',
       color: 'bg-purple-500',
       gradient: 'from-purple-500 to-pink-500'
     },
@@ -108,52 +108,49 @@ export function HomePage() {
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-8 animate-fade-in">
-      {/* Welcome Section */}
-      <div className="text-center space-y-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-lg -skew-y-1 animate-pulse"></div>
-        <div className="relative z-10 py-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-scale-in">
-            Welcome to Global JobPortal
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in">
-            Your AI-powered career companion for finding dream jobs worldwide. Build resumes, track applications, and get personalized career guidance.
-          </p>
-        </div>
+      {/* Header Section */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          Dashboard
+        </h1>
+        <p className="text-muted-foreground">
+          Your career overview and quick actions
+        </p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="hover-scale bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20 animate-fade-in">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="border-border">
           <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-primary to-blue-500 flex items-center justify-center mr-4 animate-pulse">
-              <Briefcase className="h-6 w-6 text-primary-foreground" />
+            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <Briefcase className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground animate-scale-in">{stats.applications}</p>
+              <p className="text-2xl font-bold text-foreground">{stats.applications}</p>
               <p className="text-sm text-muted-foreground">Applications</p>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="hover-scale bg-gradient-to-r from-secondary/10 to-green-500/10 border-secondary/20 animate-fade-in" style={{animationDelay: '0.2s'}}>
+        <Card className="border-border">
           <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-secondary to-green-500 flex items-center justify-center mr-4 animate-pulse" style={{animationDelay: '0.5s'}}>
-              <FileText className="h-6 w-6 text-secondary-foreground" />
+            <div className="h-12 w-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <FileText className="h-6 w-6 text-secondary" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground animate-scale-in" style={{animationDelay: '0.3s'}}>{stats.resumes}</p>
+              <p className="text-2xl font-bold text-foreground">{stats.resumes}</p>
               <p className="text-sm text-muted-foreground">Resumes</p>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="hover-scale bg-gradient-to-r from-accent/10 to-purple-500/10 border-accent/20 animate-fade-in" style={{animationDelay: '0.4s'}}>
+        <Card className="border-border">
           <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-accent to-purple-500 flex items-center justify-center mr-4 animate-pulse" style={{animationDelay: '1s'}}>
-              <TrendingUp className="h-6 w-6 text-accent-foreground" />
+            <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mr-4">
+              <TrendingUp className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground animate-scale-in" style={{animationDelay: '0.5s'}}>{stats.saved_jobs}</p>
+              <p className="text-2xl font-bold text-foreground">{stats.saved_jobs}</p>
               <p className="text-sm text-muted-foreground">Saved Jobs</p>
             </div>
           </CardContent>
