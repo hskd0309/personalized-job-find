@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LogIn, UserPlus, Mail, Lock, User } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { LogIn, UserPlus, Mail, Lock, User, Building, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -26,7 +27,9 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    userType: 'job_seeker' as 'job_seeker' | 'recruiter',
+    companyName: ''
   });
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -79,6 +82,8 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
           data: {
             first_name: signupData.firstName,
             last_name: signupData.lastName,
+            user_type: signupData.userType,
+            company_name: signupData.userType === 'recruiter' ? signupData.companyName : null
           },
           emailRedirectTo: `${window.location.origin}/`
         }
@@ -205,6 +210,54 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
                       />
                     </div>
                   </div>
+                  
+                  {/* User Type Selection */}
+                  <div>
+                    <Label htmlFor="signup-userType">I am a</Label>
+                    <Select 
+                      value={signupData.userType} 
+                      onValueChange={(value: 'job_seeker' | 'recruiter') => 
+                        setSignupData(prev => ({ ...prev, userType: value }))
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="job_seeker">
+                          <div className="flex items-center gap-2">
+                            <User className="h-4 w-4" />
+                            Job Seeker
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="recruiter">
+                          <div className="flex items-center gap-2">
+                            <Building className="h-4 w-4" />
+                            Company/Recruiter
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Company Name for Recruiters */}
+                  {signupData.userType === 'recruiter' && (
+                    <div>
+                      <Label htmlFor="signup-companyName">Company Name</Label>
+                      <div className="relative">
+                        <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="signup-companyName"
+                          placeholder="Your company name"
+                          className="pl-10"
+                          value={signupData.companyName}
+                          onChange={(e) => setSignupData(prev => ({ ...prev, companyName: e.target.value }))}
+                          required
+                        />
+                      </div>
+                    </div>
+                  )}
+                   
                   <div>
                     <Label htmlFor="signup-email">Email</Label>
                     <div className="relative">

@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
-const menuItems = [
+const jobSeekerMenuItems = [
   {
     title: "Dashboard",
     url: "/app",
@@ -72,9 +72,37 @@ const menuItems = [
     icon: MessageSquare,
   },
   {
-    title: "Recruiter",
+    title: "Profile",
+    url: "/app/profile",
+    icon: User,
+  },
+];
+
+const recruiterMenuItems = [
+  {
+    title: "Dashboard",
+    url: "/app",
+    icon: Home,
+  },
+  {
+    title: "Post Jobs",
     url: "/app/recruiter",
+    icon: Building,
+  },
+  {
+    title: "Manage Jobs",
+    url: "/app/job-postings",
+    icon: Briefcase,
+  },
+  {
+    title: "Applications",
+    url: "/app/applications",
     icon: Users,
+  },
+  {
+    title: "Candidates",
+    url: "/app/candidates",
+    icon: Target,
   },
   {
     title: "Profile",
@@ -87,6 +115,7 @@ interface UserProfile {
   first_name: string;
   last_name: string;
   email: string;
+  user_type: 'job_seeker' | 'recruiter';
 }
 
 export function AppSidebar() {
@@ -105,7 +134,7 @@ export function AppSidebar() {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('first_name, last_name, email')
+        .select('first_name, last_name, email, user_type')
         .eq('user_id', user.id)
         .single();
 
@@ -114,7 +143,7 @@ export function AppSidebar() {
       }
 
       if (data) {
-        setProfile(data);
+        setProfile(data as UserProfile);
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -140,6 +169,10 @@ export function AppSidebar() {
     return profile?.email || 'User';
   };
 
+  const getMenuItems = () => {
+    return profile?.user_type === 'recruiter' ? recruiterMenuItems : jobSeekerMenuItems;
+  };
+
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-border p-4">
@@ -159,7 +192,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
+              {getMenuItems().map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild

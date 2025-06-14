@@ -5,19 +5,18 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Plus, 
   Building, 
+  Plus, 
   Users, 
   Eye, 
   Edit,
   Trash2,
   TrendingUp,
-  UserPlus,
-  Briefcase,
-  Star
+  MapPin,
+  DollarSign
 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -29,32 +28,23 @@ interface JobPosting {
   location: string;
   job_type: string;
   experience_level: string;
-  salary_min: number;
-  salary_max: number;
+  salary_min?: number;
+  salary_max?: number;
   skills_required: string[];
-  views_count: number;
+  is_active: boolean;
   applications_count: number;
+  views_count: number;
   created_at: string;
 }
 
-interface RecruiterProfile {
-  company_name: string;
-  company_description: string;
-  company_website: string;
-  company_size: string;
-  industry: string;
-}
-
 export function RecruiterDashboard() {
-  const [jobs, setJobs] = useState<JobPosting[]>([]);
-  const [profile, setProfile] = useState<RecruiterProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showJobDialog, setShowJobDialog] = useState(false);
-  const [showProfileDialog, setShowProfileDialog] = useState(false);
-  const [editingJob, setEditingJob] = useState<JobPosting | null>(null);
+  const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
+  const [isRecruiter, setIsRecruiter] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showCreateJob, setShowCreateJob] = useState(false);
   const { toast } = useToast();
 
-  const [jobForm, setJobForm] = useState({
+  const [newJob, setNewJob] = useState({
     title: '',
     description: '',
     requirements: '',
@@ -66,129 +56,105 @@ export function RecruiterDashboard() {
     skills_required: ''
   });
 
-  const [profileForm, setProfileForm] = useState({
-    company_name: '',
-    company_description: '',
-    company_website: '',
-    company_size: '',
-    industry: ''
-  });
-
   useEffect(() => {
-    fetchData();
+    checkRecruiterStatus();
+    loadJobPostings();
   }, []);
 
-  const fetchData = async () => {
+  const checkRecruiterStatus = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Fetch recruiter profile
-      const { data: profileData } = await supabase
-        .from('recruiter_profiles')
-        .select('*')
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_type')
         .eq('user_id', user.id)
         .single();
 
-      if (profileData) {
-        setProfile(profileData);
-        setProfileForm(profileData);
-
-        // Fetch job postings
-        const { data: jobsData } = await supabase
-          .from('job_postings')
-          .select('*')
-          .eq('recruiter_id', user.id)
-          .order('created_at', { ascending: false });
-
-        setJobs(jobsData || []);
-      }
+      setIsRecruiter(profile?.user_type === 'recruiter');
     } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
+      console.error('Error checking recruiter status:', error);
     }
   };
 
-  const handleCreateProfile = async () => {
+  const loadJobPostings = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: jobs, error } = await supabase
+        .from('job_postings')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setJobPostings(jobs || []);
+    } catch (error) {
+      console.error('Error loading job postings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createRecruiterProfile = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
       const { error } = await supabase
-        .from('recruiter_profiles')
+        .from('profiles')
+        .update({ user_type: 'recruiter', company_name: 'Your Company' })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setIsRecruiter(true);
+      toast({
+        title: "Recruiter profile created!",
+        description: "You can now post jobs and manage applications",
+      });
+    } catch (error) {
+      console.error('Error creating recruiter profile:', error);
+      toast({
+        title: "Failed to create recruiter profile",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const createJobPosting = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const skillsArray = newJob.skills_required.split(',').map(s => s.trim()).filter(Boolean);
+
+      const { error } = await supabase
+        .from('job_postings')
         .insert({
           user_id: user.id,
-          ...profileForm
+          title: newJob.title,
+          description: newJob.description,
+          requirements: newJob.requirements,
+          location: newJob.location,
+          job_type: newJob.job_type,
+          experience_level: newJob.experience_level,
+          salary_min: newJob.salary_min ? parseInt(newJob.salary_min) : null,
+          salary_max: newJob.salary_max ? parseInt(newJob.salary_max) : null,
+          skills_required: skillsArray
         });
 
       if (error) throw error;
 
       toast({
-        title: "Profile created!",
-        description: "Your recruiter profile has been set up successfully.",
+        title: "Job posted successfully!",
+        description: "Your job posting is now live",
       });
 
-      setShowProfileDialog(false);
-      fetchData();
-    } catch (error) {
-      console.error('Error creating profile:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create profile. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleCreateJob = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const skillsArray = jobForm.skills_required.split(',').map(s => s.trim()).filter(s => s);
-
-      const jobData = {
-        recruiter_id: user.id,
-        title: jobForm.title,
-        description: jobForm.description,
-        requirements: jobForm.requirements,
-        location: jobForm.location,
-        job_type: jobForm.job_type,
-        experience_level: jobForm.experience_level,
-        salary_min: parseInt(jobForm.salary_min) || null,
-        salary_max: parseInt(jobForm.salary_max) || null,
-        skills_required: skillsArray
-      };
-
-      if (editingJob) {
-        const { error } = await supabase
-          .from('job_postings')
-          .update(jobData)
-          .eq('id', editingJob.id);
-
-        if (error) throw error;
-
-        toast({
-          title: "Job updated!",
-          description: "Job posting has been updated successfully.",
-        });
-      } else {
-        const { error } = await supabase
-          .from('job_postings')
-          .insert(jobData);
-
-        if (error) throw error;
-
-        toast({
-          title: "Job posted!",
-          description: "Your job posting is now live.",
-        });
-      }
-
-      setShowJobDialog(false);
-      setEditingJob(null);
-      setJobForm({
+      setShowCreateJob(false);
+      setNewJob({
         title: '',
         description: '',
         requirements: '',
@@ -199,363 +165,288 @@ export function RecruiterDashboard() {
         salary_max: '',
         skills_required: ''
       });
-      fetchData();
+      loadJobPostings();
     } catch (error) {
-      console.error('Error with job:', error);
+      console.error('Error creating job posting:', error);
       toast({
-        title: "Error",
-        description: "Failed to save job. Please try again.",
-        variant: "destructive"
+        title: "Failed to create job posting",
+        variant: "destructive",
       });
     }
   };
 
-  const handleDeleteJob = async (jobId: string) => {
-    try {
-      const { error } = await supabase
-        .from('job_postings')
-        .delete()
-        .eq('id', jobId);
-
-      if (error) throw error;
-
-      toast({
-        title: "Job deleted",
-        description: "Job posting has been removed.",
-      });
-
-      fetchData();
-    } catch (error) {
-      console.error('Error deleting job:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete job.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const startEditJob = (job: JobPosting) => {
-    setEditingJob(job);
-    setJobForm({
-      title: job.title,
-      description: job.description,
-      requirements: job.requirements,
-      location: job.location,
-      job_type: job.job_type,
-      experience_level: job.experience_level,
-      salary_min: job.salary_min?.toString() || '',
-      salary_max: job.salary_max?.toString() || '',
-      skills_required: job.skills_required?.join(', ') || ''
-    });
-    setShowJobDialog(true);
-  };
-
-  if (isLoading) {
+  if (!isRecruiter) {
     return (
-      <div className="container mx-auto px-4 py-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-muted rounded w-1/4"></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="h-32 bg-muted rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!profile) {
-    return (
-      <div className="container mx-auto px-4 py-6">
-        <Card className="max-w-2xl mx-auto">
-          <CardHeader className="text-center">
-            <CardTitle className="flex items-center justify-center gap-2">
-              <Building className="h-6 w-6" />
-              Welcome to Recruiter Dashboard
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Set up your company profile to start posting jobs and finding the best candidates.
+      <div className="space-y-6 animate-fade-in">
+        <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+          <CardContent className="p-8 text-center">
+            <Building className="h-16 w-16 mx-auto text-primary mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Become a Recruiter</h2>
+            <p className="text-muted-foreground mb-6">
+              Join our platform as a recruiter to post jobs and find the best candidates
             </p>
-            <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-primary to-secondary">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Create Company Profile
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>Create Company Profile</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <Input
-                    placeholder="Company Name"
-                    value={profileForm.company_name}
-                    onChange={(e) => setProfileForm({...profileForm, company_name: e.target.value})}
-                  />
-                  <Textarea
-                    placeholder="Company Description"
-                    value={profileForm.company_description}
-                    onChange={(e) => setProfileForm({...profileForm, company_description: e.target.value})}
-                  />
-                  <Input
-                    placeholder="Company Website"
-                    value={profileForm.company_website}
-                    onChange={(e) => setProfileForm({...profileForm, company_website: e.target.value})}
-                  />
-                  <Select value={profileForm.company_size} onValueChange={(value) => setProfileForm({...profileForm, company_size: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Company Size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1-10">1-10 employees</SelectItem>
-                      <SelectItem value="11-50">11-50 employees</SelectItem>
-                      <SelectItem value="51-200">51-200 employees</SelectItem>
-                      <SelectItem value="201-1000">201-1000 employees</SelectItem>
-                      <SelectItem value="1000+">1000+ employees</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    placeholder="Industry"
-                    value={profileForm.industry}
-                    onChange={(e) => setProfileForm({...profileForm, industry: e.target.value})}
-                  />
-                  <Button onClick={handleCreateProfile} className="w-full">
-                    Create Profile
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button 
+              onClick={createRecruiterProfile}
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+            >
+              Set Up Recruiter Profile
+            </Button>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  const totalViews = jobs.reduce((sum, job) => sum + job.views_count, 0);
-  const totalApplications = jobs.reduce((sum, job) => sum + job.applications_count, 0);
-
   return (
-    <div className="container mx-auto px-4 py-6 space-y-8 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Recruiter Dashboard
           </h1>
-          <p className="text-muted-foreground">{profile.company_name}</p>
+          <p className="text-muted-foreground">Manage your job postings and applications</p>
         </div>
-        <Dialog open={showJobDialog} onOpenChange={setShowJobDialog}>
+        
+        <Dialog open={showCreateJob} onOpenChange={setShowCreateJob}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-primary to-secondary">
+            <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
               <Plus className="h-4 w-4 mr-2" />
               Post New Job
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl">
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>{editingJob ? 'Edit Job' : 'Post New Job'}</DialogTitle>
+              <DialogTitle>Create Job Posting</DialogTitle>
             </DialogHeader>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                placeholder="Job Title"
-                value={jobForm.title}
-                onChange={(e) => setJobForm({...jobForm, title: e.target.value})}
-              />
-              <Input
-                placeholder="Location"
-                value={jobForm.location}
-                onChange={(e) => setJobForm({...jobForm, location: e.target.value})}
-              />
-              <Select value={jobForm.job_type} onValueChange={(value) => setJobForm({...jobForm, job_type: value})}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Job Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="full-time">Full Time</SelectItem>
-                  <SelectItem value="part-time">Part Time</SelectItem>
-                  <SelectItem value="contract">Contract</SelectItem>
-                  <SelectItem value="remote">Remote</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={jobForm.experience_level} onValueChange={(value) => setJobForm({...jobForm, experience_level: value})}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Experience Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="entry">Entry Level</SelectItem>
-                  <SelectItem value="mid">Mid Level</SelectItem>
-                  <SelectItem value="senior">Senior Level</SelectItem>
-                </SelectContent>
-              </Select>
-              <Input
-                placeholder="Min Salary"
-                type="number"
-                value={jobForm.salary_min}
-                onChange={(e) => setJobForm({...jobForm, salary_min: e.target.value})}
-              />
-              <Input
-                placeholder="Max Salary"
-                type="number"
-                value={jobForm.salary_max}
-                onChange={(e) => setJobForm({...jobForm, salary_max: e.target.value})}
-              />
-              <div className="md:col-span-2">
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Job Title</label>
+                  <Input
+                    placeholder="e.g., Senior React Developer"
+                    value={newJob.title}
+                    onChange={(e) => setNewJob({...newJob, title: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Location</label>
+                  <Input
+                    placeholder="e.g., Remote, New York"
+                    value={newJob.location}
+                    onChange={(e) => setNewJob({...newJob, location: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Job Description</label>
                 <Textarea
-                  placeholder="Job Description"
-                  value={jobForm.description}
-                  onChange={(e) => setJobForm({...jobForm, description: e.target.value})}
+                  placeholder="Describe the role and responsibilities..."
+                  value={newJob.description}
+                  onChange={(e) => setNewJob({...newJob, description: e.target.value})}
                   rows={4}
                 />
               </div>
-              <div className="md:col-span-2">
+
+              <div>
+                <label className="text-sm font-medium">Requirements</label>
                 <Textarea
-                  placeholder="Requirements"
-                  value={jobForm.requirements}
-                  onChange={(e) => setJobForm({...jobForm, requirements: e.target.value})}
-                  rows={4}
+                  placeholder="List the required qualifications..."
+                  value={newJob.requirements}
+                  onChange={(e) => setNewJob({...newJob, requirements: e.target.value})}
+                  rows={3}
                 />
               </div>
-              <div className="md:col-span-2">
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Job Type</label>
+                  <Select value={newJob.job_type} onValueChange={(value) => setNewJob({...newJob, job_type: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="full-time">Full Time</SelectItem>
+                      <SelectItem value="part-time">Part Time</SelectItem>
+                      <SelectItem value="contract">Contract</SelectItem>
+                      <SelectItem value="remote">Remote</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Experience Level</label>
+                  <Select value={newJob.experience_level} onValueChange={(value) => setNewJob({...newJob, experience_level: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="entry">Entry Level</SelectItem>
+                      <SelectItem value="mid">Mid Level</SelectItem>
+                      <SelectItem value="senior">Senior Level</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Min Salary ($)</label>
+                  <Input
+                    type="number"
+                    placeholder="50000"
+                    value={newJob.salary_min}
+                    onChange={(e) => setNewJob({...newJob, salary_min: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Max Salary ($)</label>
+                  <Input
+                    type="number"
+                    placeholder="80000"
+                    value={newJob.salary_max}
+                    onChange={(e) => setNewJob({...newJob, salary_max: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Required Skills (comma-separated)</label>
                 <Input
-                  placeholder="Required Skills (comma separated)"
-                  value={jobForm.skills_required}
-                  onChange={(e) => setJobForm({...jobForm, skills_required: e.target.value})}
+                  placeholder="React, TypeScript, Node.js"
+                  value={newJob.skills_required}
+                  onChange={(e) => setNewJob({...newJob, skills_required: e.target.value})}
                 />
               </div>
-              <div className="md:col-span-2">
-                <Button onClick={handleCreateJob} className="w-full">
-                  {editingJob ? 'Update Job' : 'Post Job'}
-                </Button>
-              </div>
+
+              <Button 
+                onClick={createJobPosting} 
+                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                disabled={!newJob.title || !newJob.description}
+              >
+                Post Job
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="hover-scale bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-primary to-blue-500 flex items-center justify-center mr-4">
-              <Briefcase className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{jobs.length}</p>
-              <p className="text-sm text-muted-foreground">Active Jobs</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover-scale bg-gradient-to-r from-secondary/10 to-green-500/10 border-secondary/20">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-secondary to-green-500 flex items-center justify-center mr-4">
-              <Eye className="h-6 w-6 text-secondary-foreground" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{totalViews}</p>
-              <p className="text-sm text-muted-foreground">Total Views</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20 animate-fade-in">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Active Jobs</p>
+                <p className="text-2xl font-bold">{jobPostings.filter(j => j.is_active).length}</p>
+              </div>
+              <Building className="h-8 w-8 text-primary" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover-scale bg-gradient-to-r from-accent/10 to-purple-500/10 border-accent/20">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-accent to-purple-500 flex items-center justify-center mr-4">
-              <Users className="h-6 w-6 text-accent-foreground" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{totalApplications}</p>
-              <p className="text-sm text-muted-foreground">Applications</p>
+        <Card className="bg-gradient-to-r from-secondary/10 to-green-500/10 border-secondary/20 animate-fade-in" style={{animationDelay: '0.1s'}}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Applications</p>
+                <p className="text-2xl font-bold">{jobPostings.reduce((sum, job) => sum + job.applications_count, 0)}</p>
+              </div>
+              <Users className="h-8 w-8 text-secondary" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover-scale bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mr-4">
-              <TrendingUp className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">
-                {jobs.length > 0 ? Math.round(totalApplications / jobs.length) : 0}
-              </p>
-              <p className="text-sm text-muted-foreground">Avg Applications</p>
+        <Card className="bg-gradient-to-r from-accent/10 to-purple-500/10 border-accent/20 animate-fade-in" style={{animationDelay: '0.2s'}}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Views</p>
+                <p className="text-2xl font-bold">{jobPostings.reduce((sum, job) => sum + job.views_count, 0)}</p>
+              </div>
+              <TrendingUp className="h-8 w-8 text-accent" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Job Listings */}
+      {/* Job Postings */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Briefcase className="h-5 w-5" />
-            Your Job Postings
-          </CardTitle>
+          <CardTitle>Your Job Postings</CardTitle>
         </CardHeader>
         <CardContent>
-          {jobs.length === 0 ? (
-            <div className="text-center py-12">
-              <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          {loading ? (
+            <div className="text-center py-8">Loading job postings...</div>
+          ) : jobPostings.length === 0 ? (
+            <div className="text-center py-8">
+              <Building className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <p className="text-muted-foreground">No job postings yet. Create your first job posting!</p>
             </div>
           ) : (
             <div className="space-y-4">
-              {jobs.map((job) => (
-                <div key={job.id} className="p-6 border rounded-lg hover:shadow-md transition-shadow">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-semibold">{job.title}</h3>
-                        <Badge variant="secondary">{job.job_type}</Badge>
-                        <Badge variant="outline">{job.experience_level}</Badge>
-                      </div>
-                      <p className="text-muted-foreground mb-2">{job.location}</p>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{job.description}</p>
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {job.skills_required?.slice(0, 5).map((skill, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
-                            {skill}
+              {jobPostings.map((job, index) => (
+                <Card key={job.id} className="animate-slide-in-right" style={{animationDelay: `${index * 0.1}s`}}>
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="text-lg font-semibold">{job.title}</h3>
+                          <Badge variant={job.is_active ? "default" : "secondary"}>
+                            {job.is_active ? "Active" : "Inactive"}
                           </Badge>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Eye className="h-4 w-4" />
-                          {job.views_count} views
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="h-4 w-4" />
-                          {job.applications_count} applications
-                        </span>
-                        {job.salary_min && job.salary_max && (
-                          <span>${job.salary_min}k - ${job.salary_max}k</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {job.location}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4" />
+                            {job.applications_count} applications
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Eye className="h-4 w-4" />
+                            {job.views_count} views
+                          </div>
+                          {job.salary_min && job.salary_max && (
+                            <div className="flex items-center gap-1">
+                              <DollarSign className="h-4 w-4" />
+                              ${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()}
+                            </div>
+                          )}
+                        </div>
+
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                          {job.description}
+                        </p>
+
+                        {job.skills_required && (
+                          <div className="flex flex-wrap gap-1">
+                            {job.skills_required.map((skill, idx) => (
+                              <Badge key={idx} variant="outline" className="text-xs">
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
                         )}
                       </div>
+
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex gap-2 ml-4">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => startEditJob(job)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDeleteJob(job.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           )}

@@ -144,13 +144,13 @@ export type Database = {
           is_active: boolean | null
           job_type: string | null
           location: string | null
-          recruiter_id: string
           requirements: string
           salary_max: number | null
           salary_min: number | null
           skills_required: string[] | null
           title: string
           updated_at: string
+          user_id: string
           views_count: number | null
         }
         Insert: {
@@ -162,13 +162,13 @@ export type Database = {
           is_active?: boolean | null
           job_type?: string | null
           location?: string | null
-          recruiter_id: string
           requirements: string
           salary_max?: number | null
           salary_min?: number | null
           skills_required?: string[] | null
           title: string
           updated_at?: string
+          user_id: string
           views_count?: number | null
         }
         Update: {
@@ -180,13 +180,13 @@ export type Database = {
           is_active?: boolean | null
           job_type?: string | null
           location?: string | null
-          recruiter_id?: string
           requirements?: string
           salary_max?: number | null
           salary_min?: number | null
           skills_required?: string[] | null
           title?: string
           updated_at?: string
+          user_id?: string
           views_count?: number | null
         }
         Relationships: []
@@ -228,11 +228,16 @@ export type Database = {
         Row: {
           avatar_url: string | null
           bio: string | null
+          company_description: string | null
+          company_name: string | null
+          company_size: string | null
+          company_website: string | null
           created_at: string
           email: string | null
           experience: Json | null
           first_name: string | null
           id: string
+          industry: string | null
           last_name: string | null
           location: string | null
           phone: string | null
@@ -240,15 +245,21 @@ export type Database = {
           skills: string[] | null
           updated_at: string
           user_id: string
+          user_type: string | null
         }
         Insert: {
           avatar_url?: string | null
           bio?: string | null
+          company_description?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          company_website?: string | null
           created_at?: string
           email?: string | null
           experience?: Json | null
           first_name?: string | null
           id?: string
+          industry?: string | null
           last_name?: string | null
           location?: string | null
           phone?: string | null
@@ -256,15 +267,21 @@ export type Database = {
           skills?: string[] | null
           updated_at?: string
           user_id: string
+          user_type?: string | null
         }
         Update: {
           avatar_url?: string | null
           bio?: string | null
+          company_description?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          company_website?: string | null
           created_at?: string
           email?: string | null
           experience?: Json | null
           first_name?: string | null
           id?: string
+          industry?: string | null
           last_name?: string | null
           location?: string | null
           phone?: string | null
@@ -272,48 +289,7 @@ export type Database = {
           skills?: string[] | null
           updated_at?: string
           user_id?: string
-        }
-        Relationships: []
-      }
-      recruiter_profiles: {
-        Row: {
-          company_description: string | null
-          company_name: string
-          company_size: string | null
-          company_website: string | null
-          created_at: string
-          id: string
-          industry: string | null
-          logo_url: string | null
-          updated_at: string
-          user_id: string
-          verified: boolean | null
-        }
-        Insert: {
-          company_description?: string | null
-          company_name: string
-          company_size?: string | null
-          company_website?: string | null
-          created_at?: string
-          id?: string
-          industry?: string | null
-          logo_url?: string | null
-          updated_at?: string
-          user_id: string
-          verified?: boolean | null
-        }
-        Update: {
-          company_description?: string | null
-          company_name?: string
-          company_size?: string | null
-          company_website?: string | null
-          created_at?: string
-          id?: string
-          industry?: string | null
-          logo_url?: string | null
-          updated_at?: string
-          user_id?: string
-          verified?: boolean | null
+          user_type?: string | null
         }
         Relationships: []
       }
