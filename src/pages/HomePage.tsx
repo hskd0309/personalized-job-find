@@ -159,23 +159,23 @@ export function HomePage() {
 
       {/* Quick Actions */}
       <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-foreground bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-slide-in-right">Quick Actions</h2>
+        <h2 className="text-2xl font-semibold text-foreground bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {quickActions.map((action, index) => (
             <Link to={action.href} key={action.title}>
-              <Card className="hover-scale cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 group-hover:skew-x-12"></div>
+              <Card className="cursor-pointer hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0"></div>
                 <CardContent className="p-6 text-center space-y-4 relative z-10">
-                  <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
-                    <action.icon className="h-8 w-8 text-white" />
+                  <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg`}>
+                    <action.icon className="h-8 w-8 text-primary-foreground" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{action.title}</h3>
+                    <h3 className="font-semibold text-foreground">{action.title}</h3>
                     <p className="text-sm text-muted-foreground">{action.description}</p>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full group border-primary/20 hover:border-primary hover:bg-primary hover:text-primary-foreground">
-                    Get Started
-                    <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                   <Button variant="outline" size="sm" className="w-full group border-primary/20 hover:border-primary hover:bg-primary hover:text-primary-foreground">
+                     Get Started
+                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </CardContent>
               </Card>
@@ -187,7 +187,7 @@ export function HomePage() {
       {/* Recent Activity & Tips */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Activity */}
-        <Card className="animate-slide-in-right bg-gradient-to-br from-background to-primary/5 border-primary/10">
+        <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-primary">
               <Clock className="h-5 w-5" />
@@ -196,7 +196,7 @@ export function HomePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {recentActivities.map((activity, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 hover:from-primary/10 hover:to-secondary/20 transition-all duration-300 border border-transparent hover:border-primary/20">
+              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 border border-transparent">
                 <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
                   <activity.icon className="h-4 w-4 text-primary" />
                 </div>
@@ -210,7 +210,7 @@ export function HomePage() {
         </Card>
 
         {/* Career Tips */}
-        <Card className="animate-slide-in-right bg-gradient-to-br from-background to-secondary/5 border-secondary/10" style={{animationDelay: '0.2s'}}>
+        <Card className="bg-gradient-to-br from-background to-secondary/5 border-secondary/10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-secondary">
               <Users className="h-5 w-5" />
@@ -219,21 +219,21 @@ export function HomePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
-              <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 border-l-4 border-primary hover:from-primary/20 hover:to-blue-500/20 transition-all duration-300">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 border-l-4 border-primary">
                 <h4 className="font-medium text-primary">Networking is Key</h4>
                 <p className="text-sm text-muted-foreground">Join professional groups on LinkedIn and attend virtual meetups.</p>
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary hover:from-secondary/20 hover:to-green-500/20 transition-all duration-300">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary">
                 <h4 className="font-medium text-secondary">Skill Development</h4>
                 <p className="text-sm text-muted-foreground">Focus on in-demand skills like AI, Data Science, and Cloud Computing.</p>
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent hover:from-accent/20 hover:to-purple-500/20 transition-all duration-300">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent">
                 <h4 className="font-medium text-accent">Resume Optimization</h4>
                 <p className="text-sm text-muted-foreground">Tailor your resume for each application with relevant keywords.</p>
               </div>
             </div>
             <Link to="/app/career-chat">
-              <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 animate-scale-in">
+              <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
                 Get Personalized Advice
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
@@ -260,7 +260,7 @@ export function HomePage() {
               <Badge 
                 key={category} 
                 variant="secondary" 
-                className="hover-scale cursor-pointer bg-gradient-to-r from-secondary/80 to-accent/80 hover:from-secondary hover:to-accent text-secondary-foreground border-0"
+                className="cursor-pointer bg-gradient-to-r from-secondary/80 to-accent/80 hover:from-secondary hover:to-accent text-secondary-foreground border-0"
               >
                 {category}
               </Badge>
