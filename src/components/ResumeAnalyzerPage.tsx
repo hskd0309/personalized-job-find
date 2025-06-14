@@ -14,12 +14,20 @@ import {
   CheckCircle,
   Target,
   Brain,
-  Zap
+  Zap,
+  Layout,
+  Award,
+  BookOpen,
+  Users,
+  Clock,
+  ArrowRight
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { resumeTemplates } from '@/components/resume/ResumeTemplates';
 
 interface ResumeAnalysis {
+  score: number;
   overallScore: number;
   grammarScore: number;
   formattingScore: number;
@@ -28,6 +36,13 @@ interface ResumeAnalysis {
   improvements: string[];
   missingSkills: string[];
   feedback: string;
+  extractedSkills: string[];
+  experienceYears: number;
+  suggestions: string[];
+  strengths: string[];
+  weaknesses: string[];
+  atsStrategies: string[];
+  industryTips: string[];
 }
 
 export function ResumeAnalyzerPage() {
@@ -214,13 +229,13 @@ export function ResumeAnalyzerPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-center space-y-4">
-                    <div className={`text-4xl font-bold ${getScoreColor(analysis.overallScore)}`}>
-                      {analysis.overallScore}/100
-                    </div>
-                    <Progress 
-                      value={analysis.overallScore} 
-                      className="h-3"
-                    />
+                     <div className={`text-4xl font-bold ${getScoreColor(analysis.score || analysis.overallScore)}`}>
+                       {analysis.score || analysis.overallScore}/100
+                     </div>
+                     <Progress 
+                       value={analysis.score || analysis.overallScore} 
+                       className="h-3"
+                     />
                   </div>
                 </CardContent>
               </Card>
@@ -275,24 +290,173 @@ export function ResumeAnalyzerPage() {
                 </CardContent>
               </Card>
 
-              {/* Missing Skills */}
+              {/* Skills Summary */}
               <Card className="bg-gradient-to-br from-background to-secondary/5 border-secondary/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Suggested Skills
+                    <Award className="h-5 w-5" />
+                    Skills Analysis
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {analysis.missingSkills.map((skill, index) => (
-                      <Badge key={index} variant="secondary">
-                        {skill}
-                      </Badge>
-                    ))}
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-1">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      Extracted Skills ({analysis.extractedSkills?.length || 0})
+                    </h4>
+                    <div className="flex flex-wrap gap-1">
+                      {analysis.extractedSkills?.map((skill, index) => (
+                        <Badge key={index} className="bg-green-100 text-green-800 text-xs">
+                          {skill}
+                        </Badge>
+                      )) || <p className="text-sm text-muted-foreground">No skills detected</p>}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-1">
+                      <Clock className="h-4 w-4 text-blue-600" />
+                      Experience: {analysis.experienceYears || 0} years
+                    </h4>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-1">
+                      <Target className="h-4 w-4 text-orange-600" />
+                      Skills to Add ({analysis.missingSkills?.length || 0})
+                    </h4>
+                    <div className="flex flex-wrap gap-1">
+                      {analysis.missingSkills?.map((skill, index) => (
+                        <Badge key={index} variant="outline" className="border-orange-200 text-orange-700 text-xs">
+                          {skill}
+                        </Badge>
+                      )) || <p className="text-sm text-muted-foreground">All essential skills covered</p>}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Strengths & Weaknesses */}
+              <Card className="bg-gradient-to-br from-background to-accent/5 border-accent/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5" />
+                    Strengths & Areas to Improve
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {analysis.strengths && analysis.strengths.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-1 text-green-700">
+                        <CheckCircle className="h-4 w-4" />
+                        Strengths
+                      </h4>
+                      <div className="space-y-1">
+                        {analysis.strengths.map((strength, index) => (
+                          <div key={index} className="p-2 bg-green-50 rounded-lg border-l-4 border-green-400">
+                            <p className="text-sm text-green-700">{strength}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {analysis.weaknesses && analysis.weaknesses.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-1 text-red-700">
+                        <AlertCircle className="h-4 w-4" />
+                        Areas to Improve
+                      </h4>
+                      <div className="space-y-1">
+                        {analysis.weaknesses.map((weakness, index) => (
+                          <div key={index} className="p-2 bg-red-50 rounded-lg border-l-4 border-red-400">
+                            <p className="text-sm text-red-700">{weakness}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* ATS Tips */}
+              {analysis.atsStrategies && analysis.atsStrategies.length > 0 && (
+                <Card className="bg-gradient-to-br from-background to-blue-50 border-blue-200">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-700">
+                      <Brain className="h-5 w-5" />
+                      ATS Optimization Tips
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {analysis.atsStrategies.map((tip, index) => (
+                        <div key={index} className="p-2 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                          <p className="text-sm text-blue-700">{tip}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Industry Tips */}
+              {analysis.industryTips && analysis.industryTips.length > 0 && (
+                <Card className="bg-gradient-to-br from-background to-purple-50 border-purple-200">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-700">
+                      <BookOpen className="h-5 w-5" />
+                      Industry Recommendations
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {analysis.industryTips.map((tip, index) => (
+                        <div key={index} className="p-2 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                          <p className="text-sm text-purple-700">{tip}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Template Recommendations - Show when score < 90 */}
+              {(analysis.score || analysis.overallScore) < 90 && (
+                <Card className="bg-gradient-to-br from-background to-amber-50 border-amber-200">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-amber-700">
+                      <Layout className="h-5 w-5" />
+                      Recommended Templates
+                    </CardTitle>
+                    <p className="text-sm text-amber-600 mt-1">
+                      Consider using these professional templates to improve your resume's impact
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-3">
+                      {resumeTemplates.slice(0, 4).map((template) => (
+                        <div key={template.id} className="p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-300 transition-colors">
+                          <div className="aspect-[3/4] bg-gradient-to-br from-gray-50 to-gray-100 rounded-md mb-2 flex items-center justify-center">
+                            <Layout className="h-8 w-8 text-gray-400" />
+                          </div>
+                          <h4 className="font-medium text-sm text-gray-900">{template.name}</h4>
+                          <p className="text-xs text-gray-600 mb-2">{template.category}</p>
+                          <Button size="sm" variant="outline" className="w-full text-xs">
+                            <ArrowRight className="h-3 w-3 mr-1" />
+                            Use Template
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-4 p-3 bg-amber-100 rounded-lg">
+                      <p className="text-sm text-amber-800">
+                        💡 <strong>Pro Tip:</strong> Professional templates can boost your resume score by 15-20 points through better formatting and ATS optimization.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </>
           ) : (
             <Card className="bg-gradient-to-br from-background to-muted/5">
