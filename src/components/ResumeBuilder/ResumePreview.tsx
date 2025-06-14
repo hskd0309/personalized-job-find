@@ -44,8 +44,61 @@ interface ResumePreviewProps {
   templateId: string;
 }
 
+// Example data for template preview
+const exampleData: ResumeData = {
+  personalInfo: {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@email.com',
+    phone: '+91 9876543210',
+    location: 'Mumbai, India',
+    website: 'johndoe.dev',
+    linkedin: 'linkedin.com/in/johndoe'
+  },
+  summary: 'Experienced software engineer with 5+ years in full-stack development. Specialized in React, Node.js, and cloud technologies. Proven track record of delivering scalable solutions and leading cross-functional teams.',
+  experience: [
+    {
+      id: '1',
+      position: 'Senior Software Engineer',
+      company: 'Tech Innovations Ltd',
+      location: 'Mumbai, India',
+      startDate: '2021-01',
+      endDate: '',
+      current: true,
+      description: 'Led development of microservices architecture serving 1M+ users. Implemented CI/CD pipelines reducing deployment time by 70%. Mentored junior developers and conducted code reviews.'
+    },
+    {
+      id: '2',
+      position: 'Software Developer',
+      company: 'StartupXYZ',
+      location: 'Bangalore, India',
+      startDate: '2019-06',
+      endDate: '2020-12',
+      current: false,
+      description: 'Developed responsive web applications using React and TypeScript. Collaborated with UX team to improve user engagement by 40%. Built RESTful APIs with Node.js and MongoDB.'
+    }
+  ],
+  education: [
+    {
+      id: '1',
+      degree: 'Bachelor of Technology in Computer Science',
+      institution: 'Indian Institute of Technology',
+      location: 'Delhi, India',
+      startDate: '2015-07',
+      endDate: '2019-05',
+      gpa: '8.5/10'
+    }
+  ],
+  skills: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker', 'MongoDB', 'Git', 'Agile']
+};
+
 export function ResumePreview({ data, templateId }: ResumePreviewProps) {
   const { toast } = useToast();
+  
+  // Use example data if no data is provided or if data is mostly empty
+  const isDataEmpty = !data.personalInfo.firstName && !data.personalInfo.lastName && 
+                     data.experience.length === 0 && data.education.length === 0;
+  const displayData = isDataEmpty ? exampleData : data;
 
   const downloadResume = async () => {
     try {
@@ -123,7 +176,7 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
     const TemplateComponent = resumeTemplateMap[templateId as keyof typeof resumeTemplateMap];
     
     if (TemplateComponent) {
-      return <TemplateComponent data={data} />;
+      return <TemplateComponent data={displayData} />;
     }
     
     // Fallback to existing hardcoded templates
@@ -132,32 +185,32 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
         <div className="resume-template professional">
           <header className="header text-center border-b-2 border-primary pb-4 mb-6">
             <h1 className="text-3xl font-bold text-foreground">
-              {data.personalInfo.firstName} {data.personalInfo.lastName}
+              {displayData.personalInfo.firstName} {displayData.personalInfo.lastName}
             </h1>
             <div className="contact-info text-muted-foreground mt-2 space-y-1">
-              <p>{data.personalInfo.email} | {data.personalInfo.phone}</p>
-              <p>{data.personalInfo.location}</p>
-              {data.personalInfo.linkedin && <p>LinkedIn: {data.personalInfo.linkedin}</p>}
-              {data.personalInfo.website && <p>Website: {data.personalInfo.website}</p>}
+              <p>{displayData.personalInfo.email} | {displayData.personalInfo.phone}</p>
+              <p>{displayData.personalInfo.location}</p>
+              {displayData.personalInfo.linkedin && <p>LinkedIn: {displayData.personalInfo.linkedin}</p>}
+              {displayData.personalInfo.website && <p>Website: {displayData.personalInfo.website}</p>}
             </div>
           </header>
 
-          {data.summary && (
+          {displayData.summary && (
             <section className="summary mb-6">
               <h2 className="text-xl font-bold text-primary border-b border-border pb-1 mb-3">
                 PROFESSIONAL SUMMARY
               </h2>
-              <p className="text-foreground leading-relaxed">{data.summary}</p>
+              <p className="text-foreground leading-relaxed">{displayData.summary}</p>
             </section>
           )}
 
-          {data.experience.length > 0 && (
+          {displayData.experience.length > 0 && (
             <section className="experience mb-6">
               <h2 className="text-xl font-bold text-primary border-b border-border pb-1 mb-3">
                 PROFESSIONAL EXPERIENCE
               </h2>
               <div className="space-y-4">
-                {data.experience.map((exp) => (
+                {displayData.experience.map((exp) => (
                   <div key={exp.id} className="job">
                     <div className="flex justify-between items-start">
                       <div>
@@ -176,11 +229,11 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
             </section>
           )}
 
-          {data.education.length > 0 && (
+          {displayData.education.length > 0 && (
             <section className="education mb-6">
               <h2 className="text-xl font-bold text-primary border-b border-border pb-1 mb-3">EDUCATION</h2>
               <div className="space-y-3">
-                {data.education.map((edu) => (
+                {displayData.education.map((edu) => (
                   <div key={edu.id} className="school flex justify-between items-start">
                     <div>
                       <h3 className="font-bold text-foreground">{edu.degree}</h3>
@@ -197,11 +250,11 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
             </section>
           )}
 
-          {data.skills.length > 0 && (
+          {displayData.skills.length > 0 && (
             <section className="skills">
               <h2 className="text-xl font-bold text-primary border-b border-border pb-1 mb-3">TECHNICAL SKILLS</h2>
               <div className="skills-list flex flex-wrap gap-2">
-                {data.skills.map((skill) => (
+                {displayData.skills.map((skill) => (
                   <span key={skill} className="skill bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">
                     {skill}
                   </span>
@@ -219,20 +272,20 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
           <div className="sidebar md:col-span-1 bg-secondary/20 p-6 rounded-lg">
             <div className="profile text-center mb-6">
               <h1 className="text-2xl font-bold text-foreground">
-                {data.personalInfo.firstName}<br/>{data.personalInfo.lastName}
+                {displayData.personalInfo.firstName}<br/>{displayData.personalInfo.lastName}
               </h1>
               <div className="contact mt-4 space-y-2 text-sm text-muted-foreground">
-                <div>{data.personalInfo.email}</div>
-                <div>{data.personalInfo.phone}</div>
-                <div>{data.personalInfo.location}</div>
+                <div>{displayData.personalInfo.email}</div>
+                <div>{displayData.personalInfo.phone}</div>
+                <div>{displayData.personalInfo.location}</div>
               </div>
             </div>
             
-            {data.skills.length > 0 && (
+            {displayData.skills.length > 0 && (
               <section className="skills">
                 <h2 className="text-lg font-bold text-primary mb-3">Skills</h2>
                 <div className="space-y-2">
-                  {data.skills.map((skill) => (
+                  {displayData.skills.map((skill) => (
                     <div key={skill} className="skill-item bg-primary/10 p-2 rounded text-sm">{skill}</div>
                   ))}
                 </div>
@@ -241,18 +294,18 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
           </div>
           
           <div className="main-content md:col-span-2 space-y-6">
-            {data.summary && (
+            {displayData.summary && (
               <section className="summary">
                 <h2 className="text-xl font-bold text-primary mb-3">About Me</h2>
-                <p className="text-foreground leading-relaxed">{data.summary}</p>
+                <p className="text-foreground leading-relaxed">{displayData.summary}</p>
               </section>
             )}
             
-            {data.experience.length > 0 && (
+            {displayData.experience.length > 0 && (
               <section className="experience">
                 <h2 className="text-xl font-bold text-primary mb-3">Experience</h2>
                 <div className="space-y-4">
-                  {data.experience.map((exp) => (
+                  {displayData.experience.map((exp) => (
                     <div key={exp.id} className="job border-l-2 border-primary pl-4">
                       <h3 className="font-bold text-foreground">{exp.position}</h3>
                       <div className="meta text-primary font-medium">
@@ -265,11 +318,11 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
               </section>
             )}
             
-            {data.education.length > 0 && (
+            {displayData.education.length > 0 && (
               <section className="education">
                 <h2 className="text-xl font-bold text-primary mb-3">Education</h2>
                 <div className="space-y-3">
-                  {data.education.map((edu) => (
+                  {displayData.education.map((edu) => (
                     <div key={edu.id} className="school">
                       <h3 className="font-bold text-foreground">{edu.degree}</h3>
                       <div className="text-primary">{edu.institution} | {formatDate(edu.startDate)} - {formatDate(edu.endDate)}</div>
@@ -349,26 +402,26 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
         {/* Header Section */}
         <header className={`header ${styles.headerBg} p-6 rounded-lg mb-6`}>
           <h1 className={`text-3xl font-bold ${styles.headerText} text-center`}>
-            {data.personalInfo.firstName} {data.personalInfo.lastName}
+            {displayData.personalInfo.firstName} {displayData.personalInfo.lastName}
           </h1>
           <div className="contact-info text-center mt-3 text-muted-foreground">
             <div className="flex justify-center items-center gap-3 text-sm">
-              <span>{data.personalInfo.email}</span>
+              <span>{displayData.personalInfo.email}</span>
               <span>•</span>
-              <span>{data.personalInfo.phone}</span>
+              <span>{displayData.personalInfo.phone}</span>
               <span>•</span>
-              <span>{data.personalInfo.location}</span>
+              <span>{displayData.personalInfo.location}</span>
             </div>
           </div>
         </header>
 
         {/* Summary Section */}
-        {data.summary && (
+        {displayData.summary && (
           <section className="summary mb-6">
             <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
               Professional Summary
             </h2>
-            <p className="text-foreground leading-relaxed">{data.summary}</p>
+            <p className="text-foreground leading-relaxed">{displayData.summary}</p>
           </section>
         )}
 
@@ -376,12 +429,12 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Experience Section */}
-            {data.experience.length > 0 && (
+            {displayData.experience.length > 0 && (
               <section className="experience mb-6">
                 <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
                   Professional Experience
                 </h2>
-                {data.experience.map((exp, index) => (
+                {displayData.experience.map((exp, index) => (
                   <div key={index} className="job mb-5 pb-4 border-b border-border last:border-b-0">
                     <h3 className="text-lg font-semibold text-foreground">{exp.position}</h3>
                     <div className="company-info text-primary font-medium">{exp.company}</div>
@@ -395,12 +448,12 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
             )}
 
             {/* Education Section */}
-            {data.education.length > 0 && (
+            {displayData.education.length > 0 && (
               <section className="education mb-6">
                 <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
                   Education
                 </h2>
-                {data.education.map((edu, index) => (
+                {displayData.education.map((edu, index) => (
                   <div key={index} className="school mb-4">
                     <h3 className="text-lg font-semibold text-foreground">{edu.degree}</h3>
                     <div className="institution text-primary font-medium">{edu.institution}</div>
@@ -419,13 +472,13 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Skills Section */}
-            {data.skills.length > 0 && (
+            {displayData.skills.length > 0 && (
               <section className="skills">
                 <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
                   Skills & Expertise
                 </h2>
                 <div className="skills-grid">
-                  {data.skills.map((skill, index) => (
+                  {displayData.skills.map((skill, index) => (
                     <div key={index} className={`skill ${styles.skillBg} ${styles.skillText} px-3 py-2 rounded text-sm mb-2 font-medium`}>
                       {skill}
                     </div>
