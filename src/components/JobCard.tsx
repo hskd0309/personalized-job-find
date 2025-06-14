@@ -93,47 +93,47 @@ export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-lg">{job.title}</CardTitle>
-            <div className="flex items-center gap-2 mt-1">
-              <Building className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium">{job.company}</span>
+    <Card className="hover:shadow-md transition-shadow h-full">
+      <CardHeader className="pb-3 sm:pb-4">
+        <div className="flex justify-between items-start gap-2">
+          <div className="flex-1 min-w-0">
+            <CardTitle className="text-base sm:text-lg line-clamp-2">{job.title}</CardTitle>
+            <div className="flex items-center gap-1 sm:gap-2 mt-1 flex-wrap">
+              <Building className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+              <span className="font-medium text-sm sm:text-base truncate">{job.company}</span>
               <div className="flex items-center gap-1">
                 <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm text-muted-foreground">
+                <span className="text-xs sm:text-sm text-muted-foreground">
                   {job.companyRating} ({job.companyReviews})
                 </span>
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Badge variant="secondary">{job.type}</Badge>
-            {isNewJob && <Badge className="bg-green-600 hover:bg-green-700">New</Badge>}
+          <div className="flex flex-col gap-1 sm:gap-2">
+            <Badge variant="secondary" className="text-xs">{job.type}</Badge>
+            {isNewJob && <Badge className="bg-green-600 hover:bg-green-700 text-xs">New</Badge>}
           </div>
         </div>
       </CardHeader>
       
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex gap-4 text-sm text-muted-foreground">
+      <CardContent className="pt-0">
+        <div className="space-y-2 sm:space-y-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
-              <MapPin className="h-4 w-4" />
-              {job.location}
+              <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span className="truncate">{job.location}</span>
             </div>
             <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              {job.experience}
+              <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span>{job.experience}</span>
             </div>
           </div>
           
-          <div className="text-lg font-semibold text-green-600">
+          <div className="text-base sm:text-lg font-semibold text-green-600">
             {job.salary}
           </div>
           
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1 sm:gap-2">
             {job.skills.slice(0, 3).map((skill) => (
               <Badge key={skill} variant="outline" className="text-xs">
                 {skill}
@@ -146,19 +146,28 @@ export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
             )}
           </div>
           
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
             {job.description}
           </p>
           
-          <div className="flex justify-between items-center pt-2">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pt-2">
             <span className="text-xs text-muted-foreground">
               {formatDate(job.postedDate)}
             </span>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => onViewDetails(job)}>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => onViewDetails(job)}
+                className="flex-1 sm:flex-none text-xs sm:text-sm h-8 sm:h-9"
+              >
                 View Details
               </Button>
-              <Button size="sm" onClick={handleApply}>
+              <Button 
+                size="sm" 
+                onClick={handleApply}
+                className="flex-1 sm:flex-none text-xs sm:text-sm h-8 sm:h-9"
+              >
                 Apply Now
               </Button>
             </div>

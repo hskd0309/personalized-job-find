@@ -201,7 +201,7 @@ export function JobSearchPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6">
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
       {/* Search and Filters */}
       <JobSearch 
         onSearch={setFilters} 
@@ -209,7 +209,7 @@ export function JobSearchPage() {
       />
 
       {/* Job Listings */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
          {filteredJobs.map(job => (
            <JobCard 
              key={job.id} 

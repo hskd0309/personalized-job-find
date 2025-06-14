@@ -55,24 +55,24 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
 
   return (
     <Card>
-      <CardContent className="p-6">
-        <div className="space-y-4">
+      <CardContent className="p-3 sm:p-6">
+        <div className="space-y-3 sm:space-y-4">
           {/* Main Search Bar */}
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search jobs, companies, or keywords..."
-                className="pl-10"
+                placeholder="Search jobs, companies..."
+                className="pl-10 text-sm sm:text-base"
                 value={filters.searchTerm}
                 onChange={(e) => handleFilterChange('searchTerm', e.target.value)}
               />
             </div>
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Location"
-                className="pl-10 w-48"
+                className="pl-10 text-sm sm:text-base sm:w-48"
                 value={filters.location}
                 onChange={(e) => handleFilterChange('location', e.target.value)}
               />
@@ -80,7 +80,7 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
             <Button 
               variant="outline" 
               onClick={() => setShowFilters(!showFilters)}
-              className="relative"
+              className="relative min-h-[44px] w-full sm:w-auto"
             >
               <Filter className="h-4 w-4 mr-2" />
               Filters

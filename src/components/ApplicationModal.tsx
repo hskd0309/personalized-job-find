@@ -123,14 +123,14 @@ export function ApplicationModal({ job, isOpen, onClose }: ApplicationModalProps
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md mx-2 sm:mx-auto">
         <DialogHeader>
-          <DialogTitle>Apply for {job.title}</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl">Apply for {job.title}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="resume">Resume (PDF)*</Label>
+            <Label htmlFor="resume" className="text-sm font-medium">Resume (PDF)*</Label>
             <div className="flex items-center space-x-2">
               <Input
                 id="resume"
