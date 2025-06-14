@@ -6,47 +6,89 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Comprehensive skills database based on NER training data
+// Enhanced NLP-based skills database with entity recognition patterns
 const ALL_SKILLS = [
-  // Programming Languages
-  'Python', 'Java', 'JavaScript', 'TypeScript', 'C++', 'C#', 'Go', 'Ruby', 'PHP', 'Swift', 'Rust', 'Dart', 'Kotlin', 'SQL', 'NoSQL', 'C', 'Scala', 'Perl', 'Haskell', 'Bash', 'Shell', 'Cobol', 'Fortran', 'Visual Basic', 'Assembly', 'Pascal', 'Ada', 'ABAP', 'RPG', 'Lisp', 'Prolog', 'F#', 'Lua', 'MATLAB', 'SAS', 'SPSS', 'R', 'Julia',
+  // Programming Languages (with variations and common abbreviations)
+  'Python', 'Java', 'JavaScript', 'TypeScript', 'C++', 'C#', 'Go', 'Ruby', 'PHP', 'Swift', 'Rust', 'Dart', 'Kotlin', 'SQL', 'NoSQL', 'C', 'Scala', 'Perl', 'Haskell', 'Bash', 'Shell', 'PowerShell', 'Cobol', 'Fortran', 'Visual Basic', 'Assembly', 'Pascal', 'Ada', 'ABAP', 'RPG', 'Lisp', 'Prolog', 'F#', 'Lua', 'MATLAB', 'SAS', 'SPSS', 'R', 'Julia', 'Erlang', 'Elixir', 'Clojure', 'Groovy', 'VB.NET', 'Objective-C',
   
-  // Frameworks & Libraries
-  'React', 'Angular', 'Vue.js', 'Node.js', 'Express', 'Spring Boot', 'Django', 'Flask', 'Laravel', 'TensorFlow', 'PyTorch', 'Keras', 'Scikit-learn', 'Pandas', 'NumPy', 'OpenCV', 'React Native', 'Flutter', 'Unity', 'Unreal Engine',
+  // Frameworks & Libraries (enhanced with versions and variations)
+  'React', 'React.js', 'Angular', 'AngularJS', 'Vue.js', 'Vue', 'Node.js', 'Express', 'Express.js', 'Spring', 'Spring Boot', 'Django', 'Flask', 'FastAPI', 'Laravel', 'Symfony', 'CodeIgniter', 'Rails', 'Ruby on Rails', 'ASP.NET', '.NET Core', 'TensorFlow', 'PyTorch', 'Keras', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'OpenCV', 'React Native', 'Flutter', 'Xamarin', 'Unity', 'Unreal Engine', 'Three.js', 'D3.js', 'jQuery', 'Bootstrap', 'Tailwind CSS', 'Material-UI', 'Ant Design', 'Svelte', 'Next.js', 'Nuxt.js', 'Gatsby', 'Redux', 'MobX', 'Vuex',
   
-  // Databases & Storage
-  'MongoDB', 'PostgreSQL', 'MySQL', 'Oracle', 'Redis', 'Cassandra', 'Neo4j', 'HBase', 'Elasticsearch', 'Solr', 'Lucene', 'DynamoDB', 'CouchDB', 'InfluxDB',
+  // Databases & Storage (with cloud variants)
+  'MongoDB', 'PostgreSQL', 'MySQL', 'MariaDB', 'Oracle', 'SQL Server', 'SQLite', 'Redis', 'Cassandra', 'Neo4j', 'HBase', 'Elasticsearch', 'Solr', 'Lucene', 'DynamoDB', 'CouchDB', 'InfluxDB', 'TimescaleDB', 'Firebase', 'Firestore', 'Supabase', 'PlanetScale', 'Airtable', 'Amazon RDS', 'Azure SQL Database', 'Google Cloud SQL',
   
-  // Cloud & DevOps
-  'AWS', 'Azure', 'Google Cloud Platform', 'GCP', 'Docker', 'Kubernetes', 'Jenkins', 'GitLab', 'CircleCI', 'Bamboo', 'Ansible', 'Terraform', 'Chef', 'Puppet', 'Vagrant', 'Helm', 'Istio',
+  // Cloud & DevOps (comprehensive cloud services)
+  'AWS', 'Amazon Web Services', 'Azure', 'Microsoft Azure', 'Google Cloud Platform', 'GCP', 'Google Cloud', 'Docker', 'Kubernetes', 'K8s', 'Jenkins', 'GitLab CI', 'GitHub Actions', 'CircleCI', 'Travis CI', 'Bamboo', 'TeamCity', 'Ansible', 'Terraform', 'Chef', 'Puppet', 'Vagrant', 'Helm', 'Istio', 'Prometheus', 'Grafana', 'ELK Stack', 'Nagios', 'Datadog', 'New Relic', 'Splunk',
   
-  // Data & Analytics
-  'Tableau', 'Power BI', 'Apache Spark', 'Hadoop', 'Apache Kafka', 'Airflow', 'Snowflake', 'BigQuery', 'Redshift', 'ETL', 'Data Warehousing', 'Data Modeling', 'Statistical Modeling', 'Machine Learning', 'Deep Learning', 'Natural Language Processing', 'Computer Vision', 'Neural Networks', 'Artificial Intelligence',
+  // Data & Analytics (enhanced with modern tools)
+  'Tableau', 'Power BI', 'Looker', 'Apache Spark', 'Hadoop', 'Apache Kafka', 'Apache Airflow', 'Snowflake', 'BigQuery', 'Redshift', 'Databricks', 'dbt', 'ETL', 'ELT', 'Data Warehousing', 'Data Modeling', 'Data Engineering', 'Statistical Modeling', 'Machine Learning', 'Deep Learning', 'Natural Language Processing', 'Computer Vision', 'Neural Networks', 'Artificial Intelligence', 'MLOps', 'Feature Engineering', 'A/B Testing', 'Data Visualization', 'Business Intelligence',
   
-  // Web Technologies
-  'HTML', 'CSS', 'SASS', 'LESS', 'Bootstrap', 'Tailwind CSS', 'Webpack', 'Vite', 'Parcel', 'REST API', 'GraphQL', 'JSON', 'XML', 'SOAP', 'Microservices', 'Serverless',
+  // Web Technologies (modern stack)
+  'HTML', 'HTML5', 'CSS', 'CSS3', 'SASS', 'SCSS', 'LESS', 'Stylus', 'Bootstrap', 'Tailwind CSS', 'Bulma', 'Foundation', 'Webpack', 'Vite', 'Parcel', 'Rollup', 'Babel', 'ESLint', 'Prettier', 'REST API', 'RESTful Services', 'GraphQL', 'JSON', 'XML', 'YAML', 'SOAP', 'gRPC', 'Microservices', 'Serverless', 'JAMstack', 'Progressive Web Apps', 'PWA', 'Service Workers', 'WebAssembly', 'WebRTC',
   
-  // Operating Systems
-  'Linux', 'Unix', 'Windows', 'MacOS', 'Android', 'iOS', 'Ubuntu', 'CentOS', 'RHEL', 'Debian',
+  // Operating Systems & Infrastructure
+  'Linux', 'Unix', 'Windows', 'Windows Server', 'MacOS', 'Android', 'iOS', 'Ubuntu', 'CentOS', 'RHEL', 'Debian', 'Fedora', 'SUSE', 'FreeBSD', 'Alpine Linux', 'Amazon Linux', 'Container Linux',
   
-  // Tools & Software
-  'Git', 'GitHub', 'Bitbucket', 'SVN', 'JIRA', 'Confluence', 'Slack', 'Trello', 'Asana', 'Monday.com', 'Figma', 'Sketch', 'Adobe Creative Suite', 'Photoshop', 'Illustrator', 'InDesign', 'Premiere Pro', 'After Effects',
+  // Tools & Software (expanded development tools)
+  'Git', 'GitHub', 'GitLab', 'Bitbucket', 'SVN', 'Mercurial', 'JIRA', 'Confluence', 'Slack', 'Microsoft Teams', 'Discord', 'Trello', 'Asana', 'Monday.com', 'Notion', 'Linear', 'Figma', 'Sketch', 'InVision', 'Adobe XD', 'Adobe Creative Suite', 'Photoshop', 'Illustrator', 'InDesign', 'Premiere Pro', 'After Effects', 'VS Code', 'Visual Studio', 'IntelliJ IDEA', 'WebStorm', 'PyCharm', 'Sublime Text', 'Atom', 'Vim', 'Emacs',
   
-  // Testing & Quality
-  'JUnit', 'TestNG', 'Jest', 'Mocha', 'Cypress', 'Selenium', 'Pytest', 'Unit Testing', 'Integration Testing', 'Load Testing', 'Performance Testing', 'Automated Testing',
+  // Testing & Quality Assurance
+  'JUnit', 'TestNG', 'Jest', 'Mocha', 'Chai', 'Jasmine', 'Cypress', 'Selenium', 'WebDriver', 'Pytest', 'Robot Framework', 'Cucumber', 'Postman', 'Insomnia', 'Unit Testing', 'Integration Testing', 'End-to-End Testing', 'Load Testing', 'Performance Testing', 'Automated Testing', 'Manual Testing', 'Regression Testing', 'API Testing', 'Mobile Testing', 'Cross-browser Testing',
   
   // Security & Networking
-  'Cybersecurity', 'Network Security', 'Penetration Testing', 'Ethical Hacking', 'Burp Suite', 'Wireshark', 'CCNA', 'CISSP', 'Firewall', 'VPN', 'TCP/IP', 'OSI Model', 'OSPF', 'BGP', 'Cisco', 'Routing', 'Switching',
+  'Cybersecurity', 'Information Security', 'Network Security', 'Penetration Testing', 'Ethical Hacking', 'OWASP', 'Burp Suite', 'Nmap', 'Wireshark', 'Metasploit', 'Kali Linux', 'CCNA', 'CISSP', 'CEH', 'CISM', 'CompTIA Security+', 'Firewall', 'VPN', 'SSL/TLS', 'OAuth', 'SAML', 'JWT', 'TCP/IP', 'OSI Model', 'OSPF', 'BGP', 'Cisco', 'Routing', 'Switching', 'Load Balancing',
   
   // Methodologies & Practices
-  'Agile', 'Scrum', 'Kanban', 'DevOps', 'CI/CD', 'Waterfall', 'SDLC', 'Object-oriented Programming', 'Functional Programming', 'Test-driven Development', 'Behavior-driven Development',
+  'Agile', 'Scrum', 'Kanban', 'Lean', 'DevOps', 'DevSecOps', 'CI/CD', 'Waterfall', 'SDLC', 'Object-oriented Programming', 'OOP', 'Functional Programming', 'Test-driven Development', 'TDD', 'Behavior-driven Development', 'BDD', 'Domain-driven Design', 'DDD', 'Pair Programming', 'Code Review', 'Design Patterns', 'SOLID Principles', 'Clean Code', 'Refactoring',
   
-  // Business & Management
-  'Project Management', 'Team Leadership', 'Communication', 'Problem Solving', 'Critical Thinking', 'Time Management', 'Strategic Planning', 'Risk Management', 'Budget Management', 'Stakeholder Management', 'Change Management',
+  // Business & Management Skills
+  'Project Management', 'Product Management', 'Team Leadership', 'Technical Leadership', 'Communication', 'Public Speaking', 'Presentation Skills', 'Problem Solving', 'Critical Thinking', 'Time Management', 'Strategic Planning', 'Risk Management', 'Budget Management', 'Stakeholder Management', 'Change Management', 'Vendor Management', 'Cross-functional Collaboration', 'Mentoring', 'Coaching', 'Decision Making',
   
-  // Specialized Skills
-  'Blockchain', 'Cryptocurrency', 'IoT', 'Edge Computing', 'Augmented Reality', 'Virtual Reality', '3D Modeling', 'Game Development', 'Mobile Development', 'Full Stack Development', 'Frontend Development', 'Backend Development'
+  // Specialized & Emerging Technologies
+  'Blockchain', 'Cryptocurrency', 'Bitcoin', 'Ethereum', 'Smart Contracts', 'DeFi', 'NFT', 'Web3', 'IoT', 'Internet of Things', 'Edge Computing', 'Augmented Reality', 'AR', 'Virtual Reality', 'VR', 'Mixed Reality', 'MR', '3D Modeling', 'Game Development', 'Mobile Development', 'Full Stack Development', 'Frontend Development', 'Backend Development', 'DevOps Engineering', 'Site Reliability Engineering', 'SRE', 'Platform Engineering', 'Cloud Architecture', 'Solution Architecture', 'Enterprise Architecture',
+  
+  // Industry-Specific Skills
+  'Fintech', 'Healthtech', 'Edtech', 'E-commerce', 'Digital Marketing', 'SEO', 'SEM', 'Content Marketing', 'Social Media Marketing', 'Email Marketing', 'PPC', 'Google Ads', 'Facebook Ads', 'Marketing Automation', 'CRM', 'Salesforce', 'HubSpot', 'SAP', 'Oracle ERP', 'Workday', 'ServiceNow', 'Tableau', 'Looker Studio', 'Google Analytics', 'Adobe Analytics'
 ];
+
+// Enhanced NER training patterns for skill extraction
+const SKILL_PATTERNS = {
+  // Programming language patterns
+  programming_languages: [
+    /\b(python|java|javascript|typescript|c\+\+|c#|golang?|ruby|php|swift|rust|kotlin)\b/gi,
+    /\b(scala|perl|haskell|bash|shell|matlab|sql|nosql|r\b|julia)\b/gi
+  ],
+  
+  // Framework patterns
+  frameworks: [
+    /\b(react(?:\.?js)?|angular(?:js)?|vue(?:\.?js)?|node(?:\.?js)?|express(?:\.?js)?)\b/gi,
+    /\b(spring(?:\s+boot)?|django|flask|laravel|rails|\.net|tensorflow|pytorch)\b/gi
+  ],
+  
+  // Technology stack patterns
+  tech_stacks: [
+    /\b(mean|mern|lamp|jamstack|full[\s\-]?stack|front[\s\-]?end|back[\s\-]?end)\b/gi,
+    /\b(devops|mlops|dataops|devsecops|sre|platform\s+engineering)\b/gi
+  ],
+  
+  // Cloud service patterns
+  cloud_services: [
+    /\b(aws|amazon\s+web\s+services|azure|microsoft\s+azure|gcp|google\s+cloud)\b/gi,
+    /\b(docker|kubernetes|k8s|jenkins|gitlab|github\s+actions)\b/gi
+  ],
+  
+  // Database patterns
+  databases: [
+    /\b(mongodb|postgresql|mysql|oracle|redis|cassandra|elasticsearch)\b/gi,
+    /\b(sql\s+server|sqlite|dynamodb|firebase|supabase)\b/gi
+  ],
+  
+  // Methodology patterns
+  methodologies: [
+    /\b(agile|scrum|kanban|waterfall|lean|ci\/cd|tdd|bdd|oop)\b/gi,
+    /\b(design\s+patterns|solid\s+principles|clean\s+code|code\s+review)\b/gi
+  ]
+};
 
 // Industry-specific keywords database
 const INDUSTRY_KEYWORDS = {

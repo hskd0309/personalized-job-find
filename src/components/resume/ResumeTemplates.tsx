@@ -138,6 +138,147 @@ export const resumeTemplates = [
     category: 'Entry Level',
     preview: '/templates/graduate.jpg',
     description: 'Perfect for new graduates and entry-level positions'
+  },
+  // Enhanced templates from billryan/resume repository
+  {
+    id: 'moderncv-casual',
+    name: 'ModernCV Casual',
+    category: 'Modern',
+    preview: '/templates/moderncv-casual.jpg',
+    description: 'Casual modern CV with color accents'
+  },
+  {
+    id: 'moderncv-classic',
+    name: 'ModernCV Classic',
+    category: 'Classic',
+    preview: '/templates/moderncv-classic.jpg',
+    description: 'Classic modern CV layout'
+  },
+  {
+    id: 'moderncv-banking',
+    name: 'ModernCV Banking',
+    category: 'Professional',
+    preview: '/templates/moderncv-banking.jpg',
+    description: 'Conservative style for banking sector'
+  },
+  {
+    id: 'moderncv-oldstyle',
+    name: 'ModernCV Oldstyle',
+    category: 'Traditional',
+    preview: '/templates/moderncv-oldstyle.jpg',
+    description: 'Traditional academic style'
+  },
+  {
+    id: 'awesome-cv',
+    name: 'Awesome CV',
+    category: 'Contemporary',
+    preview: '/templates/awesome-cv.jpg',
+    description: 'Stylish contemporary design with color sections'
+  },
+  {
+    id: 'deedy-resume',
+    name: 'Deedy Resume',
+    category: 'Technical',
+    preview: '/templates/deedy-resume.jpg',
+    description: 'Clean technical resume for developers'
+  },
+  {
+    id: 'friggeri-cv',
+    name: 'Friggeri CV',
+    category: 'Creative',
+    preview: '/templates/friggeri-cv.jpg',
+    description: 'Creative layout with sidebar design'
+  },
+  {
+    id: 'plasmati-graduate-cv',
+    name: 'Plasmati Graduate',
+    category: 'Entry Level',
+    preview: '/templates/plasmati-graduate.jpg',
+    description: 'Perfect for graduate students'
+  },
+  {
+    id: 'twenty-seconds-cv',
+    name: 'Twenty Seconds CV',
+    category: 'Infographic',
+    preview: '/templates/twenty-seconds.jpg',
+    description: 'Infographic-style resume with visual elements'
+  },
+  {
+    id: 'wilson-resume',
+    name: 'Wilson Resume',
+    category: 'Minimal',
+    preview: '/templates/wilson-resume.jpg',
+    description: 'Ultra-minimal clean design'
+  },
+  {
+    id: 'alta-cv',
+    name: 'AltaCV',
+    category: 'Academic',
+    preview: '/templates/alta-cv.jpg',
+    description: 'Academic CV with publications section'
+  },
+  {
+    id: 'limecv',
+    name: 'LimeCV',
+    category: 'Colorful',
+    preview: '/templates/limecv.jpg',
+    description: 'Vibrant design with green accents'
+  },
+  {
+    id: 'sb-admin-resume',
+    name: 'SB Admin Resume',
+    category: 'Web Style',
+    preview: '/templates/sb-admin.jpg',
+    description: 'Web-inspired professional layout'
+  },
+  {
+    id: 'developer-cv',
+    name: 'Developer CV',
+    category: 'Technical',
+    preview: '/templates/developer-cv.jpg',
+    description: 'Specialized for software developers'
+  },
+  {
+    id: 'europass-cv',
+    name: 'Europass CV',
+    category: 'International',
+    preview: '/templates/europass.jpg',
+    description: 'Standard European CV format'
+  },
+  {
+    id: 'compact-academic-cv',
+    name: 'Compact Academic',
+    category: 'Academic',
+    preview: '/templates/compact-academic.jpg',
+    description: 'Space-efficient academic layout'
+  },
+  {
+    id: 'hipster-cv',
+    name: 'Hipster CV',
+    category: 'Creative',
+    preview: '/templates/hipster-cv.jpg',
+    description: 'Trendy design with unique typography'
+  },
+  {
+    id: 'banker-cv',
+    name: 'Banker CV',
+    category: 'Finance',
+    preview: '/templates/banker-cv.jpg',
+    description: 'Conservative design for finance professionals'
+  },
+  {
+    id: 'casual-cv',
+    name: 'Casual CV',
+    category: 'Casual',
+    preview: '/templates/casual-cv.jpg',
+    description: 'Relaxed design for creative industries'
+  },
+  {
+    id: 'infographic-resume',
+    name: 'Infographic Resume',
+    category: 'Infographic',
+    preview: '/templates/infographic.jpg',
+    description: 'Visual resume with charts and graphics'
   }
 ];
 
@@ -152,5 +293,15 @@ export const templateCategories = [
   'Technical',
   'Leadership',
   'Global',
-  'Entry Level'
+  'Entry Level',
+  'Modern',
+  'Traditional',
+  'Infographic',
+  'Minimal',
+  'Academic',
+  'Colorful',
+  'Web Style',
+  'International',
+  'Finance',
+  'Casual'
 ];
