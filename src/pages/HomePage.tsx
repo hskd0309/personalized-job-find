@@ -107,217 +107,167 @@ export function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
-        <div className="relative container mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-tight">
-                Your Career,
-                <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Powered by AI
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
-                Transform your career journey with intelligent insights, personalized recommendations, and professional growth tools.
-              </p>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button className="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-8 py-6 text-lg shadow-xl">
-                Get Started Free
-              </Button>
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg">
-                Watch Demo
-              </Button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Background Image */}
-        <div className="absolute bottom-0 right-0 w-1/3 h-64 bg-gradient-to-l from-transparent to-slate-900/50">
-          <img 
-            src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-            alt="Professional working on laptop" 
-            className="w-full h-full object-cover opacity-40"
-          />
-        </div>
+    <div className="container mx-auto px-4 py-6 space-y-8">
+      {/* Header Section */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          Dashboard
+        </h1>
+        <p className="text-muted-foreground">
+          Your career overview and quick actions
+        </p>
       </div>
 
-      <div className="container mx-auto px-4 py-16 space-y-20">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { icon: Briefcase, label: 'Applications', value: stats.applications, color: 'blue' },
-            { icon: FileText, label: 'Resumes', value: stats.resumes, color: 'purple' },
-            { icon: TrendingUp, label: 'Saved Jobs', value: stats.saved_jobs, color: 'indigo' }
-          ].map((stat, index) => (
-            <Card key={index} className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-soft hover:shadow-medium group">
-              <div className={`absolute inset-0 bg-gradient-to-br from-${stat.color}-500/5 to-${stat.color}-600/10`} />
-              <CardContent className="relative p-8">
-                <div className="flex items-center justify-between">
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="border-border">
+          <CardContent className="flex items-center p-6">
+            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <Briefcase className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">{stats.applications}</p>
+              <p className="text-sm text-muted-foreground">Applications</p>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-border">
+          <CardContent className="flex items-center p-6">
+            <div className="h-12 w-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <FileText className="h-6 w-6 text-secondary" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">{stats.resumes}</p>
+              <p className="text-sm text-muted-foreground">Resumes</p>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-border">
+          <CardContent className="flex items-center p-6">
+            <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mr-4">
+              <TrendingUp className="h-6 w-6 text-accent" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">{stats.saved_jobs}</p>
+              <p className="text-sm text-muted-foreground">Saved Jobs</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="space-y-6">
+        <h2 className="text-2xl font-semibold text-foreground bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickActions.map((action, index) => (
+            <Link to={action.href} key={action.title}>
+              <Card className="cursor-pointer hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0"></div>
+                <CardContent className="p-6 text-center space-y-4 relative z-10">
+                  <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg`}>
+                    <action.icon className="h-8 w-8 text-primary-foreground" />
+                  </div>
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-slate-600 uppercase tracking-wide">{stat.label}</p>
-                    <p className="text-4xl font-bold text-slate-900">{stat.value}</p>
+                    <h3 className="font-semibold text-foreground">{action.title}</h3>
+                    <p className="text-sm text-muted-foreground">{action.description}</p>
                   </div>
-                  <div className={`p-4 rounded-2xl bg-gradient-to-br from-${stat.color}-500 to-${stat.color}-600 shadow-large`}>
-                    <stat.icon className="h-8 w-8 text-white" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                   <Button variant="outline" size="sm" className="w-full group border-gray-300 hover:border-black hover:bg-black hover:text-white">
+                     Get Started
+                     <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
+      </div>
 
-        {/* Quick Actions */}
-        <div className="space-y-12">
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-display font-bold text-slate-900">
-              Accelerate Your Career
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Access powerful AI tools designed to enhance every aspect of your professional journey
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {quickActions.map((action, index) => (
-              <Link to={action.href} key={action.title}>
-                <Card className="relative overflow-hidden bg-white border-0 shadow-soft hover:shadow-large group h-full">
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white" />
-                  <CardContent className="relative p-8 space-y-6 h-full flex flex-col">
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-4 rounded-2xl bg-gradient-to-br ${action.gradient} shadow-medium`}>
-                        <action.icon className="h-8 w-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2">{action.title}</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">{action.description}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex-1 flex items-end">
-                      <Button 
-                        variant="outline" 
-                        className="w-full group-hover:bg-slate-900 group-hover:text-white border-slate-200 text-slate-700"
-                      >
-                        Get Started
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+      {/* Recent Activity & Tips */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Recent Activity */}
+        <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <Clock className="h-5 w-5" />
+              Recent Activity
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {recentActivities.map((activity, index) => (
+              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 border border-transparent">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <activity.icon className="h-4 w-4 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">{activity.text}</p>
+                  <p className="text-xs text-muted-foreground">{activity.time}</p>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Career Tips */}
+        <Card className="bg-gradient-to-br from-background to-secondary/5 border-secondary/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <Users className="h-5 w-5" />
+              Global Career Tips
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 border-l-4 border-primary">
+                <h4 className="font-medium text-primary">Networking is Key</h4>
+                <p className="text-sm text-muted-foreground">Join professional groups on LinkedIn and attend virtual meetups.</p>
+              </div>
+              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary">
+                <h4 className="font-medium text-primary">Skill Development</h4>
+                <p className="text-sm text-muted-foreground">Focus on in-demand skills like AI, Data Science, and Cloud Computing.</p>
+              </div>
+              <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent">
+                <h4 className="font-medium text-primary">Resume Optimization</h4>
+                <p className="text-sm text-muted-foreground">Tailor your resume for each application with relevant keywords.</p>
+              </div>
+            </div>
+            <Link to="/app/career-chat">
+              <Button className="w-full bg-black hover:bg-gray-600 text-white">
+                Get Personalized Advice
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Trending Jobs */}
+      <Card className="bg-gradient-to-br from-background via-accent/5 to-primary/5 border-accent/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <TrendingUp className="h-5 w-5" />
+              Trending Job Categories Worldwide
+            </CardTitle>
+          </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            {[
+              'Software Development', 'Data Science', 'Digital Marketing', 'Cloud Computing',
+              'AI/ML Engineer', 'Product Management', 'UI/UX Design', 'DevOps',
+              'Business Analyst', 'Full Stack Developer'
+            ].map((category, index) => (
+              <Badge 
+                key={category} 
+                variant="secondary" 
+                className="cursor-pointer bg-primary/10 hover:bg-primary/20 text-primary border-0"
+              >
+                {category}
+              </Badge>
             ))}
           </div>
-        </div>
-
-        {/* Features Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Recent Activity */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-3xl font-display font-bold text-slate-900">
-                Track Your Progress
-              </h3>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Monitor your career journey with detailed analytics and insights into your applications, skill development, and market positioning.
-              </p>
-            </div>
-            
-            <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-soft">
-              <CardContent className="p-8 space-y-6">
-                {recentActivities.map((activity, index) => (
-                  <div key={index} className="flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-slate-50 to-blue-50/50">
-                    <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-medium">
-                      <activity.icon className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-slate-900">{activity.text}</p>
-                      <p className="text-sm text-slate-500">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Career Tips */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-3xl font-display font-bold text-slate-900">
-                Expert Career Guidance
-              </h3>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Get personalized advice from industry experts and AI-powered insights to accelerate your career growth.
-              </p>
-            </div>
-            
-            <Card className="bg-gradient-to-br from-white to-purple-50/50 border-0 shadow-soft">
-              <CardContent className="p-8 space-y-6">
-                <div className="space-y-4">
-                  {[
-                    { title: "Strategic Networking", desc: "Build meaningful professional relationships that advance your career.", icon: "🤝" },
-                    { title: "Skill Development", desc: "Focus on high-demand skills that employers are actively seeking.", icon: "🚀" },
-                    { title: "Resume Excellence", desc: "Craft compelling resumes that pass ATS systems and impress recruiters.", icon: "📄" }
-                  ].map((tip, index) => (
-                    <div key={index} className="p-6 rounded-xl bg-white/80 shadow-soft border border-slate-100">
-                      <div className="flex items-start space-x-4">
-                        <span className="text-2xl">{tip.icon}</span>
-                        <div>
-                          <h4 className="font-semibold text-slate-900 mb-2">{tip.title}</h4>
-                          <p className="text-slate-600 text-sm leading-relaxed">{tip.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <Link to="/app/career-chat">
-                  <Button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-large">
-                    Get Personalized Advice
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Trending Jobs */}
-        <div className="space-y-12">
-          <div className="text-center space-y-4">
-            <h3 className="text-3xl font-display font-bold text-slate-900">
-              Trending Opportunities
-            </h3>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Discover the most in-demand job categories and emerging career paths in today's market
-            </p>
-          </div>
-          
-          <Card className="bg-gradient-to-br from-white to-slate-50 border-0 shadow-soft overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5" />
-            <CardContent className="relative p-8">
-              <div className="flex flex-wrap gap-3 justify-center">
-                {[
-                  'Software Development', 'Data Science', 'Digital Marketing', 'Cloud Computing',
-                  'AI/ML Engineer', 'Product Management', 'UI/UX Design', 'DevOps',
-                  'Business Analyst', 'Full Stack Developer'
-                ].map((category, index) => (
-                  <Badge 
-                    key={category} 
-                    className="px-6 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-soft cursor-pointer text-sm font-medium"
-                  >
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
