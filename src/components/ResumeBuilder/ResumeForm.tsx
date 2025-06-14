@@ -21,6 +21,7 @@ interface ResumeData {
     linkedin?: string;
   };
   summary: string;
+  summaryHeading?: string;
   experience: Array<{
     id: string;
     position: string;
@@ -63,6 +64,10 @@ export function ResumeForm({ data, onChange, onSave }: ResumeFormProps) {
 
   const updateSummary = (summary: string) => {
     onChange({ ...data, summary });
+  };
+
+  const handleChange = (field: string, value: string) => {
+    onChange({ ...data, [field]: value });
   };
 
   const addExperience = () => {
@@ -262,26 +267,37 @@ export function ResumeForm({ data, onChange, onSave }: ResumeFormProps) {
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Label htmlFor="summary">Professional Summary</Label>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={generateAISummary}
-                  disabled={isGenerating}
-                >
-                  <Bot className="h-3 w-3 mr-1" />
-                  {isGenerating ? 'Generating...' : 'AI Generate'}
-                </Button>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="summaryHeading">Summary Section Heading</Label>
+                <Input
+                  id="summaryHeading"
+                  placeholder="Professional Summary"
+                  value={data.summaryHeading || 'Professional Summary'}
+                  onChange={(e) => handleChange('summaryHeading', e.target.value)}
+                />
               </div>
-              <Textarea
-                id="summary"
-                placeholder="Write a brief professional summary..."
-                value={data.summary}
-                onChange={(e) => updateSummary(e.target.value)}
-                rows={4}
-              />
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Label htmlFor="summary">Summary Content</Label>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={generateAISummary}
+                    disabled={isGenerating}
+                  >
+                    <Bot className="h-3 w-3 mr-1" />
+                    {isGenerating ? 'Generating...' : 'AI Generate'}
+                  </Button>
+                </div>
+                <Textarea
+                  id="summary"
+                  placeholder="Write a brief professional summary..."
+                  value={data.summary}
+                  onChange={(e) => updateSummary(e.target.value)}
+                  rows={4}
+                />
+              </div>
             </div>
           </TabsContent>
 

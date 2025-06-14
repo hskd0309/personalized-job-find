@@ -20,6 +20,7 @@ interface ResumeData {
     linkedin?: string;
   };
   summary: string;
+  summaryHeading?: string;
   experience: Array<{
     id: string;
     position: string;
@@ -57,6 +58,7 @@ export function ResumeBuilderPage() {
       linkedin: ''
     },
     summary: '',
+    summaryHeading: 'Professional Summary',
     experience: [],
     education: [],
     skills: []
@@ -154,6 +156,7 @@ export function ResumeBuilderPage() {
         linkedin: ''
       },
       summary: '',
+      summaryHeading: 'Professional Summary',
       experience: [],
       education: [],
       skills: []
