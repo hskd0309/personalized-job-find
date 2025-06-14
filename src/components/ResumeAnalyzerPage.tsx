@@ -130,7 +130,7 @@ export function ResumeAnalyzerPage() {
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex justify-center">
-          <div className="h-16 w-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center animate-pulse">
+          <div className="h-16 w-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
             <Brain className="h-8 w-8 text-primary-foreground" />
           </div>
         </div>

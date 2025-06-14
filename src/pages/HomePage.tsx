@@ -166,7 +166,7 @@ export function HomePage() {
               <Card className="hover-scale cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 animate-fade-in relative overflow-hidden group" style={{animationDelay: `${index * 0.1}s`}}>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 group-hover:skew-x-12"></div>
                 <CardContent className="p-6 text-center space-y-4 relative z-10">
-                  <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto animate-pulse shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`} style={{animationDelay: `${index * 0.2}s`}}>
+                  <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
                     <action.icon className="h-8 w-8 text-white" />
                   </div>
                   <div className="space-y-2">
@@ -190,14 +190,14 @@ export function HomePage() {
         <Card className="animate-slide-in-right bg-gradient-to-br from-background to-primary/5 border-primary/10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-primary">
-              <Clock className="h-5 w-5 animate-pulse" />
+              <Clock className="h-5 w-5" />
               Recent Activity
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {recentActivities.map((activity, index) => (
               <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 hover:from-primary/10 hover:to-secondary/20 transition-all duration-300 animate-fade-in border border-transparent hover:border-primary/20" style={{animationDelay: `${index * 0.1}s`}}>
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center animate-pulse" style={{animationDelay: `${index * 0.2}s`}}>
+                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
                   <activity.icon className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1">
@@ -213,7 +213,7 @@ export function HomePage() {
         <Card className="animate-slide-in-right bg-gradient-to-br from-background to-secondary/5 border-secondary/10" style={{animationDelay: '0.2s'}}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-secondary">
-              <Users className="h-5 w-5 animate-pulse" />
+              <Users className="h-5 w-5" />
               Global Career Tips
             </CardTitle>
           </CardHeader>
@@ -246,7 +246,7 @@ export function HomePage() {
       <Card className="animate-fade-in bg-gradient-to-br from-background via-accent/5 to-primary/5 border-accent/20" style={{animationDelay: '0.6s'}}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-accent">
-              <TrendingUp className="h-5 w-5 animate-pulse" />
+              <TrendingUp className="h-5 w-5" />
               Trending Job Categories Worldwide
             </CardTitle>
           </CardHeader>

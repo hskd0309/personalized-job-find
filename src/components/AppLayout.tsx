@@ -49,7 +49,7 @@ export function AppLayout() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center">
-        <div className="animate-pulse text-foreground">Loading...</div>
+        <div className="text-foreground">Loading...</div>
       </div>
     );
   }

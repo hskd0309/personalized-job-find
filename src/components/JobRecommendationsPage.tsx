@@ -194,7 +194,7 @@ export function JobRecommendationsPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-6">
-        <div className="animate-pulse space-y-4">
+        <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="h-48 bg-muted rounded-lg"></div>
           ))}
@@ -208,7 +208,7 @@ export function JobRecommendationsPage() {
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex justify-center">
-          <div className="h-16 w-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center animate-pulse">
+          <div className="h-16 w-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
             <Target className="h-8 w-8 text-primary-foreground" />
           </div>
         </div>

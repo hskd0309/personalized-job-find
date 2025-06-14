@@ -147,7 +147,7 @@ export function JobMatchDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-pulse text-muted-foreground">Finding your perfect job matches...</div>
+        <div className="text-muted-foreground">Finding your perfect job matches...</div>
       </div>
     );
   }

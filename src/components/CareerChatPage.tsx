@@ -141,9 +141,9 @@ export function CareerChatPage() {
                     </div>
                     <div className="bg-muted rounded-lg p-3">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-pulse"></div>
-                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                        <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
+                        <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
+                        <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
                       </div>
                     </div>
                   </div>
