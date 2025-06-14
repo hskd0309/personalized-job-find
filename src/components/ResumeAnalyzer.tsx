@@ -143,7 +143,7 @@ export function ResumeAnalyzer() {
       {analysis && (
         <div className="grid gap-6 md:grid-cols-2">
           {/* Score Card */}
-          <Card className="bg-gradient-to-br from-background to-accent/5 border-accent/20 animate-slide-in-right">
+          <Card className="bg-gradient-to-br from-background to-accent/5 border-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-accent">
                 <Star className="h-5 w-5" />
@@ -183,7 +183,7 @@ export function ResumeAnalyzer() {
           </Card>
 
           {/* Skills & Suggestions */}
-          <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20 animate-slide-in-right" style={{animationDelay: '0.1s'}}>
+          <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-primary">
                 <TrendingUp className="h-5 w-5" />

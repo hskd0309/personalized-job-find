@@ -167,8 +167,7 @@ export function JobMatchDashboard() {
         {matches.map((match, index) => (
           <Card 
             key={match.jobId} 
-            className="hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-background to-accent/5 border-l-4 border-l-primary animate-slide-in-right"
-            style={{animationDelay: `${index * 0.1}s`}}
+            className="hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-background to-accent/5 border-l-4 border-l-primary"
           >
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">

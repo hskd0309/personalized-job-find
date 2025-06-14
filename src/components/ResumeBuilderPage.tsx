@@ -304,7 +304,7 @@ export function ResumeBuilderPage() {
         </TabsList>
 
         <TabsContent value="templates" className="space-y-6">
-          <Card className="animate-slide-in-right">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
@@ -335,7 +335,7 @@ export function ResumeBuilderPage() {
         </TabsContent>
 
         <TabsContent value="my-resumes" className="space-y-6">
-          <Card className="animate-slide-in-right">
+          <Card>
             <CardHeader>
               <CardTitle>My Saved Resumes</CardTitle>
             </CardHeader>

@@ -133,7 +133,7 @@ export function SkillGapAnalyzer() {
       {analysis && (
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Score & Overview */}
-          <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20 animate-slide-in-right">
+          <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-primary">
                 <TrendingUp className="h-5 w-5" />
@@ -188,7 +188,7 @@ export function SkillGapAnalyzer() {
           </Card>
 
           {/* Learning Path */}
-          <Card className="bg-gradient-to-br from-background to-accent/5 border-accent/20 animate-slide-in-right" style={{animationDelay: '0.1s'}}>
+          <Card className="bg-gradient-to-br from-background to-accent/5 border-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-accent">
                 <BookOpen className="h-5 w-5" />

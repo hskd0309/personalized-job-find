@@ -386,7 +386,7 @@ export function RecruiterDashboard() {
           ) : (
             <div className="space-y-4">
               {jobPostings.map((job, index) => (
-                <Card key={job.id} className="animate-slide-in-right" style={{animationDelay: `${index * 0.1}s`}}>
+                <Card key={job.id}>
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
