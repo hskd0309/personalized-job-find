@@ -225,7 +225,7 @@ export function JobRecommendationsPage() {
         <Button
           onClick={generateNewMatches}
           disabled={isGenerating}
-          className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+           className="bg-black hover:bg-gray-600 text-white"
           size="lg"
         >
           {isGenerating ? (
@@ -345,7 +345,7 @@ export function JobRecommendationsPage() {
                     </Button>
                     <Button 
                       onClick={() => applyToJob(match.jobId)}
-                      className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                      className="bg-black hover:bg-gray-600 text-white"
                       size="sm"
                     >
                       <Heart className="h-4 w-4 mr-2" />

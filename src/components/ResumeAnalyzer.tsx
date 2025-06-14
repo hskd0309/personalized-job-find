@@ -132,7 +132,7 @@ export function ResumeAnalyzer() {
             <Button 
               onClick={analyzeResume} 
               disabled={!file || analyzing}
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+              className="bg-black hover:bg-gray-600 text-white"
             >
               {analyzing ? 'Analyzing...' : 'Analyze Resume'}
             </Button>

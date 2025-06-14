@@ -187,7 +187,7 @@ export function RecruiterDashboard() {
             </p>
             <Button 
               onClick={createRecruiterProfile}
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+               className="bg-black hover:bg-gray-600 text-white"
             >
               Set Up Recruiter Profile
             </Button>
@@ -210,7 +210,7 @@ export function RecruiterDashboard() {
         
         <Dialog open={showCreateJob} onOpenChange={setShowCreateJob}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
+            <Button className="bg-black hover:bg-gray-600 text-white">
               <Plus className="h-4 w-4 mr-2" />
               Post New Job
             </Button>
@@ -321,7 +321,7 @@ export function RecruiterDashboard() {
 
               <Button 
                 onClick={createJobPosting} 
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                className="w-full bg-black hover:bg-gray-600 text-white"
                 disabled={!newJob.title || !newJob.description}
               >
                 Post Job

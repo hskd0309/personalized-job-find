@@ -173,7 +173,7 @@ export function HomePage() {
                     <h3 className="font-semibold text-foreground">{action.title}</h3>
                     <p className="text-sm text-muted-foreground">{action.description}</p>
                   </div>
-                   <Button variant="outline" size="sm" className="w-full group border-primary/20 hover:border-primary hover:bg-primary hover:text-primary-foreground">
+                   <Button variant="outline" size="sm" className="w-full group border-gray-300 hover:border-black hover:bg-black hover:text-white">
                      Get Started
                      <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
@@ -233,7 +233,7 @@ export function HomePage() {
               </div>
             </div>
             <Link to="/app/career-chat">
-              <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
+              <Button className="w-full bg-black hover:bg-gray-600 text-white">
                 Get Personalized Advice
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>

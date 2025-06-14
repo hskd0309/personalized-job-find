@@ -181,7 +181,7 @@ export function ResumeAnalyzerPage() {
               <Button
                 onClick={analyzeResume}
                 disabled={isAnalyzing || !resumeText.trim()}
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                className="w-full bg-black hover:bg-gray-600 text-white"
                 size="lg"
               >
                 {isAnalyzing ? (

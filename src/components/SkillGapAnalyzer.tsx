@@ -123,7 +123,7 @@ export function SkillGapAnalyzer() {
           <Button 
             onClick={analyzeSkillGap}
             disabled={analyzing}
-            className="w-full bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90"
+            className="w-full bg-black hover:bg-gray-600 text-white"
           >
             {analyzing ? 'Analyzing...' : 'Analyze Skill Gap'}
           </Button>
