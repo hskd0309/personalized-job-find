@@ -274,16 +274,158 @@ export function ResumePreview({ data, templateId }: ResumePreviewProps) {
       );
     }
 
-    // Default template for other cases
+    // Universal fallback template renderer for all new templates
+    return renderFallbackTemplate(template);
+  };
+
+  // Universal fallback template renderer
+  const renderFallbackTemplate = (template: any) => {
+    const getTemplateStyles = () => {
+      switch (template.category) {
+        case 'Academic':
+          return {
+            headerBg: 'bg-blue-50',
+            headerText: 'text-blue-900',
+            accentColor: 'border-blue-500',
+            skillBg: 'bg-blue-100',
+            skillText: 'text-blue-800'
+          };
+        case 'Creative':
+          return {
+            headerBg: 'bg-purple-50',
+            headerText: 'text-purple-900',
+            accentColor: 'border-purple-500',
+            skillBg: 'bg-purple-100',
+            skillText: 'text-purple-800'
+          };
+        case 'Technical':
+          return {
+            headerBg: 'bg-green-50',
+            headerText: 'text-green-900',
+            accentColor: 'border-green-500',
+            skillBg: 'bg-green-100',
+            skillText: 'text-green-800'
+          };
+        case 'Finance':
+          return {
+            headerBg: 'bg-gray-50',
+            headerText: 'text-gray-900',
+            accentColor: 'border-gray-500',
+            skillBg: 'bg-gray-100',
+            skillText: 'text-gray-800'
+          };
+        case 'Modern':
+          return {
+            headerBg: 'bg-gradient-to-r from-primary/10 to-secondary/10',
+            headerText: 'text-foreground',
+            accentColor: 'border-primary',
+            skillBg: 'bg-primary/10',
+            skillText: 'text-primary'
+          };
+        default:
+          return {
+            headerBg: 'bg-background',
+            headerText: 'text-foreground',
+            accentColor: 'border-primary',
+            skillBg: 'bg-primary/10',
+            skillText: 'text-primary'
+          };
+      }
+    };
+
+    const styles = getTemplateStyles();
+    
     return (
-      <div className="resume-template bg-background text-foreground p-8">
-        <div className="text-center border-b-2 border-primary pb-4 mb-6">
-          <h1 className="text-3xl font-bold">{data.personalInfo.firstName} {data.personalInfo.lastName}</h1>
-          <div className="text-muted-foreground mt-2">
-            <p>{data.personalInfo.email} | {data.personalInfo.phone} | {data.personalInfo.location}</p>
+      <div className={`resume-template ${template.id} bg-background text-foreground`}>
+        {/* Header Section */}
+        <header className={`header ${styles.headerBg} p-6 rounded-lg mb-6`}>
+          <h1 className={`text-3xl font-bold ${styles.headerText} text-center`}>
+            {data.personalInfo.firstName} {data.personalInfo.lastName}
+          </h1>
+          <div className="contact-info text-center mt-3 text-muted-foreground">
+            <div className="flex justify-center items-center gap-3 text-sm">
+              <span>{data.personalInfo.email}</span>
+              <span>•</span>
+              <span>{data.personalInfo.phone}</span>
+              <span>•</span>
+              <span>{data.personalInfo.location}</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Summary Section */}
+        {data.summary && (
+          <section className="summary mb-6">
+            <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
+              Professional Summary
+            </h2>
+            <p className="text-foreground leading-relaxed">{data.summary}</p>
+          </section>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2">
+            {/* Experience Section */}
+            {data.experience.length > 0 && (
+              <section className="experience mb-6">
+                <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
+                  Professional Experience
+                </h2>
+                {data.experience.map((exp, index) => (
+                  <div key={index} className="job mb-5 pb-4 border-b border-border last:border-b-0">
+                    <h3 className="text-lg font-semibold text-foreground">{exp.position}</h3>
+                    <div className="company-info text-primary font-medium">{exp.company}</div>
+                    <div className="location-date text-muted-foreground text-sm mb-2">
+                      {exp.location} | {formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}
+                    </div>
+                    <p className="text-foreground">{exp.description}</p>
+                  </div>
+                ))}
+              </section>
+            )}
+
+            {/* Education Section */}
+            {data.education.length > 0 && (
+              <section className="education mb-6">
+                <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
+                  Education
+                </h2>
+                {data.education.map((edu, index) => (
+                  <div key={index} className="school mb-4">
+                    <h3 className="text-lg font-semibold text-foreground">{edu.degree}</h3>
+                    <div className="institution text-primary font-medium">{edu.institution}</div>
+                    <div className="location-date text-muted-foreground text-sm">
+                      {edu.location} | {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    </div>
+                    {edu.gpa && (
+                      <div className="gpa text-muted-foreground text-sm">GPA: {edu.gpa}</div>
+                    )}
+                  </div>
+                ))}
+              </section>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            {/* Skills Section */}
+            {data.skills.length > 0 && (
+              <section className="skills">
+                <h2 className={`text-xl font-semibold ${styles.headerText} border-b-2 ${styles.accentColor} pb-2 mb-4`}>
+                  Skills & Expertise
+                </h2>
+                <div className="skills-grid">
+                  {data.skills.map((skill, index) => (
+                    <div key={index} className={`skill ${styles.skillBg} ${styles.skillText} px-3 py-2 rounded text-sm mb-2 font-medium`}>
+                      {skill}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
-        {/* Add other sections as needed */}
       </div>
     );
   };
