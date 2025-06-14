@@ -128,10 +128,10 @@ export function JobSearch({ onSearch, totalJobs }: JobSearchProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">Any Salary</SelectItem>
-                  <SelectItem value="0-50">$0 - $50k</SelectItem>
-                  <SelectItem value="50-80">$50k - $80k</SelectItem>
-                  <SelectItem value="80-120">$80k - $120k</SelectItem>
-                  <SelectItem value="120+">$120k+</SelectItem>
+                  <SelectItem value="4-8">₹4L - ₹8L</SelectItem>
+                  <SelectItem value="8-15">₹8L - ₹15L</SelectItem>
+                  <SelectItem value="15-25">₹15L - ₹25L</SelectItem>
+                  <SelectItem value="25+">₹25L+</SelectItem>
                 </SelectContent>
               </Select>
 

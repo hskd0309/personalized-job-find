@@ -157,8 +157,8 @@ export const jobs: Job[] = Array.from({ length: 100 }, (_, i) => {
 
   const title = jobTitles[i % jobTitles.length];
   const company = companies[i % companies.length];
-  const salaryMin = 50000 + Math.floor(Math.random() * 100000);
-  const salaryMax = salaryMin + 20000 + Math.floor(Math.random() * 50000);
+  const salaryMin = 400000 + Math.floor(Math.random() * 800000); // INR 4L to 12L base
+  const salaryMax = salaryMin + 200000 + Math.floor(Math.random() * 500000); // +2L to 7L range
 
   return {
     id: (i + 1).toString(),
@@ -166,7 +166,7 @@ export const jobs: Job[] = Array.from({ length: 100 }, (_, i) => {
     company: company.name,
     location: locations[i % locations.length],
     type: types[i % types.length],
-    salary: `$${salaryMin.toLocaleString()} - $${salaryMax.toLocaleString()}`,
+    salary: `₹${(salaryMin/100000).toFixed(1)}L - ₹${(salaryMax/100000).toFixed(1)}L`,
     experience: `${1 + Math.floor(Math.random() * 7)}+ years`,
     description: `Join our team as a ${title}. We're looking for talented individuals to help us build the future of ${categories[i % categories.length].toLowerCase()}. This role offers excellent growth opportunities and the chance to work with cutting-edge technology.`,
     requirements: requirements[i % requirements.length],

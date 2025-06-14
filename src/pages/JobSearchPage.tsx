@@ -61,20 +61,27 @@ export function JobSearchPage() {
 
       // Salary filter
       if (filters.salary) {
-        const salaryNum = parseInt(job.salary.replace(/[^0-9]/g, ''));
-        switch (filters.salary) {
-          case '0-50':
-            if (salaryNum > 50000) return false;
-            break;
-          case '50-80':
-            if (salaryNum < 50000 || salaryNum > 80000) return false;
-            break;
-          case '80-120':
-            if (salaryNum < 80000 || salaryNum > 120000) return false;
-            break;
-          case '120+':
-            if (salaryNum < 120000) return false;
-            break;
+        // Extract salary numbers from INR format (₹X.XL - ₹Y.YL)
+        const salaryMatch = job.salary.match(/₹(\d+\.?\d*)L/g);
+        if (salaryMatch && salaryMatch.length >= 2) {
+          const minSalary = parseFloat(salaryMatch[0].replace('₹', '').replace('L', ''));
+          const maxSalary = parseFloat(salaryMatch[1].replace('₹', '').replace('L', ''));
+          const avgSalary = (minSalary + maxSalary) / 2;
+          
+          switch (filters.salary) {
+            case '4-8':
+              if (avgSalary < 4 || avgSalary > 8) return false;
+              break;
+            case '8-15':
+              if (avgSalary < 8 || avgSalary > 15) return false;
+              break;
+            case '15-25':
+              if (avgSalary < 15 || avgSalary > 25) return false;
+              break;
+            case '25+':
+              if (avgSalary < 25) return false;
+              break;
+          }
         }
       }
 
