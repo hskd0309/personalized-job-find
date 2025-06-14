@@ -204,7 +204,7 @@ export function JobRecommendationsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-8 animate-fade-in">
+    <div className="container mx-auto px-4 py-6 space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex justify-center">
@@ -256,7 +256,7 @@ export function JobRecommendationsPage() {
       ) : (
         <div className="space-y-6">
           {matches.map((match, index) => (
-            <Card key={match.jobId} className="hover:shadow-lg transition-shadow animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+            <Card key={match.jobId} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">

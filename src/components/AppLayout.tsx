@@ -64,7 +64,7 @@ export function AppLayout() {
         <AppSidebar />
         <main className="flex-1 transition-all duration-300 ease-in-out">
           <div className="p-4">
-            <SidebarTrigger className="animate-fade-in" />
+            <SidebarTrigger />
           </div>
           <div className="px-6 pb-6">
             <Routes>

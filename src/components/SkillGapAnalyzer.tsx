@@ -92,7 +92,7 @@ export function SkillGapAnalyzer() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       <Card className="bg-gradient-to-br from-accent/5 to-primary/5 border-accent/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-accent">

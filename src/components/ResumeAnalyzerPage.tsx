@@ -126,7 +126,7 @@ export function ResumeAnalyzerPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-8 animate-fade-in">
+    <div className="container mx-auto px-4 py-6 space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex justify-center">
@@ -286,7 +286,7 @@ export function ResumeAnalyzerPage() {
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {analysis.missingSkills.map((skill, index) => (
-                      <Badge key={index} variant="secondary" className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                      <Badge key={index} variant="secondary">
                         {skill}
                       </Badge>
                     ))}

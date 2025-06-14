@@ -107,7 +107,7 @@ export function HomePage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-8 animate-fade-in">
+    <div className="container mx-auto px-4 py-6 space-y-8">
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -163,7 +163,7 @@ export function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {quickActions.map((action, index) => (
             <Link to={action.href} key={action.title}>
-              <Card className="hover-scale cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 animate-fade-in relative overflow-hidden group" style={{animationDelay: `${index * 0.1}s`}}>
+              <Card className="hover-scale cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 group-hover:skew-x-12"></div>
                 <CardContent className="p-6 text-center space-y-4 relative z-10">
                   <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
@@ -196,7 +196,7 @@ export function HomePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {recentActivities.map((activity, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 hover:from-primary/10 hover:to-secondary/20 transition-all duration-300 animate-fade-in border border-transparent hover:border-primary/20" style={{animationDelay: `${index * 0.1}s`}}>
+              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 hover:from-primary/10 hover:to-secondary/20 transition-all duration-300 border border-transparent hover:border-primary/20">
                 <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
                   <activity.icon className="h-4 w-4 text-primary" />
                 </div>
@@ -219,15 +219,15 @@ export function HomePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
-              <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 border-l-4 border-primary animate-fade-in hover:from-primary/20 hover:to-blue-500/20 transition-all duration-300">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 border-l-4 border-primary hover:from-primary/20 hover:to-blue-500/20 transition-all duration-300">
                 <h4 className="font-medium text-primary">Networking is Key</h4>
                 <p className="text-sm text-muted-foreground">Join professional groups on LinkedIn and attend virtual meetups.</p>
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary animate-fade-in hover:from-secondary/20 hover:to-green-500/20 transition-all duration-300" style={{animationDelay: '0.1s'}}>
+              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary hover:from-secondary/20 hover:to-green-500/20 transition-all duration-300">
                 <h4 className="font-medium text-secondary">Skill Development</h4>
                 <p className="text-sm text-muted-foreground">Focus on in-demand skills like AI, Data Science, and Cloud Computing.</p>
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent animate-fade-in hover:from-accent/20 hover:to-purple-500/20 transition-all duration-300" style={{animationDelay: '0.2s'}}>
+              <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent hover:from-accent/20 hover:to-purple-500/20 transition-all duration-300">
                 <h4 className="font-medium text-accent">Resume Optimization</h4>
                 <p className="text-sm text-muted-foreground">Tailor your resume for each application with relevant keywords.</p>
               </div>
@@ -243,7 +243,7 @@ export function HomePage() {
       </div>
 
       {/* Trending Jobs */}
-      <Card className="animate-fade-in bg-gradient-to-br from-background via-accent/5 to-primary/5 border-accent/20" style={{animationDelay: '0.6s'}}>
+      <Card className="bg-gradient-to-br from-background via-accent/5 to-primary/5 border-accent/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-accent">
               <TrendingUp className="h-5 w-5" />
@@ -260,8 +260,7 @@ export function HomePage() {
               <Badge 
                 key={category} 
                 variant="secondary" 
-                className="hover-scale cursor-pointer bg-gradient-to-r from-secondary/80 to-accent/80 hover:from-secondary hover:to-accent text-secondary-foreground border-0 animate-fade-in" 
-                style={{animationDelay: `${index * 0.05}s`}}
+                className="hover-scale cursor-pointer bg-gradient-to-r from-secondary/80 to-accent/80 hover:from-secondary hover:to-accent text-secondary-foreground border-0"
               >
                 {category}
               </Badge>
