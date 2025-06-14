@@ -23,9 +23,16 @@ export function HomePage() {
     resumes: 0,
     saved_jobs: 0
   });
+  
+  const [recentActivities, setRecentActivities] = useState<Array<{
+    text: string;
+    time: string;
+    icon: any;
+  }>>([]);
 
   useEffect(() => {
     fetchStats();
+    fetchRecentActivities();
   }, []);
 
   const fetchStats = async () => {
@@ -46,6 +53,91 @@ export function HomePage() {
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
+  };
+
+  const fetchRecentActivities = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const [applicationsRes, resumesRes, experiencesRes] = await Promise.all([
+        supabase.from('applications').select('job_title, company_name, applied_date').eq('user_id', user.id).order('applied_date', { ascending: false }).limit(2),
+        supabase.from('resumes').select('title, created_at, updated_at').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(2),
+        supabase.from('experiences').select('company_name, position, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1)
+      ]);
+
+      const activities: Array<{ text: string; time: string; icon: any }> = [];
+
+      // Add applications
+      if (applicationsRes.data) {
+        applicationsRes.data.forEach(app => {
+          activities.push({
+            text: `Applied to ${app.job_title} at ${app.company_name}`,
+            time: formatTimeAgo(app.applied_date),
+            icon: Briefcase
+          });
+        });
+      }
+
+      // Add resume updates
+      if (resumesRes.data) {
+        resumesRes.data.forEach(resume => {
+          const isNew = new Date(resume.created_at).getTime() === new Date(resume.updated_at).getTime();
+          activities.push({
+            text: isNew ? `Created resume: ${resume.title}` : `Updated resume: ${resume.title}`,
+            time: formatTimeAgo(resume.updated_at),
+            icon: FileText
+          });
+        });
+      }
+
+      // Add experience updates
+      if (experiencesRes.data) {
+        experiencesRes.data.forEach(exp => {
+          activities.push({
+            text: `Added experience: ${exp.position} at ${exp.company_name}`,
+            time: formatTimeAgo(exp.created_at),
+            icon: Building
+          });
+        });
+      }
+
+      // Sort by most recent and take top 4
+      activities.sort((a, b) => {
+        const timeA = parseTimeAgo(a.time);
+        const timeB = parseTimeAgo(b.time);
+        return timeA - timeB;
+      });
+
+      setRecentActivities(activities.slice(0, 4));
+    } catch (error) {
+      console.error('Error fetching recent activities:', error);
+    }
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    return `${Math.floor(diffInSeconds / 2592000)} months ago`;
+  };
+
+  const parseTimeAgo = (timeString: string) => {
+    if (timeString === 'Just now') return 0;
+    const match = timeString.match(/(\d+) (minutes?|hours?|days?|months?) ago/);
+    if (!match) return 0;
+    const value = parseInt(match[1]);
+    const unit = match[2];
+    if (unit.startsWith('minute')) return value;
+    if (unit.startsWith('hour')) return value * 60;
+    if (unit.startsWith('day')) return value * 1440;
+    if (unit.startsWith('month')) return value * 43200;
+    return 0;
   };
 
   const quickActions = [
@@ -97,13 +189,6 @@ export function HomePage() {
       color: 'bg-teal-500',
       gradient: 'from-teal-500 to-emerald-500'
     }
-  ];
-
-  const recentActivities = [
-    { text: 'Applied to Software Engineer at TCS', time: '2 hours ago', icon: Briefcase },
-    { text: 'Updated resume template', time: '1 day ago', icon: FileText },
-    { text: 'Searched for React Developer jobs', time: '2 days ago', icon: Search },
-    { text: 'Used AI Career Assistant', time: '3 days ago', icon: MessageSquare }
   ];
 
   return (
