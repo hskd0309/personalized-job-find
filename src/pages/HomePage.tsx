@@ -212,7 +212,7 @@ export function HomePage() {
         {/* Career Tips */}
         <Card className="bg-gradient-to-br from-background to-secondary/5 border-secondary/10">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-secondary">
+            <CardTitle className="flex items-center gap-2 text-primary">
               <Users className="h-5 w-5" />
               Global Career Tips
             </CardTitle>
@@ -224,11 +224,11 @@ export function HomePage() {
                 <p className="text-sm text-muted-foreground">Join professional groups on LinkedIn and attend virtual meetups.</p>
               </div>
               <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary">
-                <h4 className="font-medium text-secondary">Skill Development</h4>
+                <h4 className="font-medium text-primary">Skill Development</h4>
                 <p className="text-sm text-muted-foreground">Focus on in-demand skills like AI, Data Science, and Cloud Computing.</p>
               </div>
               <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent">
-                <h4 className="font-medium text-accent">Resume Optimization</h4>
+                <h4 className="font-medium text-primary">Resume Optimization</h4>
                 <p className="text-sm text-muted-foreground">Tailor your resume for each application with relevant keywords.</p>
               </div>
             </div>
@@ -245,7 +245,7 @@ export function HomePage() {
       {/* Trending Jobs */}
       <Card className="bg-gradient-to-br from-background via-accent/5 to-primary/5 border-accent/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-accent">
+            <CardTitle className="flex items-center gap-2 text-primary">
               <TrendingUp className="h-5 w-5" />
               Trending Job Categories Worldwide
             </CardTitle>
@@ -260,7 +260,7 @@ export function HomePage() {
               <Badge 
                 key={category} 
                 variant="secondary" 
-                className="cursor-pointer bg-gradient-to-r from-secondary/80 to-accent/80 hover:from-secondary hover:to-accent text-secondary-foreground border-0"
+                className="cursor-pointer bg-primary/10 hover:bg-primary/20 text-primary border-0"
               >
                 {category}
               </Badge>
