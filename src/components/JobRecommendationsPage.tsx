@@ -204,70 +204,71 @@ export function JobRecommendationsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-8">
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="flex justify-center">
-          <div className="h-16 w-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-            <Target className="h-8 w-8 text-primary-foreground" />
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+      <div className="container mx-auto px-4 py-6 space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-4">
+          <div className="flex justify-center">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+              <Target className="h-8 w-8 text-white" />
+            </div>
           </div>
+          <h1 className="text-4xl font-bold text-zinc-100">
+            AI Job Recommendations
+          </h1>
+          <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
+            Discover personalized job opportunities matched to your skills and experience using AI.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-          AI Job Recommendations
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Discover personalized job opportunities matched to your skills and experience using AI.
-        </p>
-      </div>
 
-      {/* Actions */}
-      <div className="flex justify-center">
-        <Button
-          onClick={generateNewMatches}
-          disabled={isGenerating}
-           className="bg-black hover:bg-gray-600 text-white"
-          size="lg"
-        >
-          {isGenerating ? (
-            <>
-              <Zap className="h-4 w-4 mr-2" />
-              Generating Matches...
-            </>
-          ) : (
-            <>
-              <TrendingUp className="h-4 w-4 mr-2" />
-              Find New Matches
-            </>
-          )}
-        </Button>
-      </div>
+        {/* Actions */}
+        <div className="flex justify-center">
+          <button
+            onClick={generateNewMatches}
+            disabled={isGenerating}
+            className="px-6 py-3 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGenerating ? (
+              <>
+                <Zap className="h-4 w-4 mr-2 inline" />
+                Generating Matches...
+              </>
+            ) : (
+              <>
+                <TrendingUp className="h-4 w-4 mr-2 inline" />
+                Find New Matches
+              </>
+            )}
+          </button>
+        </div>
 
-      {/* Job Matches */}
-      {matches.length === 0 ? (
-        <Card className="max-w-2xl mx-auto">
-          <CardContent className="text-center py-12">
-            <Target className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No Job Matches Yet</h3>
-            <p className="text-muted-foreground mb-4">
+        {/* Job Matches */}
+        {matches.length === 0 ? (
+          <div className="bg-zinc-900/50 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-8 text-center max-w-2xl mx-auto">
+            <Target className="h-12 w-12 text-zinc-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2 text-zinc-200">No Job Matches Yet</h3>
+            <p className="text-zinc-400 mb-4">
               Click "Find New Matches" to discover personalized job opportunities.
             </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-6">
-          {matches.map((match, index) => (
-            <Card key={match.jobId} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {matches.map((match, index) => (
+              <div key={match.jobId} className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6 hover:bg-zinc-900/90 transition-all duration-200">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{match.job.title}</h3>
-                      <Badge variant={getMatchBadgeVariant(match.matchScore)} className="flex items-center gap-1">
-                        <Star className="h-3 w-3" />
+                      <h3 className="text-xl font-semibold text-zinc-100">{match.job.title}</h3>
+                      <span className={`px-2 py-1 text-xs rounded-lg border ${
+                        match.matchScore >= 80 ? 'bg-emerald-600 text-zinc-100 border-emerald-500' : 
+                        match.matchScore >= 60 ? 'bg-yellow-600 text-zinc-100 border-yellow-500' : 
+                        'bg-orange-600 text-zinc-100 border-orange-500'
+                      }`}>
+                        <Star className="h-3 w-3 inline mr-1" />
                         {match.matchScore}% Match
-                      </Badge>
+                      </span>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                    <div className="flex items-center gap-4 text-sm text-zinc-400 mb-3">
                       <span className="flex items-center gap-1">
                         <MapPin className="h-4 w-4" />
                         {match.job.location}
@@ -287,26 +288,39 @@ export function JobRecommendationsPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-muted-foreground mb-4 line-clamp-2">
+                    <p className="text-zinc-400 mb-4 line-clamp-2">
                       {match.job.description}
                     </p>
                   </div>
                   <div className="text-center ml-6">
-                    <div className={`text-3xl font-bold ${getMatchColor(match.matchScore)} mb-2`}>
+                    <div className={`text-3xl font-bold mb-2 ${
+                      match.matchScore >= 80 ? 'text-emerald-400' : 
+                      match.matchScore >= 60 ? 'text-yellow-400' : 
+                      'text-orange-400'
+                    }`}>
                       {match.matchScore}%
                     </div>
-                    <Progress value={match.matchScore} className="w-20 h-2" />
+                    <div className="bg-zinc-800 rounded-lg h-2 w-20">
+                      <div 
+                        className={`h-2 rounded-lg transition-all duration-300 ${
+                          match.matchScore >= 80 ? 'bg-emerald-400' : 
+                          match.matchScore >= 60 ? 'bg-yellow-400' : 
+                          'bg-orange-400'
+                        }`} 
+                        style={{ width: `${match.matchScore}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
 
                 {/* Skills */}
                 <div className="mb-4">
-                  <h4 className="text-sm font-medium mb-2">Required Skills:</h4>
+                  <h4 className="text-sm font-medium mb-2 text-zinc-200">Required Skills:</h4>
                   <div className="flex flex-wrap gap-2">
                     {match.job.skills_required?.slice(0, 6).map((skill, skillIndex) => (
-                      <Badge key={skillIndex} variant="secondary" className="text-xs">
+                      <span key={skillIndex} className="px-2 py-1 text-xs bg-zinc-800 text-zinc-300 rounded-lg border border-zinc-700">
                         {skill}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -314,11 +328,11 @@ export function JobRecommendationsPage() {
                 {/* Match Reasons */}
                 {match.reasons.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="text-sm font-medium mb-2">Why this matches you:</h4>
-                    <ul className="text-sm text-muted-foreground space-y-1">
+                    <h4 className="text-sm font-medium mb-2 text-zinc-200">Why this matches you:</h4>
+                    <ul className="text-sm text-zinc-400 space-y-1">
                       {match.reasons.slice(0, 3).map((reason, reasonIndex) => (
                         <li key={reasonIndex} className="flex items-start gap-2">
-                          <span className="text-green-500 mt-1">•</span>
+                          <span className="text-emerald-400 mt-1">•</span>
                           {reason}
                         </li>
                       ))}
@@ -327,8 +341,8 @@ export function JobRecommendationsPage() {
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center justify-between pt-4 border-t">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
+                  <div className="flex items-center gap-4 text-sm text-zinc-400">
                     <span className="flex items-center gap-1">
                       <Eye className="h-4 w-4" />
                       {match.job.views_count} views
@@ -339,25 +353,24 @@ export function JobRecommendationsPage() {
                     </span>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      <ExternalLink className="h-4 w-4 mr-2" />
+                    <button className="px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200 text-sm">
+                      <ExternalLink className="h-4 w-4 mr-2 inline" />
                       View Details
-                    </Button>
-                    <Button 
+                    </button>
+                    <button 
                       onClick={() => applyToJob(match.jobId)}
-                      className="bg-black hover:bg-gray-600 text-white"
-                      size="sm"
+                      className="px-4 py-2 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors duration-200 text-sm font-medium"
                     >
-                      <Heart className="h-4 w-4 mr-2" />
+                      <Heart className="h-4 w-4 mr-2 inline" />
                       Apply Now
-                    </Button>
+                    </button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -69,7 +69,7 @@ export function ProfilePage() {
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
         throw error;
@@ -262,198 +262,210 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6">
-      <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+      <div className="container mx-auto px-4 py-6 space-y-6">
+        <h1 className="text-3xl font-bold text-zinc-100">My Profile</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profile Info */}
-        <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Profile Info */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+              <div className="flex items-center gap-2 text-zinc-100 mb-4">
                 <User className="h-5 w-5" />
-                Personal Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input 
-                    id="firstName" 
-                    value={profile.first_name || ''}
-                    onChange={(e) => setProfile(prev => prev ? {...prev, first_name: e.target.value} : null)}
-                  />
+                <h2 className="text-lg font-semibold">Personal Information</h2>
+              </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-zinc-300">First Name</label>
+                    <input 
+                      id="firstName" 
+                      value={profile.first_name || ''}
+                      onChange={(e) => setProfile(prev => prev ? {...prev, first_name: e.target.value} : null)}
+                      className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-zinc-300">Last Name</label>
+                    <input 
+                      id="lastName" 
+                      value={profile.last_name || ''}
+                      onChange={(e) => setProfile(prev => prev ? {...prev, last_name: e.target.value} : null)}
+                      className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input 
-                    id="lastName" 
-                    value={profile.last_name || ''}
-                    onChange={(e) => setProfile(prev => prev ? {...prev, last_name: e.target.value} : null)}
+                  <label className="block text-sm font-medium mb-2 text-zinc-300">Email</label>
+                  <input 
+                    id="email" 
+                    type="email" 
+                    value={profile.email || ''}
+                    onChange={(e) => setProfile(prev => prev ? {...prev, email: e.target.value} : null)}
+                    className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-zinc-300">Phone</label>
+                    <input 
+                      id="phone" 
+                      value={profile.phone || ''}
+                      onChange={(e) => setProfile(prev => prev ? {...prev, phone: e.target.value} : null)}
+                      className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-zinc-300">Location</label>
+                    <input 
+                      id="location" 
+                      value={profile.location || ''}
+                      onChange={(e) => setProfile(prev => prev ? {...prev, location: e.target.value} : null)}
+                      className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-zinc-300">Professional Bio</label>
+                  <textarea 
+                    id="bio" 
+                    value={profile.bio || ''}
+                    onChange={(e) => setProfile(prev => prev ? {...prev, bio: e.target.value} : null)}
+                    rows={4}
+                    placeholder="Tell us about your professional background..."
+                    className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200 resize-none"
                   />
                 </div>
               </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  value={profile.email || ''}
-                  onChange={(e) => setProfile(prev => prev ? {...prev, email: e.target.value} : null)}
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input 
-                    id="phone" 
-                    value={profile.phone || ''}
-                    onChange={(e) => setProfile(prev => prev ? {...prev, phone: e.target.value} : null)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="location">Location</Label>
-                  <Input 
-                    id="location" 
-                    value={profile.location || ''}
-                    onChange={(e) => setProfile(prev => prev ? {...prev, location: e.target.value} : null)}
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="bio">Professional Bio</Label>
-                <Textarea 
-                  id="bio" 
-                  value={profile.bio || ''}
-                  onChange={(e) => setProfile(prev => prev ? {...prev, bio: e.target.value} : null)}
-                  rows={4}
-                  placeholder="Tell us about your professional background..."
-                />
-              </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Skills</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+              <div className="flex items-center gap-2 text-zinc-100 mb-4">
+                <h2 className="text-lg font-semibold">Skills</h2>
+              </div>
               <div className="flex flex-wrap gap-2 mb-4">
                 {(profile.skills || []).map((skill) => (
-                  <Badge key={skill} variant="outline" className="cursor-pointer" onClick={() => removeSkill(skill)}>
+                  <span key={skill} className="px-2 py-1 text-xs bg-zinc-800 text-zinc-300 rounded-lg border border-zinc-700 cursor-pointer hover:bg-zinc-700" onClick={() => removeSkill(skill)}>
                     {skill} ×
-                  </Badge>
+                  </span>
                 ))}
               </div>
               <div className="flex gap-2">
-                <Input
+                <input
                   placeholder="Add a skill..."
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && addSkill()}
+                  className="flex-1 px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
                 />
-                <Button variant="outline" size="sm" onClick={addSkill}>
-                  <Plus className="h-4 w-4 mr-2" />
+                <button 
+                  onClick={addSkill}
+                  className="px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200 text-sm"
+                >
+                  <Plus className="h-4 w-4 mr-2 inline" />
                   Add
-                </Button>
+                </button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Experience</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+              <div className="flex items-center gap-2 text-zinc-100 mb-4">
+                <h2 className="text-lg font-semibold">Experience</h2>
+              </div>
               <div className="space-y-4 mb-4">
                 {experiences.map((exp) => (
-                  <div key={exp.id} className="border-l-2 border-primary pl-4 relative group">
+                  <div key={exp.id} className="border-l-2 border-emerald-400 pl-4 relative group">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <h4 className="font-semibold">{exp.position}</h4>
-                        <p className="text-muted-foreground">
+                        <h4 className="font-semibold text-zinc-100">{exp.position}</h4>
+                        <p className="text-zinc-400">
                           {exp.company_name} • {exp.location}
                         </p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-zinc-400">
                           {new Date(exp.start_date).toLocaleDateString()} - {
                             exp.is_current ? 'Present' : 
                             exp.end_date ? new Date(exp.end_date).toLocaleDateString() : 'Present'
                           }
                         </p>
                         {exp.description && (
-                          <p className="text-sm mt-2">{exp.description}</p>
+                          <p className="text-sm mt-2 text-zinc-300">{exp.description}</p>
                         )}
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                      <button 
+                        className="opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 text-zinc-400 hover:text-zinc-200"
                         onClick={() => removeExperience(exp.id)}
                       >
                         ×
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 ))}
                 {experiences.length === 0 && (
-                  <p className="text-muted-foreground text-sm">No experience added yet. Click the button below to add your first experience.</p>
+                  <p className="text-zinc-400 text-sm">No experience added yet. Click the button below to add your first experience.</p>
                 )}
               </div>
-              <Button variant="outline" size="sm" onClick={() => setShowExperienceForm(true)}>
-                <Plus className="h-4 w-4 mr-2" />
+              <button 
+                onClick={() => setShowExperienceForm(true)}
+                className="px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200 text-sm"
+              >
+                <Plus className="h-4 w-4 mr-2 inline" />
                 Add Experience
-              </Button>
+              </button>
               
               {showExperienceForm && (
-                <div className="mt-4 p-4 border rounded-lg space-y-4">
+                <div className="mt-4 p-4 border border-zinc-700 rounded-lg space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="position">Position</Label>
-                      <Input 
+                      <label className="block text-sm font-medium mb-2 text-zinc-300">Position</label>
+                      <input 
                         id="position"
                         placeholder="Software Engineer"
                         value={newExperience.position}
                         onChange={(e) => setNewExperience(prev => ({...prev, position: e.target.value}))}
+                        className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="company">Company</Label>
-                      <Input 
+                      <label className="block text-sm font-medium mb-2 text-zinc-300">Company</label>
+                      <input 
                         id="company"
                         placeholder="Company Name"
                         value={newExperience.company_name}
                         onChange={(e) => setNewExperience(prev => ({...prev, company_name: e.target.value}))}
+                        className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="expLocation">Location</Label>
-                    <Input 
+                    <label className="block text-sm font-medium mb-2 text-zinc-300">Location</label>
+                    <input 
                       id="expLocation"
                       placeholder="City, State"
                       value={newExperience.location}
                       onChange={(e) => setNewExperience(prev => ({...prev, location: e.target.value}))}
+                      className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="startDate">Start Date</Label>
-                      <Input 
+                      <label className="block text-sm font-medium mb-2 text-zinc-300">Start Date</label>
+                      <input 
                         id="startDate"
                         type="date"
                         value={newExperience.start_date}
                         onChange={(e) => setNewExperience(prev => ({...prev, start_date: e.target.value}))}
+                        className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="endDate">End Date</Label>
-                      <Input 
+                      <label className="block text-sm font-medium mb-2 text-zinc-300">End Date</label>
+                      <input 
                         id="endDate"
                         type="date"
                         value={newExperience.end_date}
                         onChange={(e) => setNewExperience(prev => ({...prev, end_date: e.target.value}))}
                         disabled={newExperience.is_current}
+                        className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200 disabled:opacity-50"
                       />
                       <div className="flex items-center mt-2">
                         <input 
@@ -467,94 +479,102 @@ export function ProfilePage() {
                           }))}
                           className="mr-2"
                         />
-                        <Label htmlFor="current" className="text-sm">I currently work here</Label>
+                        <label htmlFor="current" className="text-sm text-zinc-300">I currently work here</label>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea 
+                    <label className="block text-sm font-medium mb-2 text-zinc-300">Description</label>
+                    <textarea 
                       id="description"
                       placeholder="Describe your role and achievements..."
                       value={newExperience.description}
                       onChange={(e) => setNewExperience(prev => ({...prev, description: e.target.value}))}
                       rows={3}
+                      className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent transition-all duration-200 resize-none"
                     />
                   </div>
                   <div className="flex gap-2">
-                    <Button onClick={addExperience} disabled={!newExperience.position || !newExperience.company_name}>
+                    <button 
+                      onClick={addExperience} 
+                      disabled={!newExperience.position || !newExperience.company_name}
+                      className="px-4 py-2 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors duration-200 font-medium disabled:opacity-50"
+                    >
                       Save Experience
-                    </Button>
-                    <Button variant="outline" onClick={() => {
-                      setShowExperienceForm(false);
-                      setNewExperience({
-                        position: '',
-                        company_name: '',
-                        location: '',
-                        start_date: '',
-                        end_date: '',
-                        is_current: false,
-                        description: ''
-                      });
-                    }}>
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setShowExperienceForm(false);
+                        setNewExperience({
+                          position: '',
+                          company_name: '',
+                          location: '',
+                          start_date: '',
+                          end_date: '',
+                          is_current: false,
+                          description: ''
+                        });
+                      }}
+                      className="px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200"
+                    >
                       Cancel
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </div>
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Profile Completion</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Profile Strength</span>
-                    <span>{profile.profile_completion}%</span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: `${profile.profile_completion}%` }}></div>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Add more details to improve your profile visibility
-                  </p>
-                </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Documents</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center justify-between p-2 border rounded">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  <span className="text-sm">Resume.pdf</span>
-                </div>
-                <Button variant="ghost" size="sm">View</Button>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+              <div className="flex items-center gap-2 text-zinc-100 mb-4">
+                <h2 className="text-lg font-semibold">Profile Completion</h2>
               </div>
-              <Button variant="outline" size="sm" className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
-                Upload Document
-              </Button>
-            </CardContent>
-          </Card>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-300">Profile Strength</span>
+                  <span className="text-zinc-100">{profile.profile_completion}%</span>
+                </div>
+                <div className="w-full bg-zinc-800 rounded-full h-2">
+                  <div className="bg-emerald-400 h-2 rounded-full transition-all duration-300" style={{ width: `${profile.profile_completion}%` }}></div>
+                </div>
+                <p className="text-xs text-zinc-400">
+                  Add more details to improve your profile visibility
+                </p>
+              </div>
+            </div>
 
-          <Card>
-            <CardContent className="p-6">
-              <Button className="w-full" onClick={updateProfile} disabled={saving}>
-                <Save className="h-4 w-4 mr-2" />
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+              <div className="flex items-center gap-2 text-zinc-100 mb-4">
+                <h2 className="text-lg font-semibold">Documents</h2>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2 border border-zinc-700 rounded">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-zinc-400" />
+                    <span className="text-sm text-zinc-300">Resume.pdf</span>
+                  </div>
+                  <button className="text-sm text-zinc-400 hover:text-zinc-200">View</button>
+                </div>
+                <button className="w-full px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200 text-sm">
+                  <Plus className="h-4 w-4 mr-2 inline" />
+                  Upload Document
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+              <button 
+                className="w-full px-4 py-2 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors duration-200 font-medium disabled:opacity-50" 
+                onClick={updateProfile} 
+                disabled={saving}
+              >
+                <Save className="h-4 w-4 mr-2 inline" />
                 {saving ? 'Saving...' : 'Save Changes'}
-              </Button>
-            </CardContent>
-          </Card>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

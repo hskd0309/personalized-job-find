@@ -83,8 +83,10 @@ export function AppSidebar() {
         </ReactiveButton>
       </div>
 
-      {/* Desktop Close Button */}
-      <div className="hidden lg:block fixed top-4 left-[17rem] z-50">
+      {/* Desktop Close Button - positioned correctly on the left */}
+      <div className={`hidden lg:block fixed top-4 z-50 transition-all duration-500 ${
+        isCollapsed ? 'left-4' : 'left-[17rem]'
+      }`}>
         <ReactiveButton
           variant="ghost" 
           size="sm"
