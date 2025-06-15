@@ -106,7 +106,7 @@ export function AppSidebar() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static top-0 left-0 z-40 h-screen bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800/30 transition-all duration-500 ease-in-out transform
+        fixed top-0 left-0 z-40 h-screen bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800/30 transition-all duration-500 ease-in-out transform
         ${isCollapsed ? '-translate-x-full lg:translate-x-0' : 'translate-x-0'}
         ${isCollapsed ? 'lg:w-16' : 'w-64'}
       `}>
