@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { ReactiveButton } from './ui/reactive-button';
 import { SettingsModal } from './SettingsModal';
+import { CareerHubIcon } from './CareerHubIcon';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UserProfile {
@@ -85,15 +86,15 @@ export function AppSidebar() {
         </ReactiveButton>
       </div>
 
-      {/* Desktop Close Button - positioned correctly on the left */}
-      <div className={`hidden lg:block fixed top-4 z-50 transition-all duration-500 ${
-        isCollapsed ? 'left-4' : 'left-[17rem]'
+      {/* Desktop Close Button - positioned to not overlap with brand icon */}
+      <div className={`hidden lg:block fixed top-6 z-50 transition-all duration-500 ${
+        isCollapsed ? 'left-20' : 'left-[17.5rem]'
       }`}>
         <ReactiveButton
           variant="ghost" 
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="transition-all duration-300 hover:scale-110 bg-zinc-900/80 backdrop-blur-sm border border-zinc-700"
+          className="transition-all duration-300 hover:scale-110 bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 rounded-full p-2"
         >
           {isCollapsed ? (
             <Menu className="h-4 w-4 text-zinc-300" />
@@ -113,13 +114,14 @@ export function AppSidebar() {
           {/* Header */}
           <div className="p-6 border-b border-zinc-800">
             <div className="flex items-center gap-3 transition-all duration-300">
-              <div className="h-8 w-8 bg-gradient-to-br from-zinc-100 to-zinc-300 rounded-lg flex items-center justify-center transform transition-transform duration-300 hover:scale-110">
-                <FileText className="h-5 w-5 text-zinc-900" />
+              <div className="h-10 w-10 bg-gradient-to-br from-emerald-400 via-blue-500 to-purple-600 rounded-xl flex items-center justify-center transform transition-transform duration-300 hover:scale-110 shadow-lg">
+                <CareerHubIcon size={24} className="text-white" />
               </div>
               {!isCollapsed && (
-                <span className="text-xl font-bold text-zinc-100 tracking-tight animate-fade-in">
-                  CareerHub
-                </span>
+                <div className="animate-fade-in">
+                  <span className="text-xl font-bold text-zinc-100 tracking-tight">CareerHub</span>
+                  <p className="text-xs text-zinc-400 mt-0.5">AI Career Platform</p>
+                </div>
               )}
             </div>
           </div>
