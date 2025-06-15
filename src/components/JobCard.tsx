@@ -5,6 +5,8 @@ import { Building, MapPin, Clock, Star, Users } from 'lucide-react';
 import { Job } from '@/data/jobs';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { LoadingScreen } from './LoadingScreen';
+import { useState } from 'react';
 
 interface JobCardProps {
   job: Job;
@@ -14,6 +16,7 @@ interface JobCardProps {
 
 export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
   const { toast } = useToast();
+  const [isApplying, setIsApplying] = useState(false);
   const isNewJob = job.category === 'New';
 
   const formatDate = (dateString: string) => {
@@ -32,8 +35,8 @@ export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
     if (isNewJob && onApply) {
       onApply(job);
     } else {
-      // Legacy apply for static jobs
-      applyToStaticJob();
+      // Legacy apply for static jobs with loading screen
+      setIsApplying(true);
     }
   };
 
@@ -79,6 +82,15 @@ export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
 
       if (error) throw error;
 
+      return true; // Success
+    } catch (error: any) {
+      throw error;
+    }
+  };
+
+  const handleLoadingComplete = async () => {
+    try {
+      await applyToStaticJob();
       toast({
         title: "Application submitted!",
         description: `Your application for ${job.title} at ${job.company} has been submitted successfully.`,
@@ -89,10 +101,18 @@ export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
         description: "Failed to submit application",
         variant: "destructive",
       });
+    } finally {
+      setIsApplying(false);
     }
   };
 
   return (
+    <>
+      <LoadingScreen 
+        isOpen={isApplying} 
+        onComplete={handleLoadingComplete}
+        message={`Submitting application for ${job.title}...`}
+      />
     <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl shadow-lg border border-zinc-800/50 p-6 hover:bg-zinc-900/90 transition-all duration-200 h-full flex flex-col">
       <div className="pb-4 border-b border-zinc-800">
         <div className="flex justify-between items-start gap-2">
@@ -171,6 +191,7 @@ export function JobCard({ job, onViewDetails, onApply }: JobCardProps) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
