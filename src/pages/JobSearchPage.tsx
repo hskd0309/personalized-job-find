@@ -201,38 +201,47 @@ export function JobSearchPage() {
   };
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
-      {/* Search and Filters */}
-      <JobSearch 
-        onSearch={setFilters} 
-        totalJobs={filteredJobs.length}
-      />
-
-      {/* Job Listings */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-         {filteredJobs.map(job => (
-           <JobCard 
-             key={job.id} 
-             job={job} 
-             onViewDetails={handleViewDetails}
-             onApply={handleApply}
-           />
-         ))}
+    <div className="h-full flex flex-col bg-zinc-950">
+      {/* Fixed Search Header */}
+      <div className="flex-none bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800 p-4">
+        <div className="container mx-auto">
+          <JobSearch 
+            onSearch={setFilters} 
+            totalJobs={filteredJobs.length}
+          />
+        </div>
       </div>
 
-      {/* No Results */}
-      {filteredJobs.length === 0 && (
-        <div className="text-center py-12">
-          <div className="max-w-md mx-auto">
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              No jobs found
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              Try adjusting your search criteria or filters to find more opportunities.
-            </p>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto px-4 py-6">
+          {/* Job Listings */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+             {filteredJobs.map(job => (
+               <JobCard 
+                 key={job.id} 
+                 job={job} 
+                 onViewDetails={handleViewDetails}
+                 onApply={handleApply}
+               />
+             ))}
           </div>
+
+          {/* No Results */}
+          {filteredJobs.length === 0 && (
+            <div className="text-center py-12">
+              <div className="max-w-md mx-auto">
+                <h3 className="text-lg font-semibold text-zinc-100 mb-2">
+                  No jobs found
+                </h3>
+                <p className="text-zinc-400 mb-4">
+                  Try adjusting your search criteria or filters to find more opportunities.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Job Details Modal */}
       <JobDetails
