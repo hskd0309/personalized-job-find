@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Mistral API configuration
-const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY || 'your-mistral-api-key';
+const MISTRAL_API_KEY = 'mMTUkqqD5qlRC7u8mRBeXHtVTXiOaqvF';
 const MISTRAL_API_URL = 'https://api.mistral.ai/v1/chat/completions';
 
 // Chatbot endpoint using Mistral
@@ -40,7 +40,7 @@ app.post('/api/chat', async (req, res) => {
         'Authorization': `Bearer ${MISTRAL_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'mistral-7b-instruct',
+        model: 'mistral-large-latest',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
@@ -73,12 +73,26 @@ app.post('/api/generate-resume', async (req, res) => {
     const { resumeData, templateId } = req.body;
 
     // Generate resume content using Mistral
-    const prompt = `Generate professional resume content in HTML format for:
+    const prompt = `Generate a professional resume in clean HTML format for:
     Name: ${resumeData.personalInfo.firstName} ${resumeData.personalInfo.lastName}
-    Experience: ${resumeData.experience.map(exp => `${exp.position} at ${exp.company}`).join(', ')}
+    Email: ${resumeData.personalInfo.email}
+    Phone: ${resumeData.personalInfo.phone}
+    Location: ${resumeData.personalInfo.location}
+    Summary: ${resumeData.personalInfo.summary}
+    
+    Experience: ${resumeData.experience.map(exp => `${exp.position} at ${exp.company} (${exp.startDate} - ${exp.current ? 'Present' : exp.endDate}): ${exp.description}`).join('\n')}
+    
+    Education: ${resumeData.education.map(edu => `${edu.degree} from ${edu.institution} (${edu.graduationDate})${edu.gpa ? ` - GPA: ${edu.gpa}` : ''}`).join('\n')}
+    
     Skills: ${resumeData.skills.join(', ')}
     
-    Create a professional, ATS-friendly resume in clean HTML format with proper styling.`;
+    Create a professional, ATS-friendly resume in clean HTML format with proper CSS styling. Include:
+    - Professional header with contact information
+    - Clean sections for Summary, Experience, Education, and Skills
+    - Proper formatting and typography
+    - Print-friendly layout
+    
+    Return only the complete HTML document with embedded CSS.`;
 
     const response = await fetch(MISTRAL_API_URL, {
       method: 'POST',
@@ -87,12 +101,12 @@ app.post('/api/generate-resume', async (req, res) => {
         'Authorization': `Bearer ${MISTRAL_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'mistral-7b-instruct',
+        model: 'mistral-large-latest',
         messages: [
-          { role: 'system', content: 'You are a professional resume writer. Generate clean, ATS-friendly HTML resume content.' },
+          { role: 'system', content: 'You are a professional resume writer. Generate clean, ATS-friendly HTML resume content with embedded CSS styling.' },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 2000,
+        max_tokens: 3000,
         temperature: 0.3
       })
     });
@@ -126,13 +140,13 @@ app.post('/api/enhance-resume', async (req, res) => {
     Current Experience: ${resumeData.experience.map(exp => `${exp.position} at ${exp.company}: ${exp.description}`).join('\n')}
     Current Skills: ${resumeData.skills.join(', ')}
     
-    Provide suggestions for:
+    Provide actionable suggestions for:
     1. Better job descriptions with action verbs and quantified achievements
     2. Additional relevant skills to include
     3. Professional summary improvements
     4. Industry keywords for ATS optimization
     
-    Return as JSON with enhanced content.`;
+    Return as structured JSON with enhanced content and specific recommendations.`;
 
     const response = await fetch(MISTRAL_API_URL, {
       method: 'POST',
@@ -141,12 +155,12 @@ app.post('/api/enhance-resume', async (req, res) => {
         'Authorization': `Bearer ${MISTRAL_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'mistral-7b-instruct',
+        model: 'mistral-large-latest',
         messages: [
           { role: 'system', content: 'You are a professional career coach and resume expert. Provide actionable suggestions to improve resumes.' },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 1500,
+        max_tokens: 2000,
         temperature: 0.5
       })
     });
