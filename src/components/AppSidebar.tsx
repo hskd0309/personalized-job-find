@@ -71,15 +71,31 @@ export function AppSidebar() {
           variant="ghost"
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="transition-all duration-300 hover:scale-110"
+          className="transition-all duration-300 hover:scale-110 bg-zinc-900/80 backdrop-blur-sm border border-zinc-700"
         >
           <div className="relative">
             {isCollapsed ? (
-              <Menu className="h-5 w-5 transition-transform duration-300 rotate-0" />
+              <Menu className="h-5 w-5 transition-transform duration-300 rotate-0 text-zinc-300" />
             ) : (
-              <X className="h-5 w-5 transition-transform duration-300 rotate-180" />
+              <X className="h-5 w-5 transition-transform duration-300 rotate-180 text-zinc-300" />
             )}
           </div>
+        </ReactiveButton>
+      </div>
+
+      {/* Desktop Close Button */}
+      <div className="hidden lg:block fixed top-4 left-[17rem] z-50">
+        <ReactiveButton
+          variant="ghost" 
+          size="sm"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="transition-all duration-300 hover:scale-110 bg-zinc-900/80 backdrop-blur-sm border border-zinc-700"
+        >
+          {isCollapsed ? (
+            <Menu className="h-4 w-4 text-zinc-300" />
+          ) : (
+            <X className="h-4 w-4 text-zinc-300" />
+          )}
         </ReactiveButton>
       </div>
 

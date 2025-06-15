@@ -192,167 +192,159 @@ export function HomePage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-8">
-      {/* Header Section */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">
-          Dashboard
-        </h1>
-        <p className="text-muted-foreground">
-          Your career overview and quick actions
-        </p>
-      </div>
-
-      {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="border-border">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <Briefcase className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.applications}</p>
-              <p className="text-sm text-muted-foreground">Applications</p>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="border-border">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
-              <FileText className="h-6 w-6 text-secondary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.resumes}</p>
-              <p className="text-sm text-muted-foreground">Resumes</p>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="border-border">
-          <CardContent className="flex items-center p-6">
-            <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mr-4">
-              <TrendingUp className="h-6 w-6 text-accent" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.saved_jobs}</p>
-              <p className="text-sm text-muted-foreground">Saved Jobs</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-foreground bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {quickActions.map((action, index) => (
-            <Link to={action.href} key={action.title}>
-              <Card className="cursor-pointer hover:shadow-xl border-0 bg-gradient-to-br from-background via-secondary/5 to-accent/5 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0"></div>
-                <CardContent className="p-6 text-center space-y-4 relative z-10">
-                  <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg`}>
-                    <action.icon className="h-8 w-8 text-primary-foreground" />
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="font-semibold text-foreground">{action.title}</h3>
-                    <p className="text-sm text-muted-foreground">{action.description}</p>
-                  </div>
-                   <Button variant="outline" size="sm" className="w-full group border-gray-300 hover:border-black hover:bg-black hover:text-white">
-                     Get Started
-                     <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+      <div className="container mx-auto px-4 py-6 space-y-8">
+        {/* Header Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-zinc-100 mb-2">
+            Dashboard
+          </h1>
+          <p className="text-zinc-400">
+            Your career overview and quick actions
+          </p>
         </div>
-      </div>
 
-      {/* Recent Activity & Tips */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Activity */}
-        <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-primary">
-              <Clock className="h-5 w-5" />
-              Recent Activity
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {recentActivities.map((activity, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/30 to-secondary/10 border border-transparent">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <activity.icon className="h-4 w-4 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">{activity.text}</p>
-                  <p className="text-xs text-muted-foreground">{activity.time}</p>
-                </div>
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 rounded-lg bg-emerald-600/20 flex items-center justify-center mr-4">
+                <Briefcase className="h-6 w-6 text-emerald-400" />
               </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Career Tips */}
-        <Card className="bg-gradient-to-br from-background to-secondary/5 border-secondary/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-primary">
-              <Users className="h-5 w-5" />
-              Global Career Tips
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 border-l-4 border-primary">
-                <h4 className="font-medium text-primary">Networking is Key</h4>
-                <p className="text-sm text-muted-foreground">Join professional groups on LinkedIn and attend virtual meetups.</p>
-              </div>
-              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary/10 to-green-500/10 border-l-4 border-secondary">
-                <h4 className="font-medium text-primary">Skill Development</h4>
-                <p className="text-sm text-muted-foreground">Focus on in-demand skills like AI, Data Science, and Cloud Computing.</p>
-              </div>
-              <div className="p-3 rounded-lg bg-gradient-to-r from-accent/10 to-purple-500/10 border-l-4 border-accent">
-                <h4 className="font-medium text-primary">Resume Optimization</h4>
-                <p className="text-sm text-muted-foreground">Tailor your resume for each application with relevant keywords.</p>
+              <div>
+                <p className="text-2xl font-bold text-zinc-100">{stats.applications}</p>
+                <p className="text-sm text-zinc-400">Applications</p>
               </div>
             </div>
-            <Link to="/app/career-chat">
-              <Button className="w-full bg-black hover:bg-gray-600 text-white">
-                Get Personalized Advice
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+          
+          <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 rounded-lg bg-blue-600/20 flex items-center justify-center mr-4">
+                <FileText className="h-6 w-6 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-zinc-100">{stats.resumes}</p>
+                <p className="text-sm text-zinc-400">Resumes</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+            <div className="flex items-center">
+              <div className="h-12 w-12 rounded-lg bg-purple-600/20 flex items-center justify-center mr-4">
+                <TrendingUp className="h-6 w-6 text-purple-400" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-zinc-100">{stats.saved_jobs}</p>
+                <p className="text-sm text-zinc-400">Saved Jobs</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      {/* Trending Jobs */}
-      <Card className="bg-gradient-to-br from-background via-accent/5 to-primary/5 border-accent/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-primary">
-              <TrendingUp className="h-5 w-5" />
-              Trending Job Categories Worldwide
-            </CardTitle>
-          </CardHeader>
-        <CardContent>
+        {/* Quick Actions */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold text-zinc-100">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quickActions.map((action, index) => (
+              <Link to={action.href} key={action.title}>
+                <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6 hover:bg-zinc-900/90 transition-all duration-200 cursor-pointer group">
+                  <div className="text-center space-y-4">
+                    <div className={`h-16 w-16 rounded-full bg-gradient-to-r ${action.gradient} flex items-center justify-center mx-auto shadow-lg`}>
+                      <action.icon className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-semibold text-zinc-100">{action.title}</h3>
+                      <p className="text-sm text-zinc-400">{action.description}</p>
+                    </div>
+                    <button className="w-full px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 hover:text-zinc-100 transition-colors duration-200 text-sm">
+                      Get Started
+                      <ArrowRight className="h-4 w-4 ml-2 inline" />
+                    </button>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Activity & Tips */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Recent Activity */}
+          <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+            <div className="flex items-center gap-2 text-zinc-100 mb-6">
+              <Clock className="h-5 w-5" />
+              <h3 className="text-lg font-semibold">Recent Activity</h3>
+            </div>
+            <div className="space-y-4">
+              {recentActivities.map((activity, index) => (
+                <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-zinc-800/40 border border-zinc-700/30">
+                  <div className="h-8 w-8 rounded-full bg-zinc-700 flex items-center justify-center">
+                    <activity.icon className="h-4 w-4 text-zinc-300" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-zinc-100">{activity.text}</p>
+                    <p className="text-xs text-zinc-400">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Career Tips */}
+          <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+            <div className="flex items-center gap-2 text-zinc-100 mb-6">
+              <Users className="h-5 w-5" />
+              <h3 className="text-lg font-semibold">Global Career Tips</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="p-3 rounded-lg bg-emerald-600/20 border-l-4 border-emerald-400">
+                  <h4 className="font-medium text-emerald-400">Networking is Key</h4>
+                  <p className="text-sm text-zinc-400">Join professional groups on LinkedIn and attend virtual meetups.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-blue-600/20 border-l-4 border-blue-400">
+                  <h4 className="font-medium text-blue-400">Skill Development</h4>
+                  <p className="text-sm text-zinc-400">Focus on in-demand skills like AI, Data Science, and Cloud Computing.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-purple-600/20 border-l-4 border-purple-400">
+                  <h4 className="font-medium text-purple-400">Resume Optimization</h4>
+                  <p className="text-sm text-zinc-400">Tailor your resume for each application with relevant keywords.</p>
+                </div>
+              </div>
+              <Link to="/app/career-chat">
+                <button className="w-full px-4 py-2 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors duration-200 font-medium">
+                  Get Personalized Advice
+                  <ArrowRight className="h-4 w-4 ml-2 inline" />
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Trending Jobs */}
+        <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-800/50 p-6">
+          <div className="flex items-center gap-2 text-zinc-100 mb-6">
+            <TrendingUp className="h-5 w-5" />
+            <h3 className="text-lg font-semibold">Trending Job Categories Worldwide</h3>
+          </div>
           <div className="flex flex-wrap gap-2">
             {[
               'Software Development', 'Data Science', 'Digital Marketing', 'Cloud Computing',
               'AI/ML Engineer', 'Product Management', 'UI/UX Design', 'DevOps',
               'Business Analyst', 'Full Stack Developer'
             ].map((category, index) => (
-              <Badge 
+              <span 
                 key={category} 
-                variant="secondary" 
-                className="cursor-pointer bg-primary/10 hover:bg-primary/20 text-primary border-0"
+                className="px-3 py-1 text-sm bg-zinc-800 text-zinc-300 rounded-lg border border-zinc-700 cursor-pointer hover:bg-zinc-700 transition-colors duration-200"
               >
                 {category}
-              </Badge>
+              </span>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
