@@ -1,3 +1,13 @@
 export function ResumeBuilderPage() {
-  return <iframe src="https://your-deploy-url" width="100%" height="800px" style={{border:'none'}}></iframe>;
+  return (
+    <div className="w-full h-screen">
+      <iframe 
+        src="https://your-deploy-url" 
+        width="100%" 
+        height="100%"
+        style={{border:'none'}}
+        className="w-full h-full"
+      />
+    </div>
+  );
 }
