@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { TemplatesSelector } from '@/components/TemplatesSelector';
 
 interface ResumeData {
   personalInfo: {
@@ -123,7 +124,8 @@ const defaultResumeData: ResumeData = {
 export function ResumeBuilderPage() {
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
   const [savedResumes, setSavedResumes] = useState<any[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<'standard' | 'photo'>('standard');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('classic-blue');
+  const [showTemplateSelector, setShowTemplateSelector] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
@@ -302,6 +304,14 @@ export function ResumeBuilderPage() {
       )
     }));
   };
+
+  
+  if (showTemplateSelector) {
+    return <TemplatesSelector onSelectTemplate={(templateId) => {
+      setSelectedTemplate(templateId);
+      setShowTemplateSelector(false);
+    }} />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
