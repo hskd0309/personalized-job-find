@@ -56,8 +56,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         description: "You have been signed out of your account",
       });
       
-      // Reload the page to reset the app state
-      window.location.reload();
+      // Don't reload - let the auth state change handle the redirect
+      onClose();
     } catch (error: any) {
       toast({
         title: "Logout failed",
