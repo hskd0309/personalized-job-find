@@ -85,7 +85,7 @@ export function AppSidebar() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static top-0 left-0 z-40 h-screen bg-zinc-900/95 backdrop-blur-sm border-r border-zinc-800 transition-all duration-500 ease-in-out transform
+        fixed lg:static top-0 left-0 z-40 h-screen bg-zinc-950 border-r border-zinc-800/30 transition-all duration-500 ease-in-out transform
         ${isCollapsed ? '-translate-x-full lg:translate-x-0' : 'translate-x-0'}
         ${isCollapsed ? 'lg:w-16' : 'w-64'}
       `}>
@@ -115,8 +115,8 @@ export function AppSidebar() {
                   className={`
                     flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-300 ease-in-out group relative overflow-hidden
                     ${isActive 
-                      ? 'bg-zinc-800/80 text-zinc-100 border border-zinc-700/50' 
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
+                      ? 'bg-zinc-800/60 text-zinc-100' 
+                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
                     }
                   `}
                 >
