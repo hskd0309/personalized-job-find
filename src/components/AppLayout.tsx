@@ -67,7 +67,7 @@ export function AppLayout() {
       <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
         <div className="flex">
           <AppSidebar />
-          <main className="flex-1 min-h-screen ml-0 lg:ml-64 transition-all duration-500">
+          <main className="flex-1 min-h-screen transition-all duration-500">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/job-search" element={<JobSearchPage />} />
