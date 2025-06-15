@@ -72,9 +72,9 @@ export function JobRecommendationsPage() {
           jobId: match.job_id,
           job: {
             ...match.job_postings,
-            // Add realistic salary ranges if missing
-            salary_min: match.job_postings?.salary_min || (60 + Math.floor(Math.random() * 40)),
-            salary_max: match.job_postings?.salary_max || (100 + Math.floor(Math.random() * 80))
+            // Add realistic salary ranges in INR if missing
+            salary_min: match.job_postings?.salary_min || (400000 + Math.floor(Math.random() * 600000)), // 4L to 10L
+            salary_max: match.job_postings?.salary_max || (800000 + Math.floor(Math.random() * 1200000)) // 8L to 20L
           },
           matchScore: typeof match.match_score === 'string' ? parseFloat(match.match_score) : match.match_score,
           reasons: match.match_reasons || [],
@@ -289,7 +289,7 @@ export function JobRecommendationsPage() {
                       {match.job.salary_min && match.job.salary_max && (
                         <span className="flex items-center gap-1">
                           <DollarSign className="h-4 w-4" />
-                          ${match.job.salary_min}k - ${match.job.salary_max}k
+                          ₹{(match.job.salary_min/100000).toFixed(1)}L - ₹{(match.job.salary_max/100000).toFixed(1)}L
                         </span>
                       )}
                     </div>
