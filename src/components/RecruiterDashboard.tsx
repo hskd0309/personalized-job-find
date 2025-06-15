@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ApplicationManagement } from '@/components/ApplicationManagement';
 
 interface JobPosting {
   id: string;
@@ -42,6 +43,7 @@ export function RecruiterDashboard() {
   const [isRecruiter, setIsRecruiter] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showCreateJob, setShowCreateJob] = useState(false);
+  const [selectedJobForApplications, setSelectedJobForApplications] = useState<JobPosting | null>(null);
   const { toast } = useToast();
 
   const [newJob, setNewJob] = useState({
@@ -193,6 +195,25 @@ export function RecruiterDashboard() {
             </Button>
           </CardContent>
         </Card>
+      </div>
+    );
+  }
+
+  if (selectedJobForApplications) {
+    return (
+      <div className="space-y-4 sm:space-y-6 p-2 sm:p-0">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="outline" 
+            onClick={() => setSelectedJobForApplications(null)}
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <ApplicationManagement 
+          jobId={selectedJobForApplications.id} 
+          jobTitle={selectedJobForApplications.title} 
+        />
       </div>
     );
   }
@@ -435,20 +456,25 @@ export function RecruiterDashboard() {
                         )}
                       </div>
 
-                      <div className="flex gap-2 w-full sm:w-auto">
-                        <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
-                          <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
-                          <span className="ml-1 sm:hidden">Edit</span>
-                        </Button>
-                        <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
-                          <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
-                          <span className="ml-1 sm:hidden">View</span>
-                        </Button>
-                        <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
-                          <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                          <span className="ml-1 sm:hidden">Delete</span>
-                        </Button>
-                      </div>
+                       <div className="flex gap-2 w-full sm:w-auto">
+                         <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
+                           <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
+                           <span className="ml-1 sm:hidden">Edit</span>
+                         </Button>
+                         <Button 
+                           variant="outline" 
+                           size="sm" 
+                           className="flex-1 sm:flex-none"
+                           onClick={() => setSelectedJobForApplications(job)}
+                         >
+                           <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                           <span className="ml-1 sm:hidden">Applications</span>
+                         </Button>
+                         <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
+                           <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                           <span className="ml-1 sm:hidden">Delete</span>
+                         </Button>
+                       </div>
                     </div>
                   </CardContent>
                 </Card>
