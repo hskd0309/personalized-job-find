@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, 
@@ -13,9 +13,17 @@ import {
   X
 } from 'lucide-react';
 import { ReactiveButton } from './ui/reactive-button';
+import { supabase } from '@/integrations/supabase/client';
+
+interface UserProfile {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+}
 
 export function AppSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const location = useLocation();
 
   const navigation = [
@@ -28,6 +36,32 @@ export function AppSidebar() {
     { name: 'Career Chat', href: '/app/career-chat', icon: MessageSquare },
     { name: 'Profile', href: '/app/profile', icon: User },
   ];
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          // Get user data from auth user metadata and profile table
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('first_name, last_name, email')
+            .eq('user_id', user.id)
+            .single();
+
+          setUserProfile({
+            first_name: profile?.first_name || user.user_metadata?.first_name || '',
+            last_name: profile?.last_name || user.user_metadata?.last_name || '',
+            email: profile?.email || user.email || ''
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   return (
     <>
@@ -117,8 +151,12 @@ export function AppSidebar() {
               </div>
               {!isCollapsed && (
                 <div className="flex-1 min-w-0 animate-fade-in">
-                  <p className="text-sm font-medium text-zinc-100 truncate">John Doe</p>
-                  <p className="text-xs text-zinc-400 truncate">john@example.com</p>
+                  <p className="text-sm font-medium text-zinc-100 truncate">
+                    {userProfile ? `${userProfile.first_name} ${userProfile.last_name}`.trim() || 'User' : 'Loading...'}
+                  </p>
+                  <p className="text-xs text-zinc-400 truncate">
+                    {userProfile?.email || 'Loading...'}
+                  </p>
                 </div>
               )}
             </div>
