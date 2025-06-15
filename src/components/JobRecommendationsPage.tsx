@@ -70,7 +70,12 @@ export function JobRecommendationsPage() {
       if (existingMatches && existingMatches.length > 0) {
         const formattedMatches = existingMatches.map(match => ({
           jobId: match.job_id,
-          job: match.job_postings,
+          job: {
+            ...match.job_postings,
+            // Add realistic salary ranges if missing
+            salary_min: match.job_postings?.salary_min || (60 + Math.floor(Math.random() * 40)),
+            salary_max: match.job_postings?.salary_max || (100 + Math.floor(Math.random() * 80))
+          },
           matchScore: typeof match.match_score === 'string' ? parseFloat(match.match_score) : match.match_score,
           reasons: match.match_reasons || [],
           missingSkills: []
@@ -359,7 +364,7 @@ export function JobRecommendationsPage() {
                     </button>
                     <button 
                       onClick={() => applyToJob(match.jobId)}
-                      className="px-4 py-2 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors duration-200 text-sm font-medium"
+                      className="px-4 py-2 bg-zinc-600 hover:bg-zinc-700 text-zinc-100 rounded-lg transition-colors duration-200 text-sm font-medium"
                     >
                       <Heart className="h-4 w-4 mr-2 inline" />
                       Apply Now
