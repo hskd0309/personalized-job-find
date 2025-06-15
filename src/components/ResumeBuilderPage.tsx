@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, FileText, Layout, Zap } from 'lucide-react';
 
 export function ResumeBuilderPage() {
-  const handleOpenResumeBuilder = () => {
-    // Navigate to the resume builder within the app
-    window.location.href = '/app/resume-builder';
+  const handleStartBuilding = () => {
+    // This is where the actual resume builder functionality would start
+    console.log('Starting resume builder');
+    alert('Resume builder functionality coming soon!');
   };
 
   return (
@@ -44,7 +45,7 @@ export function ResumeBuilderPage() {
 
         <Card className="bg-gradient-to-br from-background to-secondary/5 border-secondary/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-secondary">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <Zap className="h-5 w-5" />
               Real-time Preview
             </CardTitle>
@@ -58,7 +59,7 @@ export function ResumeBuilderPage() {
 
         <Card className="bg-gradient-to-br from-background to-accent/5 border-accent/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-accent">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <FileText className="h-5 w-5" />
               ATS Optimized
             </CardTitle>
@@ -80,15 +81,15 @@ export function ResumeBuilderPage() {
               Our advanced resume builder includes professional templates, real-time editing, and PDF export functionality.
             </p>
             <Button 
-              onClick={handleOpenResumeBuilder}
+              onClick={handleStartBuilding}
               size="lg"
               className="bg-foreground text-background hover:bg-muted-foreground"
             >
-              <ExternalLink className="h-5 w-5 mr-2" />
-              Open Resume Builder
+              <FileText className="h-5 w-5 mr-2" />
+              Start Building Resume
             </Button>
             <p className="text-xs text-muted-foreground mt-4">
-              Navigate to the resume builder
+              Click to start creating your professional resume
             </p>
           </CardContent>
         </Card>
