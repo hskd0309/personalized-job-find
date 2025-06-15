@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -23,10 +23,23 @@ interface SettingsModalProps {
 }
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Initialize from localStorage or default to dark mode
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
   const [notifications, setNotifications] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const { toast } = useToast();
+
+  // Apply theme on component mount
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
   const handleThemeToggle = (checked: boolean) => {
     setIsDarkMode(checked);
@@ -71,9 +84,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-zinc-900 border-zinc-800 text-zinc-100 max-w-md">
+      <DialogContent className="bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-zinc-100">
+          <DialogTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
             <Settings className="h-5 w-5" />
             Settings
           </DialogTitle>
@@ -83,40 +96,40 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* Appearance */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Sun className="h-4 w-4 text-zinc-400" />
-              <h3 className="text-sm font-medium text-zinc-200">Appearance</h3>
+              <Sun className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+              <h3 className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Appearance</h3>
             </div>
             
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="text-sm text-zinc-300">Dark Mode</Label>
-                <p className="text-xs text-zinc-500">Toggle between light and dark themes</p>
+                <Label className="text-sm text-zinc-700 dark:text-zinc-300">Dark Mode</Label>
+                <p className="text-xs text-zinc-500 dark:text-zinc-500">Toggle between light and dark themes</p>
               </div>
               <div className="flex items-center gap-2">
-                <Sun className="h-4 w-4 text-zinc-400" />
+                <Sun className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                 <Switch
                   checked={isDarkMode}
                   onCheckedChange={handleThemeToggle}
                   className="data-[state=checked]:bg-zinc-600"
                 />
-                <Moon className="h-4 w-4 text-zinc-400" />
+                <Moon className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
               </div>
             </div>
           </div>
 
-          <Separator className="bg-zinc-800" />
+          <Separator className="bg-zinc-300 dark:bg-zinc-800" />
 
           {/* Notifications */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Bell className="h-4 w-4 text-zinc-400" />
-              <h3 className="text-sm font-medium text-zinc-200">Notifications</h3>
+              <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+              <h3 className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Notifications</h3>
             </div>
             
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="text-sm text-zinc-300">Push Notifications</Label>
-                <p className="text-xs text-zinc-500">Receive notifications about job matches</p>
+                <Label className="text-sm text-zinc-700 dark:text-zinc-300">Push Notifications</Label>
+                <p className="text-xs text-zinc-500 dark:text-zinc-500">Receive notifications about job matches</p>
               </div>
               <Switch
                 checked={notifications}
@@ -126,19 +139,19 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </div>
           </div>
 
-          <Separator className="bg-zinc-800" />
+          <Separator className="bg-zinc-300 dark:bg-zinc-800" />
 
           {/* Privacy */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-zinc-400" />
-              <h3 className="text-sm font-medium text-zinc-200">Privacy</h3>
+              <Shield className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+              <h3 className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Privacy</h3>
             </div>
             
             <div className="space-y-2">
               <Button 
                 variant="outline" 
-                className="w-full justify-start text-zinc-300 border-zinc-700 hover:bg-zinc-800"
+                className="w-full justify-start text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 size="sm"
               >
                 <User className="h-4 w-4 mr-2" />
@@ -147,7 +160,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </div>
           </div>
 
-          <Separator className="bg-zinc-800" />
+          <Separator className="bg-zinc-300 dark:bg-zinc-800" />
 
           {/* Account Actions */}
           <div className="space-y-4">

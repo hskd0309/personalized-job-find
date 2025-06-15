@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { AppSidebar } from './AppSidebar';
+import { ThemeProvider } from './ThemeProvider';
 import { HomePage } from '@/pages/HomePage';
 import { JobSearchPage } from '@/pages/JobSearchPage';
 import { ApplicationsPage } from './ApplicationsPage';
@@ -62,22 +63,24 @@ export function AppLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
-      <div className="flex">
-        <AppSidebar />
-        <main className="flex-1 min-h-screen">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/job-search" element={<JobSearchPage />} />
-            <Route path="/applications" element={<ApplicationsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/career-chat" element={<CareerChatPage />} />
-            <Route path="/resume-analyzer" element={<ResumeAnalyzerPage />} />
-            <Route path="/job-recommendations" element={<JobRecommendationsPage />} />
-            <Route path="/resume-builder" element={<ResumeBuilderPage />} />
-          </Routes>
-        </main>
+    <ThemeProvider>
+      <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
+        <div className="flex">
+          <AppSidebar />
+          <main className="flex-1 min-h-screen">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/job-search" element={<JobSearchPage />} />
+              <Route path="/applications" element={<ApplicationsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/career-chat" element={<CareerChatPage />} />
+              <Route path="/resume-analyzer" element={<ResumeAnalyzerPage />} />
+              <Route path="/job-recommendations" element={<JobRecommendationsPage />} />
+              <Route path="/resume-builder" element={<ResumeBuilderPage />} />
+            </Routes>
+          </main>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }

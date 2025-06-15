@@ -106,21 +106,21 @@ export function AppSidebar() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static top-0 left-0 z-40 h-screen bg-zinc-950 border-r border-zinc-800/30 transition-all duration-500 ease-in-out transform
+        fixed lg:static top-0 left-0 z-40 h-screen bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800/30 transition-all duration-500 ease-in-out transform
         ${isCollapsed ? '-translate-x-full lg:translate-x-0' : 'translate-x-0'}
         ${isCollapsed ? 'lg:w-16' : 'w-64'}
       `}>
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-zinc-800">
+          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
             <div className="flex items-center gap-3 transition-all duration-300">
               <div className="h-10 w-10 bg-gradient-to-br from-emerald-400 via-blue-500 to-purple-600 rounded-xl flex items-center justify-center transform transition-transform duration-300 hover:scale-110 shadow-lg">
                 <CareerHubIcon size={24} className="text-white" />
               </div>
               {!isCollapsed && (
                 <div className="animate-fade-in">
-                  <span className="text-xl font-bold text-zinc-100 tracking-tight">CareerHub</span>
-                  <p className="text-xs text-zinc-400 mt-0.5">AI Career Platform</p>
+                  <span className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">CareerHub</span>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">AI Career Platform</p>
                 </div>
               )}
             </div>
