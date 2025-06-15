@@ -209,7 +209,7 @@ export function JobRecommendationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
       <div className="container mx-auto px-4 py-6 space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">

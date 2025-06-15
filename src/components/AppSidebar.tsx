@@ -74,13 +74,13 @@ export function AppSidebar() {
           variant="ghost"
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="transition-all duration-300 hover:scale-110 bg-zinc-900/80 backdrop-blur-sm border border-zinc-700"
+          className="transition-all duration-300 hover:scale-110 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border border-zinc-300 dark:border-zinc-700"
         >
           <div className="relative">
             {isCollapsed ? (
-              <Menu className="h-5 w-5 transition-transform duration-300 rotate-0 text-zinc-300" />
+              <Menu className="h-5 w-5 transition-transform duration-300 rotate-0 text-zinc-700 dark:text-zinc-300" />
             ) : (
-              <X className="h-5 w-5 transition-transform duration-300 rotate-180 text-zinc-300" />
+              <X className="h-5 w-5 transition-transform duration-300 rotate-180 text-zinc-700 dark:text-zinc-300" />
             )}
           </div>
         </ReactiveButton>
@@ -94,12 +94,12 @@ export function AppSidebar() {
           variant="ghost" 
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="transition-all duration-300 hover:scale-110 bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 rounded-full p-2"
+          className="transition-all duration-300 hover:scale-110 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border border-zinc-300 dark:border-zinc-700 rounded-full p-2"
         >
           {isCollapsed ? (
-            <Menu className="h-4 w-4 text-zinc-300" />
+            <Menu className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
           ) : (
-            <X className="h-4 w-4 text-zinc-300" />
+            <X className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
           )}
         </ReactiveButton>
       </div>
@@ -137,8 +137,8 @@ export function AppSidebar() {
                   className={`
                     flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-300 ease-in-out group relative overflow-hidden
                     ${isActive 
-                      ? 'bg-zinc-800/60 text-zinc-100' 
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
+                      ? 'bg-zinc-200/80 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100' 
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30'
                     }
                   `}
                 >
@@ -148,17 +148,17 @@ export function AppSidebar() {
                   }`} />
                   
                   <item.icon className={`h-5 w-5 transition-all duration-300 relative z-10 ${
-                    isActive ? 'text-zinc-100' : 'text-zinc-400 group-hover:text-zinc-200'
+                    isActive ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200'
                   }`} />
                   {!isCollapsed && (
                     <span className={`font-medium relative z-10 transition-all duration-300 ${
-                      isActive ? 'text-zinc-100' : 'text-zinc-400 group-hover:text-zinc-200'
+                      isActive ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200'
                     }`}>{item.name}</span>
                   )}
                   
                   {/* Active indicator - subtle dot */}
                   {isActive && (
-                    <div className="absolute right-2 w-1.5 h-1.5 bg-zinc-300 rounded-full" />
+                    <div className="absolute right-2 w-1.5 h-1.5 bg-zinc-600 dark:bg-zinc-300 rounded-full" />
                   )}
                 </Link>
               );
@@ -166,20 +166,20 @@ export function AppSidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-zinc-800">
+          <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
             <div 
-              className="flex items-center gap-3 transition-all duration-300 hover:bg-zinc-800/30 rounded-lg p-2 cursor-pointer"
+              className="flex items-center gap-3 transition-all duration-300 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30 rounded-lg p-2 cursor-pointer"
               onClick={() => setIsSettingsOpen(true)}
             >
-              <div className="h-8 w-8 bg-zinc-700 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-zinc-600">
-                <User className="h-4 w-4 text-zinc-300" />
+              <div className="h-8 w-8 bg-zinc-300 dark:bg-zinc-700 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-zinc-400 dark:hover:bg-zinc-600">
+                <User className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
               </div>
               {!isCollapsed && (
                 <div className="flex-1 min-w-0 animate-fade-in">
-                  <p className="text-sm font-medium text-zinc-100 truncate">
+                  <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
                     {userProfile ? `${userProfile.first_name} ${userProfile.last_name}`.trim() || 'User' : 'Loading...'}
                   </p>
-                  <p className="text-xs text-zinc-400 truncate">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 truncate">
                     {userProfile?.email || 'Loading...'}
                   </p>
                 </div>
