@@ -81,26 +81,28 @@ export function AppSidebar() {
                   className={`
                     flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-300 ease-in-out group relative overflow-hidden
                     ${isActive 
-                      ? 'bg-zinc-100/10 text-zinc-100 border border-zinc-700 transform scale-105' 
-                      : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 hover:scale-105'
+                      ? 'bg-zinc-800/80 text-zinc-100 border border-zinc-700/50' 
+                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
                     }
                   `}
                 >
-                  {/* Animated background */}
-                  <div className={`absolute inset-0 bg-gradient-to-r from-zinc-100/5 to-zinc-100/10 transform transition-transform duration-500 ${
-                    isActive ? 'translate-x-0' : '-translate-x-full group-hover:translate-x-0'
+                  {/* Animated background for hover effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-r from-zinc-700/20 to-zinc-600/20 transform transition-transform duration-500 ${
+                    isActive ? 'translate-x-0 opacity-100' : '-translate-x-full group-hover:translate-x-0 opacity-0 group-hover:opacity-100'
                   }`} />
                   
                   <item.icon className={`h-5 w-5 transition-all duration-300 relative z-10 ${
-                    isActive ? 'text-zinc-100 scale-110' : 'group-hover:text-zinc-100 group-hover:scale-110'
+                    isActive ? 'text-zinc-100' : 'text-zinc-400 group-hover:text-zinc-200'
                   }`} />
                   {!isCollapsed && (
-                    <span className="font-medium relative z-10 transition-all duration-300">{item.name}</span>
+                    <span className={`font-medium relative z-10 transition-all duration-300 ${
+                      isActive ? 'text-zinc-100' : 'text-zinc-400 group-hover:text-zinc-200'
+                    }`}>{item.name}</span>
                   )}
                   
-                  {/* Active indicator */}
+                  {/* Active indicator - subtle dot */}
                   {isActive && (
-                    <div className="absolute right-2 w-2 h-2 bg-zinc-100 rounded-full animate-pulse" />
+                    <div className="absolute right-2 w-1.5 h-1.5 bg-zinc-300 rounded-full" />
                   )}
                 </Link>
               );
