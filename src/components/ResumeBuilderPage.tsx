@@ -1,13 +1,38 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, FileText, Layout, Zap } from 'lucide-react';
+import { FileText, Layout, Zap, Plus } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 export function ResumeBuilderPage() {
-  const handleStartBuilding = () => {
-    // This is where the actual resume builder functionality would start
-    console.log('Starting resume builder');
-    alert('Resume builder functionality coming soon!');
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [resumeTitle, setResumeTitle] = useState('');
+  const [resumeSlug, setResumeSlug] = useState('');
+
+  const handleCreateResume = () => {
+    if (!resumeTitle.trim()) return;
+    
+    // For now, just show an alert with the resume details
+    alert(`Creating resume: "${resumeTitle}" with slug: "${resumeSlug || resumeTitle.toLowerCase().replace(/\s+/g, '-')}"`);
+    setShowCreateDialog(false);
+    setResumeTitle('');
+    setResumeSlug('');
+  };
+
+  const handleTitleChange = (value: string) => {
+    setResumeTitle(value);
+    // Auto-generate slug from title
+    setResumeSlug(value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
   };
 
   return (
@@ -80,14 +105,64 @@ export function ResumeBuilderPage() {
             <p className="text-muted-foreground mb-6">
               Our advanced resume builder includes professional templates, real-time editing, and PDF export functionality.
             </p>
-            <Button 
-              onClick={handleStartBuilding}
-              size="lg"
-              className="bg-foreground text-background hover:bg-muted-foreground"
-            >
-              <FileText className="h-5 w-5 mr-2" />
-              Start Building Resume
-            </Button>
+            
+            <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  size="lg"
+                  className="bg-foreground text-background hover:bg-muted-foreground"
+                >
+                  <Plus className="h-5 w-5 mr-2" />
+                  Create New Resume
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Plus className="h-5 w-5" />
+                    Create a new resume
+                  </DialogTitle>
+                  <DialogDescription>
+                    Start building your resume by giving it a name.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Title</Label>
+                    <Input
+                      id="title"
+                      placeholder="e.g., Software Engineer Resume"
+                      value={resumeTitle}
+                      onChange={(e) => handleTitleChange(e.target.value)}
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      Tip: You can name the resume referring to the position you are applying for.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="slug">Slug</Label>
+                    <Input
+                      id="slug"
+                      placeholder="software-engineer-resume"
+                      value={resumeSlug}
+                      onChange={(e) => setResumeSlug(e.target.value)}
+                    />
+                  </div>
+                </div>
+                
+                <DialogFooter>
+                  <Button 
+                    onClick={handleCreateResume}
+                    disabled={!resumeTitle.trim()}
+                  >
+                    Create
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            
             <p className="text-xs text-muted-foreground mt-4">
               Click to start creating your professional resume
             </p>
