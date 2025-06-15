@@ -13,6 +13,7 @@ import {
   X
 } from 'lucide-react';
 import { ReactiveButton } from './ui/reactive-button';
+import { SettingsModal } from './SettingsModal';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UserProfile {
@@ -24,6 +25,7 @@ interface UserProfile {
 export function AppSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const location = useLocation();
 
   const navigation = [
@@ -163,7 +165,10 @@ export function AppSidebar() {
 
           {/* Footer */}
           <div className="p-4 border-t border-zinc-800">
-            <div className="flex items-center gap-3 transition-all duration-300 hover:bg-zinc-800/30 rounded-lg p-2">
+            <div 
+              className="flex items-center gap-3 transition-all duration-300 hover:bg-zinc-800/30 rounded-lg p-2 cursor-pointer"
+              onClick={() => setIsSettingsOpen(true)}
+            >
               <div className="h-8 w-8 bg-zinc-700 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-zinc-600">
                 <User className="h-4 w-4 text-zinc-300" />
               </div>
@@ -189,6 +194,8 @@ export function AppSidebar() {
           onClick={() => setIsCollapsed(true)}
         />
       )}
+      
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
   );
 }
