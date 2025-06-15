@@ -5,8 +5,8 @@ import { ExternalLink, FileText, Layout, Zap } from 'lucide-react';
 
 export function ResumeBuilderPage() {
   const handleOpenResumeBuilder = () => {
-    // Open the resume-builder app in a new tab
-    window.open('/resume-builder', '_blank');
+    // Navigate to the resume builder within the app
+    window.location.href = '/app/resume-builder';
   };
 
   return (
@@ -18,7 +18,7 @@ export function ResumeBuilderPage() {
             <FileText className="h-8 w-8 text-primary-foreground" />
           </div>
         </div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold text-foreground hover:text-muted-foreground transition-colors">
           Professional Resume Builder
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -82,13 +82,13 @@ export function ResumeBuilderPage() {
             <Button 
               onClick={handleOpenResumeBuilder}
               size="lg"
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white"
+              className="bg-foreground text-background hover:bg-muted-foreground"
             >
               <ExternalLink className="h-5 w-5 mr-2" />
               Open Resume Builder
             </Button>
             <p className="text-xs text-muted-foreground mt-4">
-              Opens in a new tab with full functionality
+              Navigate to the resume builder
             </p>
           </CardContent>
         </Card>
