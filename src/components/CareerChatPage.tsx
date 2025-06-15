@@ -84,7 +84,6 @@ export function CareerChatPage() {
     }
   };
 
-
   const handleQuickAction = (action: string) => {
     setInputMessage(action);
   };
@@ -104,60 +103,63 @@ export function CareerChatPage() {
           {/* Chat Container */}
           <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl shadow-lg border border-zinc-800/50 h-[600px] flex flex-col">
             {/* Chat Header */}
-            <div className="p-6 border-b border-zinc-800">
+            <div className="p-6 border-b border-zinc-800 flex-shrink-0">
               <h2 className="text-xl font-semibold text-zinc-100 flex items-center gap-2">
                 <Bot className="h-5 w-5 text-zinc-300" />
                 Career Guidance Chat
               </h2>
             </div>
             
-            {/* Chat Content */}
-            <div className="flex-1 flex flex-col p-6">
-              {/* Chat Messages */}
-              <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`flex gap-3 max-w-[80%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                      <div className={`h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                        msg.sender === 'user' ? 'bg-zinc-100 text-zinc-900' : 'bg-zinc-800 text-zinc-300'
-                      }`}>
-                        {msg.sender === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+            {/* Chat Messages - Contained in grey frame */}
+            <div className="flex-1 flex flex-col p-6 min-h-0">
+              <div className="flex-1 bg-zinc-800/30 rounded-lg border border-zinc-700 p-4 mb-4 overflow-hidden">
+                <div className="h-full overflow-y-auto pr-2">
+                  <div className="space-y-4">
+                    {messages.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className={`flex gap-3 max-w-[80%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                          <div className={`h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                            msg.sender === 'user' ? 'bg-zinc-100 text-zinc-900' : 'bg-zinc-700 text-zinc-300'
+                          }`}>
+                            {msg.sender === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                          </div>
+                          <div className={`rounded-lg p-3 ${
+                            msg.sender === 'user' 
+                              ? 'bg-zinc-100 text-zinc-900' 
+                              : 'bg-zinc-700 text-zinc-100'
+                          }`}>
+                            <p className="text-sm leading-relaxed">{msg.message}</p>
+                            <p className="text-xs opacity-70 mt-2">
+                              {msg.timestamp.toLocaleTimeString()}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className={`rounded-lg p-3 ${
-                        msg.sender === 'user' 
-                          ? 'bg-zinc-100 text-zinc-900' 
-                          : 'bg-zinc-800 text-zinc-100'
-                      }`}>
-                        <p className="text-sm leading-relaxed">{msg.message}</p>
-                        <p className="text-xs opacity-70 mt-2">
-                          {msg.timestamp.toLocaleTimeString()}
-                        </p>
+                    ))}
+                    
+                    {isTyping && (
+                      <div className="flex gap-3">
+                        <div className="h-8 w-8 rounded-full bg-zinc-700 text-zinc-300 flex items-center justify-center">
+                          <Bot className="h-4 w-4" />
+                        </div>
+                        <div className="bg-zinc-700 rounded-lg p-3">
+                          <div className="flex gap-1">
+                            <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                            <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                            <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
-                ))}
-                
-                {isTyping && (
-                  <div className="flex gap-3">
-                    <div className="h-8 w-8 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center">
-                      <Bot className="h-4 w-4" />
-                    </div>
-                    <div className="bg-zinc-800 rounded-lg p-3">
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
 
               {/* Quick Actions */}
-              <div className="mb-4">
+              <div className="mb-4 flex-shrink-0">
                 <p className="text-sm text-zinc-400 mb-3">Quick actions:</p>
                 <div className="flex flex-wrap gap-2">
                   {quickActions.map((action) => (
@@ -173,7 +175,7 @@ export function CareerChatPage() {
               </div>
 
               {/* Message Input */}
-              <div className="flex gap-3">
+              <div className="flex gap-3 flex-shrink-0">
                 <input
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
