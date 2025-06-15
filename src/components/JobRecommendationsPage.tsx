@@ -358,16 +358,16 @@ export function JobRecommendationsPage() {
                     </span>
                   </div>
                   <div className="flex gap-2">
-                    <button className="px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200 text-sm">
-                      <ExternalLink className="h-4 w-4 mr-2 inline" />
-                      View Details
-                    </button>
                     <button 
                       onClick={() => applyToJob(match.jobId)}
                       className="px-4 py-2 bg-zinc-600 hover:bg-zinc-700 text-zinc-100 rounded-lg transition-colors duration-200 text-sm font-medium"
                     >
                       <Heart className="h-4 w-4 mr-2 inline" />
                       Apply Now
+                    </button>
+                    <button className="px-4 py-2 border border-zinc-600 text-zinc-300 rounded-lg hover:bg-zinc-800 transition-colors duration-200 text-sm">
+                      <ExternalLink className="h-4 w-4 mr-2 inline" />
+                      View Details
                     </button>
                   </div>
                 </div>
