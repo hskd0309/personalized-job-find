@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Download, FileText, User, Briefcase, GraduationCap, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 export function ResumeBuilderPage() {
   const { toast } = useToast();
@@ -102,11 +103,51 @@ export function ResumeBuilderPage() {
     }
   };
 
-  const downloadResume = () => {
-    toast({
-      title: "Resume Generated!",
-      description: "Your professional resume is ready.",
-    });
+  const downloadResume = async () => {
+    try {
+      const resumeData = {
+        personalInfo,
+        experiences,
+        education,
+        skills,
+        customSections
+      };
+
+      // Call the edge function to generate the PDF
+      const { data, error } = await supabase.functions.invoke('generate-resume-pdf', {
+        body: { resumeData }
+      });
+
+      if (error) throw error;
+
+      if (data?.html) {
+        // Create a new window with the HTML content and trigger print
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(data.html);
+          printWindow.document.close();
+          
+          // Wait for content to load then trigger print dialog
+          printWindow.onload = () => {
+            setTimeout(() => {
+              printWindow.print();
+            }, 500);
+          };
+        }
+      }
+
+      toast({
+        title: "Resume Generated!",
+        description: "Your professional resume is ready for download.",
+      });
+    } catch (error) {
+      console.error('Error generating resume:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate resume. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const tabs = [
