@@ -114,15 +114,19 @@ export function ResumeBuilderPage() {
       };
 
       // Call the edge function to generate the PDF
-      const { data, error } = await supabase.functions.invoke('generate-resume-pdf', {
+      const { data, error } = await supabase.functions.invoke('generate-resume', {
         body: { resumeData }
       });
 
       if (error) throw error;
 
       if (data?.html) {
-        // Create a new window with the HTML content and trigger print
-        const printWindow = window.open('', '_blank');
+        // Create a blob with the HTML content
+        const htmlBlob = new Blob([data.html], { type: 'text/html' });
+        const url = URL.createObjectURL(htmlBlob);
+        
+        // Create a new window with proper settings for printing
+        const printWindow = window.open('', '_blank', 'width=800,height=600');
         if (printWindow) {
           printWindow.document.write(data.html);
           printWindow.document.close();
@@ -130,15 +134,39 @@ export function ResumeBuilderPage() {
           // Wait for content to load then trigger print dialog
           printWindow.onload = () => {
             setTimeout(() => {
+              printWindow.focus();
               printWindow.print();
+              // Close the window after printing (optional)
+              setTimeout(() => {
+                printWindow.close();
+              }, 1000);
             }, 500);
           };
+        } else {
+          // Fallback: create a temporary link to download the HTML
+          const fileName = `${personalInfo.firstName || 'Resume'}_${personalInfo.lastName || 'Document'}.html`;
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          toast({
+            title: "HTML Downloaded!",
+            description: "Open the file and print to PDF from your browser.",
+          });
         }
+        
+        // Clean up the URL
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+        }, 2000);
       }
 
       toast({
         title: "Resume Generated!",
-        description: "Your professional resume is ready for download.",
+        description: "Print dialog opened. Choose 'Save as PDF' to download.",
       });
     } catch (error) {
       console.error('Error generating resume:', error);
@@ -216,7 +244,7 @@ export function ResumeBuilderPage() {
                         <Input
                           value={personalInfo.firstName}
                           onChange={(e) => setPersonalInfo({...personalInfo, firstName: e.target.value})}
-                          placeholder="John"
+                          placeholder="Dhinesh"
                           className="border-b-2 border-primary/30"
                         />
                       </div>
@@ -225,7 +253,7 @@ export function ResumeBuilderPage() {
                         <Input
                           value={personalInfo.lastName}
                           onChange={(e) => setPersonalInfo({...personalInfo, lastName: e.target.value})}
-                          placeholder="Doe"
+                          placeholder="Kumar"
                           className="border-b-2 border-primary/30"
                         />
                       </div>
@@ -246,7 +274,7 @@ export function ResumeBuilderPage() {
                           type="email"
                           value={personalInfo.email}
                           onChange={(e) => setPersonalInfo({...personalInfo, email: e.target.value})}
-                          placeholder="john@example.com"
+                          placeholder="dhineshkumar0906@gmail.com"
                           className="border-b-2 border-primary/30"
                         />
                       </div>
@@ -255,7 +283,7 @@ export function ResumeBuilderPage() {
                         <Input
                           value={personalInfo.phone}
                           onChange={(e) => setPersonalInfo({...personalInfo, phone: e.target.value})}
-                          placeholder="+1 (555) 123-4567"
+                          placeholder="+919345191997"
                           className="border-b-2 border-primary/30"
                         />
                       </div>
@@ -265,7 +293,7 @@ export function ResumeBuilderPage() {
                       <Input
                         value={personalInfo.location}
                         onChange={(e) => setPersonalInfo({...personalInfo, location: e.target.value})}
-                        placeholder="New York, NY"
+                        placeholder="Chennai, India"
                         className="border-b-2 border-primary/30"
                       />
                     </div>
