@@ -176,7 +176,7 @@ export function PersonalizedJobFinder() {
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-white mb-2">
           Personalized Job Finder
         </h1>
         <p className="text-lg text-gray-600">
@@ -255,15 +255,15 @@ export function PersonalizedJobFinder() {
             <div>
               <label className="block text-sm font-medium mb-1">Job Type</label>
               <select
-                className="w-full h-10 px-3 py-2 border border-gray-200 rounded-md bg-white"
+                className="w-full h-10 px-3 py-2 border border-gray-200 rounded-md bg-white text-gray-900"
                 value={jobType}
                 onChange={(e) => setJobType(e.target.value)}
               >
-                <option value="">Any</option>
-                <option value="full-time">Full Time</option>
-                <option value="part-time">Part Time</option>
-                <option value="contract">Contract</option>
-                <option value="remote">Remote</option>
+                <option value="" className="text-gray-900">Any</option>
+                <option value="full-time" className="text-gray-900">Full Time</option>
+                <option value="part-time" className="text-gray-900">Part Time</option>
+                <option value="contract" className="text-gray-900">Contract</option>
+                <option value="remote" className="text-gray-900">Remote</option>
               </select>
             </div>
             <div className="flex items-end">
@@ -290,7 +290,7 @@ export function PersonalizedJobFinder() {
       <div className="space-y-4">
         {matchedJobs.length > 0 && (
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-xl font-semibold text-white">
               Found {matchedJobs.length} matching jobs
             </h2>
             <p className="text-sm text-gray-600">

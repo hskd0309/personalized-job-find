@@ -106,11 +106,11 @@ export function JobRecommendationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-      <div className="container mx-auto px-4 py-6 space-y-8">
+      <div className="container mx-auto px-4 py-6 space-y-8 orientation-landscape:px-6 orientation-portrait:px-4">
         
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-white mb-2">
             Job Recommendations
           </h1>
           <p className="text-lg text-gray-600">
@@ -189,7 +189,7 @@ export function JobRecommendationsPage() {
         {matches.length > 0 && (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-semibold text-gray-900">
+              <h2 className="text-2xl font-semibold text-white">
                 Found {matches.length} Job Matches
               </h2>
               <p className="text-gray-600">
@@ -311,7 +311,7 @@ export function JobRecommendationsPage() {
           <Card>
             <CardContent className="p-12 text-center">
               <Target className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 No Job Matches Found
               </h3>
               <p className="text-gray-600 mb-6">
