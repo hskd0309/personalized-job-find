@@ -15,37 +15,24 @@ import {
   ExternalLink,
   Zap,
   Users,
-  Briefcase
+  Briefcase,
+  RefreshCw
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { allJobs, Job } from '@/data/jobs';
 
-interface JobMatch {
-  jobId: string;
-  job: {
-    id: string;
-    title: string;
-    description: string;
-    requirements: string;
-    location: string;
-    job_type: string;
-    experience_level: string;
-    salary_min: number;
-    salary_max: number;
-    skills_required: string[];
-    views_count: number;
-    applications_count: number;
-    created_at: string;
-  };
+interface JobRecommendation extends Job {
   matchScore: number;
   reasons: string[];
-  missingSkills: string[];
+  matchedSkills: string[];
 }
 
 export function JobRecommendationsPage() {
-  const [matches, setMatches] = useState<JobMatch[]>([]);
+  const [matches, setMatches] = useState<JobRecommendation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [userSkills, setUserSkills] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {

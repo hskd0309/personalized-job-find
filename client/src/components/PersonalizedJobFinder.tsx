@@ -6,20 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { allJobs, Job } from '@/data/jobs';
 
-interface JobMatch {
-  id: string;
-  title: string;
-  company_name?: string;
-  location?: string;
-  job_type?: string;
-  salary_min?: number;
-  salary_max?: number;
-  skills_required?: string[];
-  description: string;
-  requirements: string;
-  created_at: string;
+interface JobMatch extends Job {
   match_score?: number;
+  matchedSkills?: string[];
 }
 
 export function PersonalizedJobFinder() {
@@ -97,58 +88,53 @@ export function PersonalizedJobFinder() {
 
     setSearching(true);
     try {
-      let query = supabase
-        .from('job_postings')
-        .select(`
-          *,
-          profiles!job_postings_user_id_fkey(company_name)
-        `)
-        .eq('is_active', true);
+      // Filter jobs from the job search page data instead of database
+      let filteredJobs = [...allJobs];
 
       // Filter by location if specified
       if (location.trim()) {
-        query = query.ilike('location', `%${location.trim()}%`);
+        filteredJobs = filteredJobs.filter(job => 
+          job.location.toLowerCase().includes(location.trim().toLowerCase())
+        );
       }
 
       // Filter by job type if specified
       if (jobType) {
-        query = query.eq('job_type', jobType);
+        filteredJobs = filteredJobs.filter(job => 
+          job.type.toLowerCase() === jobType.toLowerCase()
+        );
       }
 
-      const { data: jobs, error } = await query.order('created_at', { ascending: false });
-
-      if (error) throw error;
-
       // Calculate match scores based on skill overlap
-      const jobsWithScores = jobs?.map(job => {
-        const jobSkills = job.skills_required || [];
-        const matchedSkills = userSkills.filter(skill => 
-          jobSkills.some(jobSkill => 
-            jobSkill.toLowerCase().includes(skill.toLowerCase()) ||
-            skill.toLowerCase().includes(jobSkill.toLowerCase())
-          )
-        );
+      const jobsWithScores = filteredJobs.map(job => {
+        const jobSkills = job.skills || [];
+        const jobDescription = `${job.description} ${job.requirements?.join(' ') || ''}`.toLowerCase();
         
-        const matchScore = jobSkills.length > 0 
-          ? Math.round((matchedSkills.length / jobSkills.length) * 100)
+        // Check skills in job skills array and description
+        const matchedSkills = userSkills.filter(skill => {
+          const skillLower = skill.toLowerCase();
+          return jobSkills.some(jobSkill => 
+            jobSkill.toLowerCase().includes(skillLower) ||
+            skillLower.includes(jobSkill.toLowerCase())
+          ) || jobDescription.includes(skillLower);
+        });
+        
+        // Calculate match score based on matched skills vs total user skills
+        const matchScore = userSkills.length > 0 
+          ? Math.round((matchedSkills.length / userSkills.length) * 100)
           : 0;
 
         return {
           ...job,
-          company_name: job.profiles?.company_name || 'Company Name',
-          match_score: matchScore
+          match_score: matchScore,
+          matchedSkills
         };
-      }) || [];
+      });
 
-      // Sort by match score descending, then by creation date
+      // Sort by match score descending
       const sortedJobs = jobsWithScores
-        .filter(job => job.match_score > 0 || userSkills.length === 0)
-        .sort((a, b) => {
-          if (a.match_score !== b.match_score) {
-            return b.match_score - a.match_score;
-          }
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
+        .filter(job => job.match_score > 20) // Show jobs with at least 20% match
+        .sort((a, b) => b.match_score - a.match_score);
 
       setMatchedJobs(sortedJobs);
       
@@ -175,11 +161,8 @@ export function PersonalizedJobFinder() {
     }
   };
 
-  const formatSalary = (min?: number, max?: number) => {
-    if (!min && !max) return 'Salary not disclosed';
-    if (min && max) return `₹${(min/100000).toFixed(1)}L - ₹${(max/100000).toFixed(1)}L`;
-    if (min) return `₹${(min/100000).toFixed(1)}L+`;
-    return 'Competitive salary';
+  const formatSalary = (salary?: string) => {
+    return salary || 'Salary not disclosed';
   };
 
   const getMatchColor = (score: number) => {
@@ -326,7 +309,7 @@ export function PersonalizedJobFinder() {
                   </h3>
                   <p className="text-gray-600 flex items-center gap-1">
                     <Briefcase className="h-4 w-4" />
-                    {job.company_name}
+                    {job.company}
                   </p>
                 </div>
                 {job.match_score !== undefined && (
@@ -339,15 +322,15 @@ export function PersonalizedJobFinder() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div className="flex items-center gap-1 text-gray-600">
                   <MapPin className="h-4 w-4" />
-                  {job.location || 'Location not specified'}
+                  {job.location}
                 </div>
                 <div className="flex items-center gap-1 text-gray-600">
                   <Clock className="h-4 w-4" />
-                  {job.job_type || 'Full-time'}
+                  {job.type}
                 </div>
                 <div className="flex items-center gap-1 text-gray-600">
                   <DollarSign className="h-4 w-4" />
-                  {formatSalary(job.salary_min, job.salary_max)}
+                  {formatSalary(job.salary)}
                 </div>
               </div>
 
@@ -355,19 +338,29 @@ export function PersonalizedJobFinder() {
                 {job.description}
               </p>
 
-              {job.skills_required && job.skills_required.length > 0 && (
+              {job.skills && job.skills.length > 0 && (
                 <div className="mb-4">
                   <p className="text-sm font-medium text-gray-900 mb-2">Required Skills:</p>
                   <div className="flex flex-wrap gap-2">
-                    {job.skills_required.map((skill, index) => (
+                    {job.skills.map((skill, index) => (
                       <Badge 
                         key={index} 
-                        variant={userSkills.some(userSkill => 
-                          userSkill.toLowerCase().includes(skill.toLowerCase()) ||
-                          skill.toLowerCase().includes(userSkill.toLowerCase())
-                        ) ? "default" : "outline"}
+                        variant={job.matchedSkills?.includes(skill) ? "default" : "outline"}
                         className="text-xs"
                       >
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {job.matchedSkills && job.matchedSkills.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-green-700 mb-2">Your Matching Skills:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {job.matchedSkills.map((skill, index) => (
+                      <Badge key={index} variant="default" className="text-xs bg-green-100 text-green-800">
                         {skill}
                       </Badge>
                     ))}
@@ -377,7 +370,7 @@ export function PersonalizedJobFinder() {
 
               <div className="flex justify-between items-center">
                 <p className="text-sm text-gray-500">
-                  Posted {new Date(job.created_at).toLocaleDateString()}
+                  Posted {job.postedDate}
                 </p>
                 <Button size="sm">
                   View Details

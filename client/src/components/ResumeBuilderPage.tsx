@@ -4,13 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Download, FileText, User, Briefcase, GraduationCap, Award } from 'lucide-react';
+import { Plus, Download, FileText, User, Briefcase, GraduationCap, Award, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { ResumeAnalyzerUpload } from './ResumeAnalyzerUpload';
 
 export function ResumeBuilderPage() {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('personal');
+  const [activeTab, setActiveTab] = useState('analyze');
+  const [builderTab, setBuilderTab] = useState('personal');
   
   // Personal Info State
   const [personalInfo, setPersonalInfo] = useState({
