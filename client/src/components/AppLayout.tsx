@@ -10,6 +10,7 @@ import { CareerChatPage } from './CareerChatPage';
 import { ResumeAnalyzerPage } from './ResumeAnalyzerPage';
 import { JobRecommendationsPage } from './JobRecommendationsPage';
 import { ResumeBuilderPage } from './ResumeBuilderPage';
+import { PersonalizedJobFinder } from './PersonalizedJobFinder';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -71,6 +72,7 @@ export function AppLayout() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/job-search" element={<JobSearchPage />} />
+              <Route path="/personalized-jobs" element={<PersonalizedJobFinder />} />
               <Route path="/applications" element={<ApplicationsPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/career-chat" element={<CareerChatPage />} />

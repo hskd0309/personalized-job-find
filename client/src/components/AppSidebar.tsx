@@ -32,10 +32,11 @@ export function AppSidebar() {
   const navigation = [
     { name: 'Dashboard', href: '/app', icon: Home },
     { name: 'Job Search', href: '/app/job-search', icon: Search },
+    { name: 'Personalized Jobs', href: '/app/personalized-jobs', icon: PlusCircle },
     { name: 'Applications', href: '/app/applications', icon: Briefcase },
     { name: 'Resume Builder', href: '/app/resume-builder', icon: FileText },
     { name: 'Resume Analyzer', href: '/app/resume-analyzer', icon: BarChart3 },
-    { name: 'Job Recommendations', href: '/app/job-recommendations', icon: PlusCircle },
+    { name: 'Job Recommendations', href: '/app/job-recommendations', icon: BarChart3 },
     { name: 'Career Chat', href: '/app/career-chat', icon: MessageSquare },
     { name: 'Profile', href: '/app/profile', icon: User },
   ];
