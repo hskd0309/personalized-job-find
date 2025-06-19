@@ -6,6 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Download, FileText, User, Briefcase, GraduationCap, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 interface PersonalInfo {
   firstName: string;
@@ -79,6 +81,63 @@ export function ResumeBuilderIntegrated() {
       ...prev,
       skills: prev.skills.filter(s => s !== skill)
     }));
+  };
+
+  const downloadResume = async () => {
+    try {
+      const resumeElement = document.getElementById('resume-preview');
+      if (!resumeElement) {
+        toast({
+          title: "Error",
+          description: "Resume preview not found. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Create canvas from the resume element
+      const canvas = await html2canvas(resumeElement, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+      });
+
+      // Create PDF
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      // Download the PDF
+      const fileName = `${resumeData.personalInfo.firstName || 'Resume'}_${resumeData.personalInfo.lastName || 'Document'}.pdf`;
+      pdf.save(fileName);
+
+      toast({
+        title: "Resume Downloaded",
+        description: "Your resume has been downloaded successfully.",
+      });
+    } catch (error) {
+      console.error('Error downloading resume:', error);
+      toast({
+        title: "Download Failed",
+        description: "Failed to download resume. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const addExperience = () => {
@@ -176,7 +235,7 @@ export function ResumeBuilderIntegrated() {
           <p className="text-muted-foreground">Create your professional resume with our integrated builder</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <Card>
@@ -199,19 +258,19 @@ export function ResumeBuilderIntegrated() {
                   );
                 })}
                 <Button 
-                  onClick={generateResume}
+                  onClick={downloadResume}
                   className="w-full mt-4"
-                  disabled={!resumeData.personalInfo.firstName || resumeData.experience.length === 0}
+                  disabled={!resumeData.personalInfo.firstName}
                 >
                   <Download className="h-4 w-4 mr-2" />
-                  Generate Resume
+                  Download Resume
                 </Button>
               </CardContent>
             </Card>
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -465,6 +524,89 @@ export function ResumeBuilderIntegrated() {
                     )}
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Resume Preview */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Resume Preview
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div id="resume-preview" className="bg-white p-4 border rounded-lg min-h-[600px] text-black">
+                  {/* Header */}
+                  <div className="text-center border-b pb-4 mb-4">
+                    <h1 className="text-xl font-bold">
+                      {resumeData.personalInfo.firstName} {resumeData.personalInfo.lastName}
+                    </h1>
+                    <div className="text-sm text-gray-600 mt-2 space-y-1">
+                      {resumeData.personalInfo.email && <p>{resumeData.personalInfo.email}</p>}
+                      {resumeData.personalInfo.phone && <p>{resumeData.personalInfo.phone}</p>}
+                      {resumeData.personalInfo.location && <p>{resumeData.personalInfo.location}</p>}
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  {resumeData.personalInfo.summary && (
+                    <div className="mb-4">
+                      <h2 className="text-sm font-bold mb-2 border-b">SUMMARY</h2>
+                      <p className="text-xs text-gray-700">{resumeData.personalInfo.summary}</p>
+                    </div>
+                  )}
+
+                  {/* Experience */}
+                  {resumeData.experience.length > 0 && (
+                    <div className="mb-4">
+                      <h2 className="text-sm font-bold mb-2 border-b">EXPERIENCE</h2>
+                      {resumeData.experience.map((exp) => (
+                        <div key={exp.id} className="mb-3">
+                          <div className="flex justify-between items-start">
+                            <h3 className="text-xs font-semibold">{exp.position}</h3>
+                            <span className="text-xs text-gray-600">
+                              {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-600">{exp.company} • {exp.location}</p>
+                          <p className="text-xs text-gray-700 mt-1">{exp.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Education */}
+                  {resumeData.education.length > 0 && (
+                    <div className="mb-4">
+                      <h2 className="text-sm font-bold mb-2 border-b">EDUCATION</h2>
+                      {resumeData.education.map((edu) => (
+                        <div key={edu.id} className="mb-2">
+                          <h3 className="text-xs font-semibold">{edu.degree}</h3>
+                          <p className="text-xs text-gray-600">{edu.institution} • {edu.location}</p>
+                          <p className="text-xs text-gray-600">{edu.graduationDate}</p>
+                          {edu.gpa && <p className="text-xs">GPA: {edu.gpa}</p>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Skills */}
+                  {resumeData.skills.length > 0 && (
+                    <div className="mb-4">
+                      <h2 className="text-sm font-bold mb-2 border-b">SKILLS</h2>
+                      <div className="flex flex-wrap gap-1">
+                        {resumeData.skills.map((skill, index) => (
+                          <span key={index} className="text-xs bg-gray-100 px-2 py-1 rounded">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
