@@ -8,7 +8,7 @@ import { ApplicationsPage } from './ApplicationsPage';
 import { ProfilePage } from './ProfilePage';
 import { CareerChatPage } from './CareerChatPage';
 import { ResumeAnalyzerPage } from './ResumeAnalyzerPage';
-import { JobRecommendationsPage } from './JobRecommendationsPage';
+import { JobRecommendationsPage } from './JobRecommendationsPageSimple';
 import { ResumeBuilderPage } from './ResumeBuilderPage';
 import { PersonalizedJobFinder } from './PersonalizedJobFinder';
 import { supabase } from '@/integrations/supabase/client';

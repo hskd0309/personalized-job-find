@@ -12,7 +12,6 @@ import { ResumeAnalyzerUpload } from './ResumeAnalyzerUpload';
 export function ResumeBuilderPage() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('analyze');
-  const [builderTab, setBuilderTab] = useState('personal');
   
   // Personal Info State
   const [personalInfo, setPersonalInfo] = useState({
