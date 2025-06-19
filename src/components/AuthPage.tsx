@@ -111,8 +111,10 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-lg flex items-center justify-center">
-              <img src="/icons/careerhub-icon.svg" alt="CareerHub" className="h-10 w-10" />
+            <div className="h-10 w-10 bg-gradient-to-br from-zinc-100 to-zinc-300 rounded-lg flex items-center justify-center">
+              <svg className="h-6 w-6 text-zinc-900" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm3 1h6v4H7V5zm8 8v2a1 1 0 01-1 1H6a1 1 0 01-1-1v-2h8z" clipRule="evenodd" />
+              </svg>
             </div>
             <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">CareerHub</h1>
           </div>
